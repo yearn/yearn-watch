@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {@apply scroll-smooth font-roboto}
+
+html {
+	margin-left: calc(100vw - 100%);
+	/* background: #F4F7FB;*/
+}
+html.dark {
+	margin-left: calc(100vw - 100%);
+	/* background: #0f172a;*/
+}
+
+#__next {
+	@apply w-full h-full
+}
+
+::placeholder, :-ms-input-placeholder, ::-ms-input-placeholder {
+	@apply text-typo-off;
+}
+
+.scrollbar-none {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+    @apply hidden;
+}
+
+.flex-center {
+	@apply justify-center items-center;
+}
+
+button {@apply cursor-pointer px-3 h-8 rounded-lg text-base text-center transition-colors}
+button:disabled {@apply cursor-not-allowed}
+
+/* Color style of buttons */
+.button-light {@apply text-primary bg-button-outlined-variant hover:bg-secondary-variant}
+
+.button-filled {@apply font-bold text-button-filled-primary bg-primary hover:bg-primary-variant}
+.button-filled:disabled {@apply bg-button-disabled-primary text-button-disabled-text hover:bg-button-disabled-primary}
+
+.button-outline {@apply text-primary border border-primary hover:bg-button-outlined-variant}
+.button-outline:disabled {@apply text-button-disabled-text border border-button-disabled-text bg-opacity-0}
+
+
+.link {
+	@apply text-primary hover:text-primary-variant underline transition-colors cursor-pointer;
+}
+
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #0657F9;
+
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #0657F9, 0 0 5px #0657F9;
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: #0657F9;
+  border-left-color: #0657F9;
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.inline-dl {@apply flex flex-col space-y-4;}
+.inline-dl > span {@apply flex flex-row items-center;}
+.inline-dl > span > dt {@apply mr-8 w-5/12 text-left text-typo-secondary-variant;}
+.inline-dl > span > dd {@apply font-bold tabular-nums text-left text-typo-primary;}
