@@ -1,4 +1,4 @@
-import	React, {LegacyRef, MouseEvent, ReactElement}	from	'react';
+import	React, {MouseEvent, ReactElement}	from	'react';
 import	Link								from	'next/link';
 import	Image								from	'next/image';
 import	useYearn, {TVault}					from	'contexts/useYearn';
@@ -9,15 +9,8 @@ import	Switch								from	'@lib/Switch';
 import	AddressWithActions					from	'@lib/AddressWithActions';
 import	Details								from	'@lib/Details';
 import	IconWarning							from	'@icons/IconWarning';
-import	IconChevron							from	'@icons/IconChevron';
 
 type 		TVaultBox = {vault: TVault}
-
-export type TSummary = {
-	startChildren?: React.ReactNode;
-	endChildren?: React.ReactNode;
-	['aria-expanded']?: boolean;
-} & React.ComponentPropsWithoutRef<'section'>;
 
 const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement {
 	function	renderSummaryStart(): ReactElement {
@@ -51,27 +44,15 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 		);
 	}
 
-	//THIS PART IS STILL WIP
-	function Summary({...props}: TSummary, ref: LegacyRef<HTMLDivElement> | undefined): ReactElement {
-		return (
-			<div ref={ref} className={'flex flex-row justify-between items-center p-6 w-full cursor-pointer'} {...props}>
-				<div className={'flex flex-row items-start'}>
-					{renderSummaryStart()}
-				</div>
-				<div className={'flex flex-row items-center'}>
-					{renderSummaryEnd()}
-					<div>
-						<IconChevron className={`w-6 h-6 text-primary transition-transform ${props['aria-expanded'] ? '-rotate-90' : '-rotate-180'}`} />
-					</div>
-				</div>
-			</div>
-		);
-	}
-
 	return (
 		<Details
 			backgroundColor={'bg-surface'}
-			summary={Summary}>
+			summary={(p: unknown): ReactElement => (
+				<Details.Summary
+					startChildren={renderSummaryStart()}
+					endChildren={renderSummaryEnd()}
+					{...p} />
+			)}>
 			{(vault.warnings || []).length > 0 ? <div className={'flex flex-row items-center p-2 mb-4 bg-[#FFF9D9] rounded-lg'}>
 				<IconWarning className={'w-6 h-6 text-[#FF8A00]'} />
 				<p className={'pl-2 text-[#FF8A00]'}>{vault.warnings}</p>

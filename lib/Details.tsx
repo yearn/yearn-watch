@@ -8,8 +8,7 @@ export type TSummary = {
 	endChildren?: React.ReactNode;
 	['aria-expanded']?: boolean;
 } & React.ComponentPropsWithoutRef<'section'>;
-function Summary({startChildren, endChildren, ...props}: TSummary, ref: any): ReactElement {
-
+function Summary({startChildren, endChildren, ...props}: TSummary): ReactElement{
 	return (
 		<div className={'flex flex-row justify-between items-center p-6 w-full cursor-pointer'} {...props}>
 			<div className={'flex flex-row items-start'}>
@@ -40,7 +39,9 @@ function Details({summary, backgroundColor = 'bg-background', children}: TDetail
 					hasNoPadding
 					backgroundColor={backgroundColor}
 					className={'overflow-hidden w-full cursor-pointer'}>
-					<Disclosure.Button as={React.forwardRef(summary)} />
+					<Disclosure.Button as={'div'}>
+						{summary}
+					</Disclosure.Button>
 					<Transition
 						as={React.Fragment}
 						show={open}
