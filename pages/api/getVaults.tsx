@@ -7,10 +7,10 @@ import	{createHash}						from	'crypto';
 import	VAULT_ABI							from	'utils/abi/vaults.abi';
 import	STRATEGY_ABI						from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI					from	'utils/abi/priceOracle.abi';
-import	CHAINS								from	'@lib/utils/chains';
 import	{TVault, TStrategyReport}			from	'contexts/useWatch.d';
 import	* as utils							from	'@lib/utils';
 import	{getProvider, newEthCallProvider}	from	'@lib/utils/providers';
+import	CHAINS								from	'@lib/utils/chains';
 
 const MINUTES = 60 * 1000;
 const ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
