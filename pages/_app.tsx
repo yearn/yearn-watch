@@ -2,34 +2,25 @@ import	React, {ReactElement}		from	'react';
 import	Head						from	'next/head';
 import	{AppProps}					from	'next/app';
 import	{DefaultSeo}				from	'next-seo';
-import	{ethers}					from	'ethers';
-import	{Toaster}					from	'react-hot-toast';
-import	{Web3ReactProvider}			from	'@web3-react/core';
-import	{BalancesContextApp}		from	'contexts/useBalances';
-import useUI,	{UIContextApp}				from	'contexts/useUI';
-import	{PricesContextApp}			from	'contexts/usePrices';
-import	{LocalizationContextApp}	from 	'contexts/useLocalization';
-import	{Web3ContextApp}			from	'contexts/useWeb3';
-import	{YearnContextApp}			from	'contexts/useYearn';
-import	Header						from	'components/StandardHeader';
+import	useWatch, {WatchContextApp}	from	'contexts/useWatch';
 import	Footer						from	'components/StandardFooter';
-import	Navbar						from	'@lib/Navbar';
-import	LogoWatch					from	'@lib/logo/LogoWatch';
-import	IconAlert					from	'@icons/IconAlert';
-import	IconLab						from	'@icons/IconLab';
-import	IconVault					from	'@icons/IconVault';
-import	IconMoon					from	'@icons/IconMoon';
-import	IconSun						from	'@icons/IconSun';
+import	HeaderTitle					from	'components/HeaderTitle';
+import	IconAlert					from	'components/icons/IconAlert';
+import	IconLab						from	'components/icons/IconLab';
+import	IconVault					from	'components/icons/IconVault';
+import	IconHealthcheck				from	'components/icons/IconHealthcheck';
+import	IconQuery					from	'components/icons/IconQuery';
+import	LogoWatch					from	'components/logo/LogoWatch';
+import	WithYearn					from	'@lib/index';
+import	useInterval					from	'@lib/hooks/useInterval';
+import	Navbar						from	'@lib/components/Navbar';
+import	Header						from	'@lib/components/Header';
+import	* as format					from	'@lib/utils/format';
+import										'@lib/style.css';
 
-import	'style/Default.css';
+import	'../style.css';
 
-function	AppWrapper(props: AppProps): ReactElement {
-	const	{Component, pageProps, router} = props;
-	const	WEBSITE_URI = process.env.WEBSITE_URI;
-	const	{theme, switchTheme} = useUI();
-
-	console.warn(theme);
-
+function	AppHead(): ReactElement {
 	return (
 		<>
 			<Head>
@@ -59,13 +50,13 @@ function	AppWrapper(props: AppProps): ReactElement {
 				openGraph={{
 					type: 'website',
 					locale: 'en_US',
-					url: WEBSITE_URI,
+					url: process.env.WEBSITE_URI,
 					site_name: process.env.WEBSITE_NAME,
 					title: process.env.WEBSITE_NAME,
 					description: process.env.WEBSITE_DESCRIPTION,
 					images: [
 						{
-							url: `${WEBSITE_URI}og.png`,
+							url: `${process.env.WEBSITE_URI}og.png`,
 							width: 1200,
 							height: 675,
 							alt: 'Yearn'
@@ -77,48 +68,126 @@ function	AppWrapper(props: AppProps): ReactElement {
 					site: '@iearnfinance',
 					cardType: 'summary_large_image'
 				}} />
-			<div id={'app'} className={'grid relative flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row md:mb-6'}>
-				<div className={'flex sticky top-0 flex-col col-span-2 justify-between'} style={{height: 'calc(100vh - 1rem)'}}>
-					<Navbar
-						selected={router.pathname}
-						set_selected={(selected: string): void => {
-							router.push(selected);
-						}}
-						logo={<LogoWatch className={'w-full h-12 text-primary'} />}
-						options={[
-							{
-								id: '/',
-								values: ['/', '/vault/[vault]', '/vault/[vault]/[strategy]'],
-								label: 'Vaults',
-								icon: <IconVault  />
-							},
-							{
-								id: '/risk',
-								values: ['/risk'],
-								label: 'Risk',
-								icon: <IconLab />
-							},
-							{
-								id: '/alerts',
-								values: ['/alerts'],
-								label: 'Alerts',
-								icon: <IconAlert />
-							}
-						]}
-					/>
-					<div className={'flex flex-row justify-start mb-4'}>
-						<IconMoon
-							aria-label={'Switch to dark theme'}
-							onClick={switchTheme}
-							className={`w-5 h-5 text-typo-secondary hover:text-primary opacity-40 transition-colors cursor-pointer ${theme === 'dark' ? 'hidden' : ''}`} />
-						<IconSun
-							aria-label={'Switch to light theme'}
-							onClick={switchTheme}
-							className={`w-5 h-5 text-typo-secondary hover:text-primary opacity-40 transition-colors cursor-pointer ${theme === 'light' ? 'hidden' : ''}`} />
+		</>
+	);
+}
+
+function	AppSync(): ReactElement {
+	const	{network, lastUpdate, update} = useWatch();
+	const	[blockDiff, set_blockDiff] = React.useState<number>(0);
+	const	[lastUpdateDiff, set_lastUpdateDiff] = React.useState<number>(0);
+
+	/* 🔵 - Yearn Finance ******************************************************
+	** We are using the subgraph for some of the data. The subgraph could be
+	** a few blocks outdated, so we need to display the difference between
+	** the rpc block height and the subgraph block height.
+	**
+	** -1 is returned if the subgraph is not available, otherwise the we return
+	** the absolute difference between the two.
+	**************************************************************************/
+	React.useEffect((): void => {
+		if (network.hasGraphIndexingErrors)
+			set_blockDiff(-1);
+		else if (network.blockNumber && network.graphBlockNumber)
+			set_blockDiff(Math.abs(network.blockNumber - network.graphBlockNumber));
+	}, [network.blockNumber, network.graphBlockNumber, network.hasGraphIndexingErrors]);
+
+	/* 🔵 - Yearn Finance ******************************************************
+	** Data are cached for 10 minutes to avoid too many loading time for not
+	** much change. Theses data can be force updated on demand.
+	** Get the difference between the user's browser and the cache update time
+	** and register a interval to update this counter every minutes.
+	**************************************************************************/
+	useInterval((): void => {
+		if (lastUpdate) {
+			console.warn({update: lastUpdate - new Date().valueOf()});
+			set_lastUpdateDiff(lastUpdate - new Date().valueOf());
+		}
+	}, 30 * 1000, true, [lastUpdate]);
+
+
+	function	renderBlockDiff(): string {
+		if (blockDiff === -1)
+			return 'Error with graph height';
+		if (blockDiff === 0)
+			return 'Graph is up to date';
+		return `Graph is ${blockDiff} block${blockDiff > 1 ? 's' : ''} behind`;
+	}
+
+	return (
+		<>
+			<div className={'flex flex-row items-center space-x-2 cursor-pointer'} onClick={update}>
+				<div className={`aspect-square w-2 h-2 rounded-full ${lastUpdateDiff < -300_000 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
+				<p className={'text-xs text-typo-secondary'}>{`Sync ${format.duration(lastUpdateDiff, true)}`}</p>
+			</div>
+			<div className={'flex flex-row items-center space-x-2'}>
+				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-error-primary' : blockDiff > 100 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
+				<p className={'text-xs text-typo-secondary'}>{renderBlockDiff()}</p>
+			</div>
+		</>
+	);
+}
+
+function	AppWrapper(props: AppProps): ReactElement {
+	const	{Component, pageProps, router} = props;
+	const	navbarMenuOptions = [
+		{
+			id: '/',
+			values: ['/', '/vault/[vault]', '/vault/[vault]/[strategy]'],
+			label: 'Vaults',
+			icon: <IconVault  />
+		},
+		{
+			id: '/query',
+			values: ['/query'],
+			label: 'Query',
+			icon: <IconQuery />
+		},
+		{
+			id: '/alerts',
+			values: ['/alerts'],
+			label: 'Alerts',
+			icon: <IconAlert />
+		},
+		{
+			id: '/healthcheck',
+			values: ['/healthcheck'],
+			label: 'Healthcheck',
+			icon: <IconHealthcheck />
+		},
+		{
+			id: '/risk',
+			values: ['/risk'],
+			label: 'Risk',
+			icon: <IconLab />
+		}
+	];
+
+	function	onChangeRoute(selected: string): void {
+		router.push(selected);
+	}
+
+	return (
+		<>
+			<AppHead />
+			<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row md:mb-6'}>
+				<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2 md:h-full'}>
+					<div className={'flex flex-col justify-between h-full'}>
+						<Navbar
+							selected={router.pathname}
+							set_selected={onChangeRoute}
+							logo={<LogoWatch className={'w-full h-12 text-primary'} />}
+							options={navbarMenuOptions}>
+							<div className={'flex flex-col mt-auto space-y-2'}>
+								<AppSync />
+							</div>
+						</Navbar>
 					</div>
 				</div>
-				<div className={'flex flex-col col-span-10 w-full min-h-[100vh]'}>
-					<Header />
+				<div className={'flex flex-col col-span-12 px-4 w-full min-h-[100vh] md:col-span-10 md:px-0'}>
+					<Header>
+						<HeaderTitle />
+					</Header>
 					<Component
 						key={router.route}
 						router={props.router}
@@ -130,35 +199,18 @@ function	AppWrapper(props: AppProps): ReactElement {
 	);
 }
 
-const getLibrary = (provider: ethers.providers.ExternalProvider): ethers.providers.Web3Provider => {
-	return new ethers.providers.Web3Provider(provider, 'any');
-};
-
 function	MyApp(props: AppProps): ReactElement {
 	const	{Component, pageProps} = props;
 	
 	return (
-		<UIContextApp>
-			<Toaster
-				position={'bottom-right'}
-				toastOptions={{className: 'text-sm text-typo-primary', style: {borderRadius: '0.5rem'}}} />
-			<Web3ReactProvider getLibrary={getLibrary}>
-				<Web3ContextApp>
-					<BalancesContextApp>
-						<PricesContextApp>
-							<LocalizationContextApp>
-								<YearnContextApp>
-									<AppWrapper
-										Component={Component}
-										pageProps={pageProps}
-										router={props.router} />
-								</YearnContextApp>
-							</LocalizationContextApp>
-						</PricesContextApp>
-					</BalancesContextApp>
-				</Web3ContextApp>
-			</Web3ReactProvider>
-		</UIContextApp>
+		<WithYearn>
+			<WatchContextApp>
+				<AppWrapper
+					Component={Component}
+					pageProps={pageProps}
+					router={props.router} />
+			</WatchContextApp>
+		</WithYearn>
 	);
 }
 

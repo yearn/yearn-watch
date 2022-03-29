@@ -1,9 +1,9 @@
 import	React, {ReactElement}						from	'react';
-import	{TVault, TStrategy, TStrategyReport}		from	'contexts/useYearn';
-import	* as utils									from	'utils';
-import	TxHashWithActions							from	'@lib/TxHashWithActions';
-import	StatisticCard								from	'@lib/StatisticCard';
-import	Details										from	'@lib/Details';
+import	{TVault, TStrategy, TStrategyReport}		from	'contexts/useWatch';
+import	Card										from	'@lib/components/Card';
+import	TxHashWithActions							from	'@lib/components/TxHashWithActions';
+import	StatisticCard								from	'@lib/components/StatisticCard';
+import	* as format									from	'@lib/utils/format';
 
 type	TSectionReports = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionReports = React.memo(function SectionReports({currentVault, currentStrategy}: TSectionReports): ReactElement {
@@ -27,18 +27,19 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 		<section aria-label={'reports-of-strategy'} className={'flex flex-col col-span-2 w-full'}>
 			<span className={'flex flex-row items-center mb-6 space-x-8 w-full'}>
 				<b className={'text-lg text-typo-primary'}>{'Last 10 reports'}</b>
-				<b className={'text-lg text-typo-primary'}>{`Average APR: ${utils.formatAmount(computeAverageAPR(currentStrategy.reports))}%`}</b>
-				<b className={'text-lg text-typo-primary'}>{`Median APR: ${utils.formatAmount(computeMedianAPR(currentStrategy.reports))}%`}</b>
+				<b className={'text-lg text-typo-primary'}>{`Average APR: ${format.amount(computeAverageAPR(currentStrategy?.reports || []))}%`}</b>
+				<b className={'text-lg text-typo-primary'}>{`Median APR: ${format.amount(computeMedianAPR(currentStrategy?.reports || []))}%`}</b>
 			</span>
 			<div className={'flex flex-col space-y-4'}>
 				{
-					currentStrategy?.reports
+					(currentStrategy?.reports || [])
 						.sort((a, b): number => Number(b.timestamp) - Number(a.timestamp))
 						.map((report): ReactElement => (
-							<Details
+							<Card.Detail
 								key={report.id}
+								isSticky={false}
 								summary={(p: unknown): ReactElement => (
-									<Details.Summary
+									<Card.Detail.Summary
 										startChildren={(
 											<div>
 												<TxHashWithActions
@@ -46,51 +47,62 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 													explorer={currentVault.explorer}
 													className={'font-mono font-bold text-typo-primary'} />
 												<p className={'block mt-2 text-typo-secondary-variant'}>
-													{utils.formatDate(Number(report?.timestamp || 0))}
+													{format.date(Number(report?.timestamp || 0))}
 												</p>
 											</div>
 										)}
 										{...p} />
 								)}>
-								<div className={'grid grid-cols-4 gap-4'}>
+								<StatisticCard.Wrapper cols={{mobile: 4, desktop: 4}}>
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={`Dept Added (${currentVault.symbol})`}
-										value={utils.formatBigNumberAsAmount(report?.debtAdded, currentVault.decimals, 4, '')} />
+										value={format.bigNumberAsAmount(report?.debtAdded, currentVault.decimals, 4, '')} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={'Dept Limit'}
-										value={utils.formatBigNumberAsAmount(report?.debtLimit, 2, 4, '%')} />
+										value={format.bigNumberAsAmount(report?.debtLimit, 2, 4, '%')} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 2}}
 										className={'col-span-2'}
 										label={`Total Dept (${currentVault.symbol})`}
-										value={utils.formatBigNumberAsAmount(report?.totalDebt, currentVault.decimals, 4, '')} />
+										value={format.bigNumberAsAmount(report?.totalDebt, currentVault.decimals, 4, '')} />
 
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={`Profit (${currentVault.symbol})`}
-										value={utils.formatBigNumberAsAmount(report?.gain, currentVault.decimals, 4, '')} />
+										value={format.bigNumberAsAmount(report?.gain, currentVault.decimals, 4, '')} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={`Total Profit (${currentVault.symbol})`}
-										value={utils.formatBigNumberAsAmount(report?.totalGain, currentVault.decimals, 4, '')} />
+										value={format.bigNumberAsAmount(report?.totalGain, currentVault.decimals, 4, '')} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={`Loss (${currentVault.symbol})`}
-										value={utils.formatBigNumberAsAmount(report?.loss, currentVault.decimals, 4, '')} />
+										value={format.bigNumberAsAmount(report?.loss, currentVault.decimals, 4, '')} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={`Total Loss (${currentVault.symbol})`}
-										value={utils.formatBigNumberAsAmount(report?.totalLoss, currentVault.decimals, 4, '')} />
+										value={format.bigNumberAsAmount(report?.totalLoss, currentVault.decimals, 4, '')} />
 
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={'Duration'}
-										value={utils.formatDuration(Number(report?.duration))} />
+										value={format.duration(Number(report?.duration))} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={'Duration PR'}
-										value={`${utils.formatAmount(Number(report?.durationPR.toFixed(4)), 2)}%`} />
+										value={`${format.amount(Number(report?.durationPR.toFixed(4)), 2)}%`} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={'APR'}
-										value={`${utils.formatAmount(Number((report?.apr * 100).toFixed(4)), 2)}%`} />
+										value={`${format.amount(Number((report?.apr * 100).toFixed(4)), 2)}%`} />
 									<StatisticCard
+										cols={{mobile: 1, desktop: 1}}
 										label={'Dept Paid'}
-										value={utils.formatBigNumberAsAmount(report?.debtPaid, currentVault.decimals, 4, '')} />
-								</div>
-							</Details>
+										value={format.bigNumberAsAmount(report?.debtPaid, currentVault.decimals, 4, '')} />
+								</StatisticCard.Wrapper>
+							</Card.Detail>
 						))
 				}
 			</div>

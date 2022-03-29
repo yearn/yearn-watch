@@ -3,19 +3,30 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
 	corePlugins: {
-		ringColor: false
+		ringColor: false,
+		ring: false
 	},
 	content: [
 		'./pages/**/*.{js,ts,jsx,tsx}',
 		'./components/**/*.{js,ts,jsx,tsx}',
 		'./lib/**/*.{js,ts,jsx,tsx}'
 	],
+	safelist: [{
+		pattern: /grid-cols-(1|2|3|4|5|6|7|8|9|10|11|12)/,
+		variants: ['md']
+	},	{
+		pattern: /col-span-(1|2|3|4|5|6|7|8|9|10|11|12)/,
+		variants: ['md']
+	}],
 	variants: {
 		textColor: ['hover', 'dark', 'light'],
 		backgroundColor: ['hover', 'dark', 'light']
 	},
 	theme: {
 		extend: {
+			gridTemplateColumns: {
+				'22': 'repeat(22, minmax(0, 1fr))'
+			},
 			fontFamily: {
 				roboto: ['Roboto', ...defaultTheme.fontFamily.sans],
 				mono: ['Roboto Mono', ...defaultTheme.fontFamily.mono]
@@ -49,6 +60,21 @@ module.exports = {
 				'white': '#FFFFFF',
 				'transparent': 'transparent',
 				'inherit': 'inherit'
+			},
+			keyframes: {
+				'fade-in-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				}
+			},
+			animation: {
+				'fade-in-up': 'fade-in-up 0.5s ease-out'
 			}
 		}
 	},

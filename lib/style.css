@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {@apply scroll-smooth font-roboto}
+html {margin-left: calc(100vw - 100%);}
+#__next {@apply w-full h-full}
+
+::placeholder, :-ms-input-placeholder, ::-ms-input-placeholder {
+	@apply text-typo-off;
+}
+
+.scrollbar-none {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {@apply hidden}
+
+/* 🔵 - Yearn Finance ******************************************************
+** List of extended style to handle Yearn default themes
+**************************************************************************/
+/* Buttons - Filled and outline variants */
+button {@apply cursor-pointer px-3 h-8 rounded-lg text-base text-center transition-colors}
+button:disabled {@apply cursor-not-allowed}
+.button-light {@apply text-primary bg-button-outlined-variant hover:bg-secondary-variant}
+.button-filled {@apply font-bold text-button-filled-text bg-primary hover:bg-primary-variant}
+.button-filled:disabled {@apply bg-button-disabled-primary text-button-disabled-text hover:bg-button-disabled-primary}
+.button-outline {@apply text-primary border border-primary hover:bg-button-outlined-variant}
+.button-outline:disabled {@apply text-button-disabled-text border border-button-disabled-text bg-opacity-0}
+
+/* External Links - use with yearn meta descriptions link for example */
+.link {@apply text-primary hover:text-primary-variant underline transition-colors cursor-pointer}
+
+/* Description list component - used to style the component */
+.inline-dl {@apply flex flex-col space-y-4;}
+.inline-dl > span {@apply flex flex-row items-center;}
+.inline-dl > span > dt {@apply mr-8 w-5/12 text-left text-typo-secondary-variant;}
+.inline-dl > span > dd {@apply font-bold tabular-nums text-left text-typo-primary;}
+
+/* Grid/Table - Used to fake a table without the impossible customizations */
+.grid-row {@apply grid grid-cols-22 w-max md:w-full py-3 h-16 rounded-sm relative mb-0.5;}
+.row-1 {@apply flex flex-row col-span-1}
+.row-2 {@apply flex flex-row col-span-2}
+.row-3 {@apply flex flex-row col-span-3}
+.row-4 {@apply flex flex-row col-span-4}
+.row-5 {@apply flex flex-row col-span-5}
+.row-6 {@apply flex flex-row col-span-6}
+.row-8 {@apply flex flex-row col-span-8}
+.cell-end {@apply tabular-nums text-right text-typo-primary justify-end}
+.cell-start {@apply tabular-nums text-left text-typo-primary justify-start}
+
+/* Typo - Some basic typo stuff */
+h1 {@apply text-xl font-bold text-primary}
+h4 {@apply text-lg font-bold text-typo-primary}
+
+/* Some extra */
+.flex-center {@apply justify-center items-center}
+
+/* 🔵 - Yearn Finance ******************************************************
+** NsProgress is used to display the loading indicator. All of theses
+** styles are required to make it visible
+**************************************************************************/
+.nprogress-custom-parent {@apply overflow-hidden relative}
+.nprogress-custom-parent #nprogress .spinner {@apply absolute}
+.nprogress-custom-parent #nprogress .bar {@apply absolute}
+#nprogress {@apply pointer-events-none}
+#nprogress .bar {@apply bg-primary fixed top-0 left-0 w-full h-1 z-[1031]}
+#nprogress .spinner {@apply block fixed z-[1031] top-4 right-4}
+#nprogress .spinner-icon {@apply w-4 h-4 box-border border-2 border-transparent border-t-primary border-l-primary rounded-[50%] animate-spin}
+

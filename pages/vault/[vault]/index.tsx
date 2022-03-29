@@ -1,13 +1,13 @@
 import	React, {ReactElement}		from	'react';
 import	{useRouter}					from	'next/router';
-import	useYearn, {TVault}			from	'contexts/useYearn';
+import	useWatch, {TVault}			from	'contexts/useWatch';
 import	SectionAbout				from	'components/vaults/SectionAbout';
 import	SectionAllocations			from	'components/vaults/SectionAllocations';
 import	SectionStrategies			from	'components/vaults/SectionStrategies';
-import	CardTabs					from	'@lib/CardTabs';
+import	Card						from	'@lib/components/Card';
 
 function	Index(): ReactElement {
-	const	{vaults} = useYearn();
+	const	{vaults} = useWatch();
 	const	router = useRouter();
 	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);
 
@@ -39,8 +39,8 @@ function	Index(): ReactElement {
 	}
 	return (
 		<div className={'w-full'}>
-			<CardTabs
-				options={[
+			<Card.Tabs
+				tabs={[
 					{label: 'Details', children: renderDetailsTab()},
 					{label: 'Strategies', children: <SectionStrategies currentVault={currentVault} />}
 				]}

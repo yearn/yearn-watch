@@ -14,6 +14,22 @@ const base = new Theme()
 		secondary: '#E0EAFF',
 		secondaryVariant: '#C6D7F9',
 		disabled: '#CED5E3',
+		dark: '#141414',
+		alert: {
+			warning: {
+				primary: '#FF8A00',
+				secondary: '#FFF9D9',
+				secondaryVariant: '#FFF7CD'
+			},
+			error: {
+				primary: '#E7007D',
+				secondary: '#FFDCEF'
+			},	
+			critical: {
+				primary: '#FF0000',
+				secondary: '#FFDFDF'
+			}
+		},
 		icons: {
 			primary: '#CED5E3',
 			variant: '#475570'
@@ -60,6 +76,7 @@ const dark = new Theme()
 		secondary: '#272727',
 		secondaryVariant: '#202020',
 		disabled: '#A8A8A8',
+		dark: '#141414',
 		icons: {
 			primary: '#A8A8A8',
 			variant: '#FFFFFF'

@@ -78,6 +78,16 @@ module.exports = ({
 			'0xFEB4acf3df3cDEA7399794D0869ef76A6EfAff52': 'ychad.eth',
 			'0x846e211e8ba920B353FB717631C015cf04061Cc9': 'dev.ychad.eth'
 		},
-		ALCHEMY_KEY: process.env.ALCHEMY_KEY
+		ALCHEMY_KEY: process.env.ALCHEMY_KEY,
+		GRAPH_URL_PROD: {
+			1: `https://gateway.thegraph.com/api/${process.env.GRAPH_API_KEY}/subgraphs/id/5xMSe3wTNLgFQqsAc5SCVVwT4MiRb5AogJCuSN9PjzXF`,
+			250: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-fantom',
+			42161: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-arbitrum'
+		},
+		GRAPH_URL: {
+			1: 'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet',
+			250: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-fantom',
+			42161: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-arbitrum'
+		}
 	}
 });

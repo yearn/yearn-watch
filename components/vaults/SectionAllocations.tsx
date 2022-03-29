@@ -1,10 +1,10 @@
 import	React, {ReactElement}						from	'react';
 import	{ethers}									from	'ethers';
 import	{Disclosure, Transition}					from	'@headlessui/react';
-import	{TVault, TStrategy}							from	'contexts/useYearn';
-import	* as utils									from	'utils';
-import	useClientEffect								from	'hooks/useClientEffect';
+import	{TVault, TStrategy}							from	'contexts/useWatch';
+import	useClientEffect								from	'@lib/hooks/useClientEffect';
 import	IconChevron									from	'@icons/IconChevron';
+import	* as format									from	'@lib/utils/format';
 
 type	TSectionAllocations = {currentVault: TVault};
 const	SectionAllocations = React.memo(function SectionAllocations({currentVault}: TSectionAllocations): ReactElement {
@@ -64,7 +64,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 	return (
 		<section aria-label={'vault-allocations'} className={'col-span-1'}>
 			<div className={'flex flex-col'}>
-				<h4 className={'mb-4 text-lg font-bold text-typo-primary'}>{'Protocols Allocation'}</h4>
+				<h4 className={'mb-4'}>{'Protocols Allocation'}</h4>
 				<div className={'space-y-4'}>
 					{
 						Object.entries(allocations.protocolsAllocation).map(([key, value]): ReactElement => {
@@ -72,7 +72,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 								<span className={'flex flex-row justify-between items-center mb-2'}>
 									<p className={'text-left text-typo-secondary-variant'}>{`${key}`}</p>
 									<b className={'text-left text-primary'}>
-										{`${utils.formatAmount(Number(value) / Number(allocations.totalProtocolsAllocation) * 100)}%`}
+										{`${format.amount(Number(value) / Number(allocations.totalProtocolsAllocation) * 100)}%`}
 									</b>
 								</span>
 								<div>
@@ -87,18 +87,18 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 			</div>
 
 			<div className={'flex flex-col mt-8'}>
-				<h4 className={'mb-4 text-lg font-bold text-typo-primary'}>{'Strategy Allocation'}</h4>
+				<h4 className={'mb-4'}>{'Strategy Allocation'}</h4>
 				<div className={'space-y-4'}>
 					<div className={'flex flex-col'}>
 						<span className={'flex flex-row justify-between items-center mb-2'}>
 							<p className={'text-left text-typo-secondary-variant'}>{'Not Allocated'}</p>
 							<b className={'text-left text-primary'}>
-								{`${utils.formatAmount(100 - Number(ethers.utils.formatUnits(allocations.notAllocated, 2)), 2)}%`}
+								{`${format.amount(100 - Number(format.units(allocations.notAllocated, 2)), 2)}%`}
 							</b>
 						</span>
 						<div>
 							<div className={'overflow-hidden relative w-full h-2 bg-background rounded-2xl transition-transform'}>
-								<div className={'inset-y-0 left-0 h-full bg-primary rounded-2xl'} style={{width: `${100 - Number(ethers.utils.formatUnits(allocations.notAllocated, 2))}%`}} />
+								<div className={'inset-y-0 left-0 h-full bg-primary rounded-2xl'} style={{width: `${100 - Number(format.units(allocations.notAllocated, 2))}%`}} />
 							</div>
 						</div>
 					</div>
@@ -108,12 +108,12 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 								<span className={'flex flex-row justify-between items-center mb-2'}>
 									<p className={'text-left text-typo-secondary-variant'}>{`${strategy.name}`}</p>
 									<b className={'text-left text-primary'}>
-										{`${utils.formatAmount(Number(ethers.utils.formatUnits(strategy.debtRatio, 2)), 2)}%`}
+										{`${format.amount(Number(format.units(strategy.debtRatio, 2)), 2)}%`}
 									</b>
 								</span>
 								<div>
 									<div className={'overflow-hidden relative w-full h-2 bg-background rounded-2xl transition-transform'}>
-										<div className={'inset-y-0 left-0 h-full bg-primary rounded-2xl'} style={{width: `${Number(ethers.utils.formatUnits(strategy.debtRatio, 2))}%`}} />
+										<div className={'inset-y-0 left-0 h-full bg-primary rounded-2xl'} style={{width: `${Number(format.units(strategy.debtRatio, 2))}%`}} />
 									</div>
 								</div>
 							</div>

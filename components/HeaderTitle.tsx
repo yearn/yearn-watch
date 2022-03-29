@@ -1,0 +1,69 @@
+import	React, {ReactElement}				from	'react';
+import	Image								from	'next/image';
+import	{useRouter}							from	'next/router';
+import	useWatch, {TStrategy, TVault}		from	'contexts/useWatch';
+import	{toAddress}							from	'@lib/utils';
+
+function	HeaderTitle(): ReactElement {
+	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);
+	const	[currentStrategy, set_currentStrategy] = React.useState<TStrategy | undefined>(undefined);
+	const	{vaults} = useWatch();
+	const	router = useRouter();
+
+	/* 🔵 - Yearn Finance ******************************************************
+	** This effect is triggered every time the vault list or the router query
+	** is changed. It retrieves the data about the current vault.
+	**************************************************************************/
+	React.useEffect((): void => {
+		if (router.query.vault && router.query.strategy) {
+			const	_currentVault = vaults.find((vault): boolean => toAddress(vault.address) === toAddress(router.query.vault as string));
+			set_currentVault(_currentVault);
+			set_currentStrategy(_currentVault?.strategies.find((strategy): boolean => toAddress(strategy.address) === toAddress(router.query.strategy as string)));
+		} else if (router.query.vault) {
+			set_currentVault(vaults.find((vault): boolean => vault.address === router.query.vault));
+		} else {
+			set_currentVault(undefined);
+		}
+	}, [router.query.vault, router.query.strategy, vaults]);
+
+	if (currentVault && currentStrategy) {
+		return (
+			<div className={'items-start'}>
+				<b className={'text-base text-typo-primary'}>{currentStrategy.name}</b>
+				<p className={'text-xs text-typo-secondary'}>{currentVault.display_name}</p>
+			</div>
+		);	
+	}
+	if (!currentVault) {
+		if (router.asPath.includes('/healthcheck')) {
+			return (
+				<div className={'flex flex-row items-center'}>
+					<h1 className={'mr-2 text-typo-primary md:mr-4'}>
+						{'Healthcheck'}
+					</h1>
+				</div>
+			);
+		}
+		return (
+			<div className={'flex flex-row items-center'}>
+				<h1 className={'mr-2 text-typo-primary md:mr-4'}>
+					{'Vaults'}
+				</h1>
+			</div>
+		);
+	}
+	return (
+		<div className={'flex flex-row items-center'}>
+			<Image width={32} height={32} src={currentVault.icon} quality={90} />
+			<div className={'ml-2 md:ml-6'}>
+				<b className={'text-base text-typo-primary'}>{currentVault.display_name}</b>
+				<p className={'text-xs text-typo-secondary'}>
+					{(currentVault.strategies).length > 1 ? `${(currentVault.strategies).length} strats` : `${(currentVault.strategies).length} strat`}
+				</p>
+			</div>
+		</div>
+	);
+
+}
+
+export default HeaderTitle;

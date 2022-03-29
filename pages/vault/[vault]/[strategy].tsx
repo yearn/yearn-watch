@@ -1,15 +1,15 @@
 import	React, {ReactElement}						from	'react';
 import	{useRouter}									from	'next/router';
-import	useYearn, {TVault, TStrategy}				from	'contexts/useYearn';
+import	useWatch, {TVault, TStrategy}				from	'contexts/useWatch';
 import	SectionStats								from	'components/strategies/SectionStats';
 import	SectionAbout								from	'components/strategies/SectionAbout';
 import	SectionHealthCheck							from	'components/strategies/SectionHealthCheck';
 import	SectionReports								from	'components/strategies/SectionReports';
-import	* as utils									from	'utils';
-import	CardTabs									from	'@lib/CardTabs';
+import	{toAddress}									from	'@lib/utils';
+import	Card										from	'@lib/components/Card';
 
 function	Index(): ReactElement {
-	const	{vaults} = useYearn();
+	const	{vaults} = useWatch();
 	const	router = useRouter();
 	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);
 	const	[currentStrategy, set_currentStrategy] = React.useState<TStrategy | undefined>(undefined);
@@ -20,9 +20,9 @@ function	Index(): ReactElement {
 	**************************************************************************/
 	React.useEffect((): void => {
 		if (router?.query?.vault && router?.query?.strategy) {
-			const	_currentVault = vaults.find((vault): boolean => utils.toAddress(vault.address) === utils.toAddress(router.query.vault as string));
+			const	_currentVault = vaults.find((vault): boolean => toAddress(vault.address) === toAddress(router.query.vault as string));
 			set_currentVault(_currentVault);
-			set_currentStrategy(_currentVault?.strategies.find((strategy): boolean => utils.toAddress(strategy.address) === utils.toAddress(router.query.strategy as string)));
+			set_currentStrategy(_currentVault?.strategies.find((strategy): boolean => toAddress(strategy.address) === toAddress(router.query.strategy as string)));
 		}
 	}, [router.query.vault, router.query.strategy, vaults]);
 
@@ -46,8 +46,8 @@ function	Index(): ReactElement {
 
 	return (
 		<div className={'w-full'}>
-			<CardTabs
-				options={[
+			<Card.Tabs
+				tabs={[
 					{label: 'Details', children: renderDetailsTab()},
 					{label: 'Reports', children: <SectionReports currentVault={currentVault} currentStrategy={currentStrategy} />},
 					{label: 'Health Check', children: <SectionHealthCheck currentVault={currentVault} currentStrategy={currentStrategy} />}
