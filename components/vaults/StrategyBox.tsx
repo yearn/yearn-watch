@@ -1,11 +1,8 @@
-import	React, {MouseEvent, ReactElement}	from	'react';
-import	Link								from	'next/link';
-import	{TStrategy}							from	'contexts/useWatch';
-import	{parseMarkdown}						from	'@lib/utils';
-import	AddressWithActions					from	'@lib/components/AddressWithActions';
-import	Card								from	'@lib/components/Card';
-import	StatisticCard						from	'@lib/components/StatisticCard';
-import	* as format							from	'@lib/utils/format';
+import	React, {MouseEvent, ReactElement}			from	'react';
+import	Link										from	'next/link';
+import	{TStrategy}									from	'contexts/useWatch';
+import	{StatisticCard, Card, AddressWithActions}	from	'@majorfi/web-lib/components';
+import	* as utils									from	'@majorfi/web-lib/utils';
 
 type 		TStrategyBox = {strategy: TStrategy, symbol: string, decimals: number, vaultAddress: string, vaultExplorer: string}
 function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: TStrategyBox): ReactElement {
@@ -15,7 +12,7 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 				<div>
 					<b className={'mb-2 text-base text-typo-primary'}>{strategy.name}</b>
 					<p className={'text-xs text-typo-secondary'}>
-						{`Last report: ${strategy?.lastReport ? format.since(Number(strategy.lastReport) * 1000) : 'never'}`}
+						{`Last report: ${strategy?.lastReport ? utils.format.since(Number(strategy.lastReport) * 1000) : 'never'}`}
 					</p>
 					<AddressWithActions
 						address={strategy.address}
@@ -42,30 +39,30 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 			<div className={'my-6 w-full md:w-3/4'}>
 				<p
 					className={'text-sm text-typo-primary'}
-					dangerouslySetInnerHTML={{__html: parseMarkdown((strategy?.description || '').replace(/{{token}}/g, symbol) || '')}} />
+					dangerouslySetInnerHTML={{__html: utils.parseMarkdown((strategy?.description || '').replace(/{{token}}/g, symbol) || '')}} />
 			</div>
 			<StatisticCard.Wrapper>
 				<StatisticCard
 					label={'Total debt'}
-					value={format.bigNumberAsAmount(strategy.totalDebt, decimals, 5)} />
+					value={utils.format.bigNumberAsAmount(strategy.totalDebt, decimals, 5)} />
 				<StatisticCard
 					label={'Credit available'}
-					value={format.bigNumberAsAmount(strategy.creditAvailable, decimals, 4)} />
+					value={utils.format.bigNumberAsAmount(strategy.creditAvailable, decimals, 4)} />
 				<StatisticCard
 					label={'Total Estimated Assets'}
-					value={format.bigNumberAsAmount(strategy.estimatedTotalAssets, decimals, 4)} />
+					value={utils.format.bigNumberAsAmount(strategy.estimatedTotalAssets, decimals, 4)} />
 				<StatisticCard
 					cols={{mobile: 1, desktop: 1}}
 					label={'Debt ratio'}
-					value={format.bigNumberAsAmount(strategy.debtRatio, 2, 2, '%')} />
+					value={utils.format.bigNumberAsAmount(strategy.debtRatio, 2, 2, '%')} />
 				<StatisticCard
 					cols={{mobile: 1, desktop: 1}}
 					label={'Average APR'}
-					value={`${format.amount((strategy?.apr || 0) * 100, 2)}%`} />
+					value={`${utils.format.amount((strategy?.apr || 0) * 100, 2)}%`} />
 				<StatisticCard
 					cols={{mobile: 1, desktop: 1}}
 					label={'Index'}
-					value={format.amount((strategy?.index === 21 ? -1 : strategy?.index || 0))} />
+					value={utils.format.amount((strategy?.index === 21 ? -1 : strategy?.index || 0))} />
 			</StatisticCard.Wrapper>
 		</Card>
 	);

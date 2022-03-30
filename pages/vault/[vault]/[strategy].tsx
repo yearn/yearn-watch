@@ -1,12 +1,12 @@
-import	React, {ReactElement}						from	'react';
-import	{useRouter}									from	'next/router';
-import	useWatch, {TVault, TStrategy}				from	'contexts/useWatch';
-import	SectionStats								from	'components/strategies/SectionStats';
-import	SectionAbout								from	'components/strategies/SectionAbout';
-import	SectionHealthCheck							from	'components/strategies/SectionHealthCheck';
-import	SectionReports								from	'components/strategies/SectionReports';
-import	{toAddress}									from	'@lib/utils';
-import	Card										from	'@lib/components/Card';
+import	React, {ReactElement}			from	'react';
+import	{useRouter}						from	'next/router';
+import	useWatch, {TVault, TStrategy}	from	'contexts/useWatch';
+import	SectionStats					from	'components/strategies/SectionStats';
+import	SectionAbout					from	'components/strategies/SectionAbout';
+import	SectionHealthCheck				from	'components/strategies/SectionHealthCheck';
+import	SectionReports					from	'components/strategies/SectionReports';
+import	{Card}							from	'@majorfi/web-lib/components';
+import	* as utils						from	'@majorfi/web-lib/utils';
 
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();
@@ -20,9 +20,9 @@ function	Index(): ReactElement {
 	**************************************************************************/
 	React.useEffect((): void => {
 		if (router?.query?.vault && router?.query?.strategy) {
-			const	_currentVault = vaults.find((vault): boolean => toAddress(vault.address) === toAddress(router.query.vault as string));
+			const	_currentVault = vaults.find((vault): boolean => utils.toAddress(vault.address) === utils.toAddress(router.query.vault as string));
 			set_currentVault(_currentVault);
-			set_currentStrategy(_currentVault?.strategies.find((strategy): boolean => toAddress(strategy.address) === toAddress(router.query.strategy as string)));
+			set_currentStrategy(_currentVault?.strategies.find((strategy): boolean => utils.toAddress(strategy.address) === utils.toAddress(router.query.strategy as string)));
 		}
 	}, [router.query.vault, router.query.strategy, vaults]);
 

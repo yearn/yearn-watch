@@ -1,5 +1,5 @@
-import	{BigNumber}	from	'ethers';
-import	{TAddress}	from	'@lib/utils';
+import {BigNumber} from 'ethers';
+import {utils} from '@majorfi/web-lib';
 
 export type TAlert = {
 	level: 'warning' | 'error' | 'critical',
@@ -35,11 +35,11 @@ export type TStrategy = {
 	isEmergencyExit: boolean,
 	isActive: boolean,
 	shouldDoHealthCheck: boolean,
-	address: TAddress,
-	addrHealthCheck: TAddress,
-	addrKeeper: TAddress,
-	addrStrategist: TAddress,
-	addrRewards: TAddress,
+	address: utils.TAddress,
+	addrHealthCheck: utils.TAddress,
+	addrKeeper: utils.TAddress,
+	addrStrategist: utils.TAddress,
+	addrRewards: utils.TAddress,
 	performanceFee: BigNumber,
 	debtRatio: BigNumber,
 	minDebtPerHarvest: BigNumber,
@@ -55,7 +55,7 @@ export type TStrategy = {
 	reports: TStrategyReport[],
 	alerts: TAlert[],
 	vault: {
-		address: TAddress,
+		address: utils.TAddress,
 		name: string,
 		explorer: string,
 		icon: string,
@@ -91,11 +91,11 @@ export type TVault = {
 	updated: number, //From Yearn API
 	endorsed: boolean, //From Yearn API
 	emergency_shutdown: boolean, //From Yearn API
-	address: TAddress, //From Yearn API
-	guardian: TAddress, //From multicall
-	management: TAddress, //From multicall
-	governance: TAddress, //From multicall
-	rewards: TAddress, //From multicall
+	address: utils.TAddress, //From Yearn API
+	guardian: utils.TAddress, //From multicall
+	management: utils.TAddress, //From multicall
+	governance: utils.TAddress, //From multicall
+	rewards: utils.TAddress, //From multicall
 	balanceTokens: BigNumber, //From the GraphQL schema
 	tokensDepositLimit: BigNumber, //From the GraphQL schema
 	managementFeeBps: BigNumber, //From the GraphQL schema
@@ -107,7 +107,7 @@ export type TVault = {
     token: {
         name: string
         symbol: string
-        address: TAddress
+        address: utils.TAddress
         decimals: number
         display_name: string
         icon: string

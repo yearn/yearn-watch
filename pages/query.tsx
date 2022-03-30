@@ -1,14 +1,11 @@
-import	React, {MouseEvent, ReactElement}	from	'react';
-import	Image								from	'next/image';
-import	Link								from	'next/link';
-import	useWatch, {TStrategy}				from	'contexts/useWatch';
-import	Card								from	'@lib/components/Card';
-import	AddressWithActions					from	'@lib/components/AddressWithActions';
-import	SearchCard							from	'@lib/components/SearchCard';
-import	StatisticCard						from	'@lib/components/StatisticCard';
-import	IconArrowDown						from	'@icons/IconArrowDown';
-import	{useRouter}							from	'next/router';
-import	* as format							from	'@lib/utils/format';
+import	React, {MouseEvent, ReactElement}						from	'react';
+import	Image													from	'next/image';
+import	Link													from	'next/link';
+import	useWatch, {TStrategy}									from	'contexts/useWatch';
+import	{useRouter}												from	'next/router';
+import	{Card, AddressWithActions, StatisticCard, SearchBox}	from	'@majorfi/web-lib/components';
+import	{ArrowDown}												from	'@majorfi/web-lib/icons';
+import	* as utils												from	'@majorfi/web-lib/utils';
 
 function	humanizeRisk(risk: number): ReactElement {
 	if (risk === 0)
@@ -67,7 +64,7 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 	**************************************************************************/
 	function	computeTotalDebt(totalDebtUSDC: number): string {
 		return (
-			format.amount(
+			utils.format.amount(
 				totalDebtUSDC / Number((sortedStrategies?.reduce((acc: number, strategy: TStrategy): number => acc + strategy.totalDebtUSDC, 0) || 0)) * 100,
 				2
 			)
@@ -84,7 +81,7 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 								<div className={'flex flex-row items-start'}>
 									<Image width={40} height={40} src={strategy.vault?.icon || ''} quality={90} />
 									<div className={'ml-2 md:ml-6'}>
-										<b className={'text-base text-typo-primary text-ellipsis line-clamp-1'}>{`${strategy.display_name || strategy.name}`}</b>
+										<b className={'text-base text-ellipsis line-clamp-1 text-typo-primary'}>{`${strategy.display_name || strategy.name}`}</b>
 										<AddressWithActions
 											address={strategy.address}
 											explorer={strategy.vault.explorer}
@@ -96,13 +93,13 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 						</div>
 						<div className={'items-start min-w-36 row-4 cell-end'}>
 							<div>
-								<b>{`${format.amount(strategy.totalDebtUSDC, 4)}$`}</b>
+								<b>{`${utils.format.amount(strategy.totalDebtUSDC, 4)}$`}</b>
 								<p className={'text-sm'}>{`${computeTotalDebt(strategy.totalDebtUSDC)}%`}</p>
 							</div>
 						</div>
 						<div className={'items-start min-w-36 row-4 cell-end'}>
 							<div>
-								<b>{format.bigNumberAsAmount(strategy.debtOutstanding, strategy.vault.decimals, 4)}</b>
+								<b>{utils.format.bigNumberAsAmount(strategy.debtOutstanding, strategy.vault.decimals, 4)}</b>
 								<p className={'text-sm'}>{strategy.vault.name}</p>
 							</div>
 						</div>
@@ -117,7 +114,7 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 									{'Details'}
 								</button>
 							</Link>
-							{/* <p>{format.date(Number(strategy.activation) * 1000, false)}</p> */}
+							{/* <p>{utils.format.date(Number(strategy.activation) * 1000, false)}</p> */}
 						</div>
 					</div>
 				))}
@@ -164,11 +161,11 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Activation'}
-													value={format.date(Number(strategy.activation) * 1000)} />
+													value={utils.format.date(Number(strategy.activation) * 1000)} />
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Total USDC Value Locked'}
-													value={format.amount(strategy.totalDebtUSDC, 4)} />
+													value={utils.format.amount(strategy.totalDebtUSDC, 4)} />
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Ratio USDC Value Locked'}
@@ -176,7 +173,7 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Debt outstanding'}
-													value={format.bigNumberAsAmount(strategy.debtOutstanding, strategy.vault.decimals, 4)} />
+													value={utils.format.bigNumberAsAmount(strategy.debtOutstanding, strategy.vault.decimals, 4)} />
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Risk Factor'}
@@ -205,7 +202,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 				<div
 					onClick={(): void => set_sortBy((n): string => n === 'name' ? '-name' : n === '-name' ? '' : 'name')}
 					className={`p-1 -m-1 cursor-pointer transition-all transform ${sortBy === 'name' ? 'text-icons-variant' : sortBy === '-name' ? 'text-icons-variant rotate-180' : 'text-icons-primary hover:text-icons-variant'}`}>
-					<IconArrowDown />
+					<ArrowDown />
 				</div>
 			</div>
 			<div className={'items-center cell-end row-4 min-w-36'}>
@@ -213,7 +210,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 				<div
 					onClick={(): void => set_sortBy((n): string => n === 'tvl' ? '-tvl' : n === '-tvl' ? '' : 'tvl')}
 					className={`p-1 -m-1 cursor-pointer transition-all transform ${sortBy === 'tvl' ? 'text-icons-variant' : sortBy === '-tvl' ? 'text-icons-variant rotate-180' : 'text-icons-primary hover:text-icons-variant'}`}>
-					<IconArrowDown />
+					<ArrowDown />
 				</div>
 			</div>
 			<div className={'items-center cell-end row-4 min-w-36'}>
@@ -224,7 +221,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 				<div
 					onClick={(): void => set_sortBy((n): string => n === 'risk' ? '-risk' : n === '-risk' ? '' : 'risk')}
 					className={`p-1 -m-1 cursor-pointer transition-all transform ${sortBy === 'risk' ? 'text-icons-variant' : sortBy === '-risk' ? 'text-icons-variant rotate-180' : 'text-icons-primary hover:text-icons-variant'}`}>
-					<IconArrowDown />
+					<ArrowDown />
 				</div>
 			</div>
 			<div className={'cell-end row-3 min-w-36'}>
@@ -272,7 +269,7 @@ function	Index(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'w-full'}>
-			<div className={'flex flex-col p-6 mb-4 text-primary bg-secondary rounded-lg border-2 border-primary'}>
+			<div className={'flex flex-col p-6 mb-4 rounded-lg border-2 text-primary bg-secondary border-primary'}>
 				<h4 className={'mb-6 text-primary'}>{'Alerts and warnings'}</h4>
 				<p>{'Vaults and strategies evolve with the opportunities. Thus, some of they could have point of attention emerging with some time, like a deprecaded strategy with still some TVL, a hight risk with no healthcheck etc.'}</p>
 				<p className={'block mt-4'}>{'This page is used to display all of theses warnings to whom it may concern.'}</p>
@@ -283,7 +280,7 @@ function	Index(): ReactElement {
 					<div className={'flex flex-row justify-between items-center p-6'}>
 						<h4>{'Result'}</h4>
 						<div className={'flex flex-col mt-2 space-y-2 w-1/4 md:mt-0'}>
-							<SearchCard isNarrow backgroundColor={'bg-background'} searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
+							<SearchBox isNarrow backgroundColor={'bg-background'} searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
 						</div>
 					</div>
 					<div className={'grid overflow-x-scroll relative pb-6 md:block md:h-auto h-table-wrapper scrollbar-none'}>

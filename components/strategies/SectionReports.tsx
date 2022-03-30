@@ -1,9 +1,7 @@
 import	React, {ReactElement}						from	'react';
 import	{TVault, TStrategy, TStrategyReport}		from	'contexts/useWatch';
-import	Card										from	'@lib/components/Card';
-import	TxHashWithActions							from	'@lib/components/TxHashWithActions';
-import	StatisticCard								from	'@lib/components/StatisticCard';
-import	* as format									from	'@lib/utils/format';
+import	{Card, TxHashWithActions, StatisticCard}	from	'@majorfi/web-lib/components';
+import	{format} 									from	'@majorfi/web-lib/utils';
 
 type	TSectionReports = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionReports = React.memo(function SectionReports({currentVault, currentStrategy}: TSectionReports): ReactElement {

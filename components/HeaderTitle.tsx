@@ -2,7 +2,7 @@ import	React, {ReactElement}				from	'react';
 import	Image								from	'next/image';
 import	{useRouter}							from	'next/router';
 import	useWatch, {TStrategy, TVault}		from	'contexts/useWatch';
-import	{toAddress}							from	'@lib/utils';
+import	{toAddress} 						from	'@majorfi/web-lib/utils';
 
 function	HeaderTitle(): ReactElement {
 	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);
@@ -38,7 +38,7 @@ function	HeaderTitle(): ReactElement {
 		if (router.asPath.includes('/healthcheck')) {
 			return (
 				<div className={'flex flex-row items-center'}>
-					<h1 className={'mr-2 text-typo-primary md:mr-4'}>
+					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
 						{'Healthcheck'}
 					</h1>
 				</div>
@@ -46,7 +46,7 @@ function	HeaderTitle(): ReactElement {
 		}
 		return (
 			<div className={'flex flex-row items-center'}>
-				<h1 className={'mr-2 text-typo-primary md:mr-4'}>
+				<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
 					{'Vaults'}
 				</h1>
 			</div>

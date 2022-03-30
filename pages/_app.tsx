@@ -1,22 +1,20 @@
-import	React, {ReactElement}		from	'react';
-import	Head						from	'next/head';
-import	{AppProps}					from	'next/app';
-import	{DefaultSeo}				from	'next-seo';
-import	useWatch, {WatchContextApp}	from	'contexts/useWatch';
-import	Footer						from	'components/StandardFooter';
-import	HeaderTitle					from	'components/HeaderTitle';
-import	IconAlert					from	'components/icons/IconAlert';
-import	IconLab						from	'components/icons/IconLab';
-import	IconVault					from	'components/icons/IconVault';
-import	IconHealthcheck				from	'components/icons/IconHealthcheck';
-import	IconQuery					from	'components/icons/IconQuery';
-import	LogoWatch					from	'components/logo/LogoWatch';
-import	WithYearn					from	'@lib/index';
-import	useInterval					from	'@lib/hooks/useInterval';
-import	Navbar						from	'@lib/components/Navbar';
-import	Header						from	'@lib/components/Header';
-import	* as format					from	'@lib/utils/format';
-import										'@lib/style.css';
+import	React, {ReactElement}			from	'react';
+import	Head							from	'next/head';
+import	{AppProps}						from	'next/app';
+import	{DefaultSeo}					from	'next-seo';
+import	useWatch, {WatchContextApp}		from	'contexts/useWatch';
+import	Footer							from	'components/StandardFooter';
+import	HeaderTitle						from	'components/HeaderTitle';
+import	IconAlert						from	'components/icons/IconAlert';
+import	IconLab							from	'components/icons/IconLab';
+import	IconVault						from	'components/icons/IconVault';
+import	IconHealthcheck					from	'components/icons/IconHealthcheck';
+import	IconQuery						from	'components/icons/IconQuery';
+import	LogoWatch						from	'components/logo/LogoWatch';
+import	{WithYearn}						from	'@majorfi/web-lib';
+import	{Navbar, Header}				from	'@majorfi/web-lib/components';
+import	{useInterval}					from	'@majorfi/web-lib/hooks';
+import	* as utils						from	'@majorfi/web-lib/utils';
 
 import	'../style.css';
 
@@ -118,7 +116,7 @@ function	AppSync(): ReactElement {
 		<>
 			<div className={'flex flex-row items-center space-x-2 cursor-pointer'} onClick={update}>
 				<div className={`aspect-square w-2 h-2 rounded-full ${lastUpdateDiff < -300_000 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
-				<p className={'text-xs text-typo-secondary'}>{`Sync ${format.duration(lastUpdateDiff, true)}`}</p>
+				<p className={'text-xs text-typo-secondary'}>{`Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
 			</div>
 			<div className={'flex flex-row items-center space-x-2'}>
 				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-error-primary' : blockDiff > 100 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
@@ -170,8 +168,8 @@ function	AppWrapper(props: AppProps): ReactElement {
 	return (
 		<>
 			<AppHead />
-			<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row md:mb-6'}>
-				<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2 md:h-full'}>
+			<div id={'app'} className={'grid flex-col gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row md:mb-6 grid-cols-12'}>
+				<div className={'sticky top-0 z-50 col-span-12 md:relative md:col-span-2 h-auto md:h-full'}>
 					<div className={'flex flex-col justify-between h-full'}>
 						<Navbar
 							selected={router.pathname}
@@ -184,7 +182,7 @@ function	AppWrapper(props: AppProps): ReactElement {
 						</Navbar>
 					</div>
 				</div>
-				<div className={'flex flex-col col-span-12 px-4 w-full min-h-[100vh] md:col-span-10 md:px-0'}>
+				<div className={'flex flex-col col-span-12 px-4 min-h-[100vh] md:col-span-10 md:px-0 w-full'}>
 					<Header>
 						<HeaderTitle />
 					</Header>

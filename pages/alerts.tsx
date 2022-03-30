@@ -1,16 +1,9 @@
-import	React, {MouseEvent, ReactElement}	from	'react';
-import	Image								from	'next/image';
-import	useWatch, {TVault, TStrategy}		from	'contexts/useWatch';
-import	useLocalStorage						from	'@lib/hooks/useLocalStorage';
-import	Card								from	'@lib/components/Card';
-import	AddressWithActions					from	'@lib/components/AddressWithActions';
-import	SearchCard							from	'@lib/components/SearchCard';
-import	Switch								from	'@lib/components/Switch';
-import	AlertBox							from	'@lib/components/AlertBox';
-import	IconAlertWarning					from	'@icons/IconAlertWarning';
-import	IconAlertError						from	'@icons/IconAlertError';
-import	IconAlertCritical					from	'@icons/IconAlertCritical';
-import	IconArrowDown						from	'@icons/IconArrowDown';
+import	React, {MouseEvent, ReactElement}						from	'react';
+import	Image													from	'next/image';
+import	useWatch, {TVault, TStrategy}							from	'contexts/useWatch';
+import	{Card, AddressWithActions, SearchBox, Switch, AlertBox}	from	'@majorfi/web-lib/components';
+import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@majorfi/web-lib/icons';
+import	{useLocalStorage}										from	'@majorfi/web-lib/hooks';
 
 type		TTable = {
 	stratOrVault: (TStrategy | TVault)[],
@@ -63,7 +56,7 @@ function	Table({stratOrVault, shouldDisplayDismissed}: TTable): ReactElement {
 				</div>
 				<div className={'flex flex-row items-center w-[125px] whitespace-nowrap'}>
 					<p className={'text-typo-secondary-variant'}>{'Level'}</p>
-					<IconArrowDown
+					<ArrowDown
 						onClick={(): void => set_sortBy(sortBy === 'level' ? '-level' : sortBy === '-level' ? '' : 'level')}
 						className={`ml-1 w-4 h-4 hover:text-icons-variant transition-all cursor-pointer ${sortBy.includes('level') ? 'text-icon-variant' : 'text-icons-primary'} ${sortBy === '-level' ? 'rotate-180' : 'rotate-0'}`} />
 				</div>
@@ -75,7 +68,7 @@ function	Table({stratOrVault, shouldDisplayDismissed}: TTable): ReactElement {
 			return (
 				<div className={'w-[125px] text-sm whitespace-nowrap'}>
 					<div className={'flex flex-row items-center'}>
-						<IconAlertCritical className={'mr-2 w-5 h-5 text-alert-critical-primary'} />
+						<AlertCritical className={'mr-2 w-5 h-5 text-alert-critical-primary'} />
 						<p className={'text-alert-error-primary'}>{'Error'}</p>
 					</div>
 				</div>
@@ -85,7 +78,7 @@ function	Table({stratOrVault, shouldDisplayDismissed}: TTable): ReactElement {
 			return (
 				<div className={'w-[125px] text-sm whitespace-nowrap'}>
 					<div className={'flex flex-row items-center'}>
-						<IconAlertError className={'mr-2 w-5 h-5 text-alert-error-primary'} />
+						<AlertError className={'mr-2 w-5 h-5 text-alert-error-primary'} />
 						<p className={'text-alert-error-primary'}>{'Error'}</p>
 					</div>
 				</div>
@@ -94,7 +87,7 @@ function	Table({stratOrVault, shouldDisplayDismissed}: TTable): ReactElement {
 		return (
 			<div className={'w-[125px] text-sm whitespace-nowrap'}>
 				<div className={'flex flex-row items-center'}>
-					<IconAlertWarning className={'mr-2 w-5 h-5 text-alert-warning-primary'} />
+					<AlertWarning className={'mr-2 w-5 h-5 text-alert-warning-primary'} />
 					<p className={'text-alert-warning-primary'}>{'Warning'}</p>
 				</div>
 			</div>
@@ -277,7 +270,7 @@ function	Index(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'w-full'}>
-			<div className={'flex flex-col p-6 mb-4 text-primary bg-secondary rounded-lg border-2 border-primary'}>
+			<div className={'flex flex-col p-6 mb-4 rounded-lg border-2 text-primary bg-secondary border-primary'}>
 				<h4 className={'mb-6 text-primary'}>{'Alerts and warnings'}</h4>
 				<p>{'Vaults and strategies evolve with the opportunities. Thus, some of they could have point of attention emerging with some time, like a deprecaded strategy with still some TVL, a hight risk with no healthcheck etc.'}</p>
 				<p className={'block mt-4'}>{'This page is used to display all of theses warnings to whom it may concern.'}</p>
@@ -285,7 +278,7 @@ function	Index(): ReactElement {
 
 			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
 				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
-					<SearchCard searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
+					<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
 					<div className={'flex flex-row items-center'}>
 						<p className={'text-xs text-typo-secondary'}>{`Strategies Found: ${filteredStrategies.length}`}</p>
 					</div>

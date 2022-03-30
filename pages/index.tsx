@@ -1,15 +1,12 @@
-import	React, {MouseEvent, ReactElement}	from	'react';
-import	Link								from	'next/link';
-import	Image								from	'next/image';
-import	useWatch, {TVault}					from	'contexts/useWatch';
-import	StrategyBox							from	'components/vaults/StrategyBox';
-import	ModalWarning						from	'components/ModalWarning';
-import	performBatchedUpdates				from	'@lib/utils/performBatchedUpdates';
-import	Card								from	'@lib/components/Card';
-import	SearchCard							from	'@lib/components/SearchCard';
-import	Switch								from	'@lib/components/Switch';
-import	AddressWithActions					from	'@lib/components/AddressWithActions';
-import	IconWarning							from	'@icons/IconAlertWarning';
+import	React, {MouseEvent, ReactElement}				from	'react';
+import	Link											from	'next/link';
+import	Image											from	'next/image';
+import	useWatch, {TVault}								from	'contexts/useWatch';
+import	StrategyBox										from	'components/vaults/StrategyBox';
+import	ModalWarning									from	'components/ModalWarning';
+import	{Card, SearchBox, Switch, AddressWithActions}	from	'@majorfi/web-lib/components';
+import	{AlertWarning}									from	'@majorfi/web-lib/icons';
+import	* as utils										from	'@majorfi/web-lib/utils';
 
 type 		TVaultBox = {vault: TVault}
 
@@ -19,7 +16,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 		return (
 			<div className={'flex flex-row justify-between items-start w-max'}>
 				<div className={'flex flex-row items-start'}>
-					<Image width={40} height={40} src={vault.icon} quality={90} />
+					<Image width={40} height={40} src={vault.icon} quality={90} className={'w-10 h-10'} />
 					<div className={'ml-2 md:ml-6'}>
 						<b className={'text-base text-typo-primary'}>{vault.display_name}</b>
 						<p className={'text-xs text-typo-secondary'}>
@@ -38,7 +35,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 	}
 	function	renderSummaryEnd(): ReactElement {
 		return (
-			<div className={'flex flex-row justify-start items-center w-full md:justify-end'}>
+			<div className={'flex flex-row justify-start items-center md:justify-end w-full'}>
 				{(vault.alerts || []).length > 0 ? (
 					<>
 						<div
@@ -46,8 +43,8 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 								e.stopPropagation();
 								set_isOpen(true);
 							}}
-							className={'flex flex-row items-center p-1 mr-5 w-32 h-8 text-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant rounded-lg border border-alert-warning-primary transition-colors cursor-pointer'}>
-							<IconWarning className={'w-5 h-5'} />
+							className={'flex flex-row items-center p-1 mr-5 rounded-lg border transition-colors cursor-pointer w-32 h-8 text-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant border-alert-warning-primary'}>
+							<AlertWarning className={'w-5 h-5'} />
 							<p className={'pl-2'}>{`${vault.alerts.length} warning${vault.alerts.length === 1 ? ' ' : 's'}`}</p>
 						</div>
 						<ModalWarning
@@ -137,7 +134,7 @@ function	Index(): ReactElement {
 				);
 			});
 		}
-		performBatchedUpdates((): void => {
+		utils.performBatchedUpdates((): void => {
 			set_filteredVaults(_filteredVaults);
 			set_searchResult({vaults: _filteredVaults.length, strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault?.strategies?.length || 0), 0)});
 		});
@@ -149,16 +146,16 @@ function	Index(): ReactElement {
 	return (
 		<div className={'w-full'}>
 			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
-				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
-					<SearchCard searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
+				<div className={'flex flex-col mt-2 space-y-2 md:mt-0 w-full'}>
+					<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
 					<div className={'flex flex-row items-center'}>
-						<p className={'mr-4 text-xs text-typo-secondary md:mr-10'}>{`Vaults Found: ${searchResult.vaults}`}</p>
+						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Vaults Found: ${searchResult.vaults}`}</p>
 						<p className={'text-xs text-typo-secondary'}>{`Strategies Found: ${searchResult.strategies}`}</p>
 					</div>
 				</div>
 				<div>
 					<Card isNarrow>
-						<label className={'flex flex-row justify-between p-2 space-x-6 w-full cursor-pointer md:p-0 md:w-max'}>
+						<label className={'flex flex-row justify-between p-2 space-x-6 cursor-pointer md:p-0 w-full md:w-max'}>
 							<p className={'text-typo-primary'}>{'Only vaults with warnings'}</p>
 							<Switch isEnabled={isOnlyWarning} set_isEnabled={set_isOnlyWarning} />
 						</label>

@@ -8,9 +8,7 @@ import	VAULT_ABI							from	'utils/abi/vaults.abi';
 import	STRATEGY_ABI						from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI					from	'utils/abi/priceOracle.abi';
 import	{TVault, TStrategyReport}			from	'contexts/useWatch.d';
-import	* as utils							from	'@lib/utils';
-import	{getProvider, newEthCallProvider}	from	'@lib/utils/providers';
-import	CHAINS								from	'@lib/utils/chains';
+import	* as utils							from	'@majorfi/web-lib/utils';
 
 const MINUTES = 60 * 1000;
 const ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
@@ -89,7 +87,7 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 		axios.get(`https://api.yearn.finance/v1/chains/${chainID || 1}/vaults/all`),
 		axios.get(`https://meta.yearn.network/strategies/${chainID || 1}/all`),
 		request(process.env.GRAPH_URL?.[chainID || 1] as string, GRAPH_REQUEST),
-		getProvider(chainID || 1).getBlockNumber()
+		utils.providers.getProvider(chainID || 1).getBlockNumber()
 	]);
 
 	/* 🔵 - Yearn Finance ******************************************************
@@ -110,7 +108,7 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 	** vault, retrieve some more data from the vault contract but also from
 	** the strategy contract itself.
 	**************************************************************************/
-	const	ethcallProvider = await newEthCallProvider(getProvider(chainID || 1));
+	const	ethcallProvider = await utils.providers.newEthCallProvider(utils.providers.getProvider(chainID || 1));
 	const	multiCalls = [];
 	const	priceOracleContract = new Contract(
 		(chainID || 1) === 1 ? ETH_ORACLE_CONTRACT_ADDRESS : FTM_ORACLE_CONTRACT_ADDRESS,
@@ -168,7 +166,7 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 				withdrawalQueue.push(addr as string);
 		}
 		vault.alerts = [];
-		vault.explorer = CHAINS[(chainID || '1') as keyof typeof CHAINS].block_explorer;
+		vault.explorer = utils.chains[(chainID || '1') as keyof typeof utils.chains].block_explorer;
 		vault.guardian = utils.toAddress(callResult[rIndex++] as string);
 		vault.management = utils.toAddress(callResult[rIndex++] as string);
 		vault.governance = utils.toAddress(callResult[rIndex++] as string);

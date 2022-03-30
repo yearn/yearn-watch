@@ -1,14 +1,9 @@
-import	React, {MouseEvent, ReactElement}	from	'react';
-import	Link								from	'next/link';
-import	Image								from	'next/image';
-import	useWatch, {TStrategy}				from	'contexts/useWatch';
-import	{isZeroAddress}						from	'@lib/utils';
-import	Card								from	'@lib/components/Card';
-import	AddressWithActions					from	'@lib/components/AddressWithActions';
-import	StatisticCard						from	'@lib/components/StatisticCard';
-import	SearchCard							from	'@lib/components/SearchCard';
-import	Switch								from	'@lib/components/Switch';
-import	* as format							from	'@lib/utils/format';
+import	React, {MouseEvent, ReactElement} 								from	'react';
+import	Link															from	'next/link';
+import	Image															from	'next/image';
+import	useWatch, {TStrategy}											from	'contexts/useWatch';
+import	{Card, AddressWithActions, StatisticCard, Switch, SearchBox}	from	'@majorfi/web-lib/components';
+import	* as utils														from	'@majorfi/web-lib/utils';
 
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();
@@ -50,7 +45,7 @@ function	Index(): ReactElement {
 		for (const vault of _filteredVaults) {
 			for (const strategy of vault.strategies) {
 				const	shouldDoHealtcheck = strategy.shouldDoHealthCheck;
-				const	hasValidHealtcheckAddr = !isZeroAddress(strategy.addrHealthCheck);
+				const	hasValidHealtcheckAddr = !utils.isZeroAddress(strategy.addrHealthCheck);
 
 				if (shouldDoHealtcheck || hasValidHealtcheckAddr || (strategy?.totalDebt.isZero() && isOnlyWithTvl))
 					continue;
@@ -65,7 +60,7 @@ function	Index(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'w-full'}>
-			<div className={'flex flex-col p-6 mb-4 text-primary bg-secondary rounded-lg border-2 border-primary'}>
+			<div className={'flex flex-col p-6 mb-4 rounded-lg border-2 text-primary bg-secondary border-primary'}>
 				<h4 className={'mb-6 text-primary'}>{'Alerts and warnings'}</h4>
 				<p>{'The healthchecks have been added since v0.4.2 for the Yearn\'s strategies in order to ensure that they are working properly. The healthchecks are automatically triggered on harvest if the doHealthCheck parameter is enabled, and if a valid address for this check is set. The strategies missing one of theses parameters will be displayed bellow.'}</p>
 				<p className={'block mt-4'}>{'Based on the Total Value Locked (TVL) in the strategy, a Risk score, from 5 (most risky) to 1 (least risky), is computed.'}</p>
@@ -73,7 +68,7 @@ function	Index(): ReactElement {
 
 			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
 				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
-					<SearchCard searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
+					<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
 					<div className={'flex flex-row items-center'}>
 						<p className={'text-xs text-typo-secondary'}>{`Strategies Found: ${filteredStrategies.length}`}</p>
 					</div>
@@ -126,11 +121,11 @@ function	Index(): ReactElement {
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Activation'}
-													value={format.date(Number(strategy.activation) * 1000)} />
+													value={utils.format.date(Number(strategy.activation) * 1000)} />
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Total USDC Value Locked'}
-													value={format.amount(strategy.totalDebtUSDC, 4)} />
+													value={utils.format.amount(strategy.totalDebtUSDC, 4)} />
 												<StatisticCard
 													backgroundColor={'bg-background'}
 													label={'Risk Factor'}

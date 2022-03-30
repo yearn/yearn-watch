@@ -2,10 +2,10 @@ import	React, {ReactElement}							from	'react';
 import	axios											from	'axios';
 import	NProgress										from	'nprogress';
 import	{ethers}										from	'ethers';
-import	useWeb3											from	'@lib/contexts/useWeb3';
-import	useLocalStorage									from	'@lib/hooks/useLocalStorage';
-import	performBatchedUpdates							from	'@lib/utils/performBatchedUpdates';
 import	{TVault, TStrategy, TStrategyReport, TAlert}	from	'contexts/useWatch.d';
+import	{useWeb3}										from	'@majorfi/web-lib/contexts';
+import	{useLocalStorage}								from	'@majorfi/web-lib/hooks';
+import	* as utils										from	'@majorfi/web-lib/utils';
 
 type	TNetworkData = {blockNumber: number, graphBlockNumber: number, hasGraphIndexingErrors: boolean}
 type	TYearnContext = {vaults: TVault[], lastUpdate: number, network: TNetworkData, update: () => void}
@@ -74,7 +74,7 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 
 		getVaultIsRunning.current = false;
 		if (getVaultRunNonce.current === currentNonce) {
-			performBatchedUpdates((): void => {
+			utils.performBatchedUpdates((): void => {
 				set_vaults(_vaultsInitials);
 				set_lastUpdate(Number(data.access));
 				set_networkSync(data.data.network);

@@ -1,10 +1,10 @@
-import	React, {ReactElement}						from	'react';
-import	{ethers}									from	'ethers';
-import	{Disclosure, Transition}					from	'@headlessui/react';
-import	{TVault, TStrategy}							from	'contexts/useWatch';
-import	useClientEffect								from	'@lib/hooks/useClientEffect';
-import	IconChevron									from	'@icons/IconChevron';
-import	* as format									from	'@lib/utils/format';
+import	React, {ReactElement}			from	'react';
+import	{ethers}						from	'ethers';
+import	{Disclosure, Transition}		from	'@headlessui/react';
+import	{TVault, TStrategy}				from	'contexts/useWatch';
+import	{Chevron}						from	'@majorfi/web-lib/icons';
+import	{useClientEffect}				from	'@majorfi/web-lib/hooks';
+import	{format} 						from	'@majorfi/web-lib/utils';
 
 type	TSectionAllocations = {currentVault: TVault};
 const	SectionAllocations = React.memo(function SectionAllocations({currentVault}: TSectionAllocations): ReactElement {
@@ -76,8 +76,8 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 									</b>
 								</span>
 								<div>
-									<div className={'overflow-hidden relative w-full h-2 bg-background rounded-2xl transition-transform'}>
-										<div className={'inset-y-0 left-0 h-full bg-primary rounded-2xl'} style={{width: `${Number(value) / Number(allocations.totalProtocolsAllocation) * 100}%`}} />
+									<div className={'overflow-hidden relative w-full h-2 rounded-2xl transition-transform bg-background'}>
+										<div className={'inset-y-0 left-0 h-full rounded-2xl bg-primary'} style={{width: `${Number(value) / Number(allocations.totalProtocolsAllocation) * 100}%`}} />
 									</div>
 								</div>
 							</div>;
@@ -97,8 +97,8 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 							</b>
 						</span>
 						<div>
-							<div className={'overflow-hidden relative w-full h-2 bg-background rounded-2xl transition-transform'}>
-								<div className={'inset-y-0 left-0 h-full bg-primary rounded-2xl'} style={{width: `${100 - Number(format.units(allocations.notAllocated, 2))}%`}} />
+							<div className={'overflow-hidden relative w-full h-2 rounded-2xl transition-transform bg-background'}>
+								<div className={'inset-y-0 left-0 h-full rounded-2xl bg-primary'} style={{width: `${100 - Number(format.units(allocations.notAllocated, 2))}%`}} />
 							</div>
 						</div>
 					</div>
@@ -112,8 +112,8 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 									</b>
 								</span>
 								<div>
-									<div className={'overflow-hidden relative w-full h-2 bg-background rounded-2xl transition-transform'}>
-										<div className={'inset-y-0 left-0 h-full bg-primary rounded-2xl'} style={{width: `${Number(format.units(strategy.debtRatio, 2))}%`}} />
+									<div className={'overflow-hidden relative w-full h-2 rounded-2xl transition-transform bg-background'}>
+										<div className={'inset-y-0 left-0 h-full rounded-2xl bg-primary'} style={{width: `${Number(format.units(strategy.debtRatio, 2))}%`}} />
 									</div>
 								</div>
 							</div>
@@ -127,7 +127,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 								<Disclosure.Button as={'div'} className={'w-full'}>
 									<span className={'flex flex-row justify-between items-center mb-2 w-full cursor-pointer'}>
 										<p className={'text-left text-typo-secondary-variant'}>{'Empty Allocations'}</p>
-										<IconChevron className={`w-4 h-4 transition-transform transform text-primary ${open ? '-rotate-90' : '-rotate-180'}`} />
+										<Chevron className={`w-4 h-4 transition-transform transform text-primary ${open ? '-rotate-90' : '-rotate-180'}`} />
 									</span>
 								</Disclosure.Button>
 								<Transition
@@ -139,7 +139,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 									leave={'transition ease-out origin-top'}
 									leaveFrom={'transform scale-y-100 opacity-100 origin-top'}
 									leaveTo={'transform scale-y-0 opacity-0 origin-top'}>
-									<Disclosure.Panel static className={'py-2 px-4 w-full bg-surface-variant rounded-lg'}>
+									<Disclosure.Panel static className={'py-2 px-4 w-full rounded-lg bg-surface-variant'}>
 										{
 											allocations.empty.map((strategy: TStrategy): ReactElement => (
 												<div className={'flex flex-col'} key={strategy.address}>
