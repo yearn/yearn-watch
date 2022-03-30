@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+function withOpacityValue(variable) {
+	return ({opacityValue}) => {
+		if (opacityValue === undefined) {
+			return `rgb(var(${variable}))`;
+		}
+		return `rgb(var(${variable}) / ${opacityValue})`;
+	};
+}
+
 module.exports = {
 	corePlugins: {
 		ringColor: false,
@@ -59,7 +68,47 @@ module.exports = {
 			colors: {
 				'white': '#FFFFFF',
 				'transparent': 'transparent',
-				'inherit': 'inherit'
+				'inherit': 'inherit',
+
+				'background': withOpacityValue('--color-background'),
+				'background-variant': withOpacityValue('--color-background-variant'),
+				'surface': withOpacityValue('--color-surface'),
+				'surface-variant': withOpacityValue('--color-surface-variant'),
+				'primary': withOpacityValue('--color-primary'),
+				'primary-variant': withOpacityValue('--color-primary-variant'),
+				'secondary': withOpacityValue('--color-secondary'),
+				'secondary-variant': withOpacityValue('--color-secondary-variant'),
+				'disabled': withOpacityValue('--color-disabled'),
+				'dark': withOpacityValue('--color-dark'),
+			
+				'alert-warning-primary': withOpacityValue('--color-alert-warning-primary'),
+				'alert-warning-secondary': withOpacityValue('--color-alert-warning-secondary'),
+				'alert-warning-secondary-variant': withOpacityValue('--color-alert-warning-secondary-variant'),
+				'alert-error-primary': withOpacityValue('--color-alert-error-primary'),
+				'alert-error-secondary': withOpacityValue('--color-alert-error-secondary'),
+				'alert-critical-primary': withOpacityValue('--color-alert-critical-primary'),
+				'alert-critical-secondary': withOpacityValue('--color-alert-critical-secondary'),
+			
+				'icons-primary': withOpacityValue('--color-icons-primary'),
+				'icons-variant': withOpacityValue('--color-icons-variant'),
+			
+				'logo-background': withOpacityValue('--color-logo-background'),
+				'logo-fill': withOpacityValue('--color-logo-fill'),
+			
+				'typo-primary': withOpacityValue('--color-typo-primary'),
+				'typo-primary-variant': withOpacityValue('--color-typo-primary-variant'),
+				'typo-secondary': withOpacityValue('--color-typo-secondary'),
+				'typo-secondary-variant': withOpacityValue('--color-typo-secondary-variant'),
+				'typo-off': withOpacityValue('--color-typo-off'),
+			
+				'button-filled-primary': withOpacityValue('--color-button-filled-primary'),
+				'button-filled-variant': withOpacityValue('--color-button-filled-variant'),
+				'button-filled-text': withOpacityValue('--color-button-filled-text'),
+				'button-outlined-primary': withOpacityValue('--color-button-outlined-primary'),
+				'button-outlined-variant': withOpacityValue('--color-button-outlined-variant'),
+				'button-outlined-text': withOpacityValue('--color-button-outlined-text'),
+				'button-disabled-primary': withOpacityValue('--color-button-disabled-primary'),
+				'button-disabled-text': withOpacityValue('--color-button-disabled-text')
 			},
 			keyframes: {
 				'fade-in-up': {
@@ -81,7 +130,6 @@ module.exports = {
 	plugins: [
 		require('@tailwindcss/typography'),
 		require('@tailwindcss/forms'),
-		require('@tailwindcss/line-clamp'),
-		require('tailwindcss-theming')
+		require('@tailwindcss/line-clamp')
 	]
 };
