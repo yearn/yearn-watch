@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {@apply scroll-smooth font-roboto}
+
+/* 🔵 - Yearn Finance ******************************************************
+** NsProgress is used to display the loading indicator. All of theses
+** styles are required to make it visible
+**************************************************************************/
+.nprogress-custom-parent {@apply overflow-hidden relative}
+.nprogress-custom-parent #nprogress .spinner {@apply absolute}
+.nprogress-custom-parent #nprogress .bar {@apply absolute}
+#nprogress {@apply pointer-events-none}
+#nprogress .bar {@apply bg-primary fixed top-0 left-0 w-full h-1 z-[1031]}
+#nprogress .spinner {@apply block fixed z-[1031] top-4 right-4}
+#nprogress .spinner-icon {@apply w-4 h-4 box-border border-2 border-transparent border-t-primary border-l-primary rounded-[50%] animate-spin}
