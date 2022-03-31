@@ -75,9 +75,9 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 		<Card.List className={'flex flex-col w-full'}>
 			{sortedStrategies
 				.map((strategy, index): ReactElement => (
-					<div key={strategy.address} className={`grid-row px-6 py-4 ${index % 2 ? 'bg-surface-variant' : 'bg-surface'}`}>
-						<div className={'items-start row-8 min-w-32'}>
-							<div className={'tabular-nums text-typo-secondary'}>
+					<div key={strategy.address} className={`grid grid-cols-22 w-max md:w-full h-16 rounded-sm relative mb-0.5 px-6 py-4 ${index % 2 ? 'bg-surface-variant' : 'bg-surface'}`}>
+						<div className={'flex flex-row col-span-8 items-start min-w-32'}>
+							<div className={'text-typo-secondary'}>
 								<div className={'flex flex-row items-start'}>
 									<Image width={40} height={40} src={strategy.vault?.icon || ''} quality={90} />
 									<div className={'ml-2 md:ml-6'}>
@@ -91,26 +91,26 @@ function	Table({sortBy, strategies}: TTable): ReactElement {
 								</div>
 							</div>
 						</div>
-						<div className={'items-start min-w-36 row-4 cell-end'}>
+						<div className={'flex flex-row col-span-4 items-start tabular-nums min-w-36 cell-end'}>
 							<div>
 								<b>{`${utils.format.amount(strategy.totalDebtUSDC, 4)}$`}</b>
 								<p className={'text-sm'}>{`${computeTotalDebt(strategy.totalDebtUSDC)}%`}</p>
 							</div>
 						</div>
-						<div className={'items-start min-w-36 row-4 cell-end'}>
+						<div className={'flex flex-row col-span-4 items-start tabular-nums min-w-36 cell-end'}>
 							<div>
 								<b>{utils.format.bigNumberAsAmount(strategy.debtOutstanding, strategy.vault.decimals, 4)}</b>
 								<p className={'text-sm'}>{strategy.vault.name}</p>
 							</div>
 						</div>
-						<div className={'justify-end items-start min-w-36 row-3'}>
-							<div className={'tabular-nums'}>
+						<div className={'flex flex-row col-span-3 justify-end items-start tabular-nums min-w-36'}>
+							<div>
 								{humanizeRisk(strategy.tvlImpact)}
 							</div>
 						</div>
-						<div className={'items-start min-w-36 row-3 cell-end'}>
+						<div className={'flex flex-row col-span-3 items-start min-w-36 cell-end'}>
 							<Link href={`/vault/${strategy.vault.address}/${strategy.address}`}>
-								<button className={'px-4 min-w-fit button button-light'}>
+								<button className={'px-5 min-w-fit button-light'}>
 									{'Details'}
 								</button>
 							</Link>
@@ -196,8 +196,8 @@ type		TRowHead = {
 };
 function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 	return (
-		<div className={'grid sticky top-0 z-10 grid-cols-22 py-3 px-6 pb-4 w-max rounded-sm md:w-full'}>
-			<div className={'items-center cell-start row-8 min-w-32'}>
+		<div className={'grid sticky top-0 z-10 py-3 px-6 pb-4 w-max rounded-sm md:w-full grid-cols-22'}>
+			<div className={'flex flex-row col-span-8 items-center tabular-nums cell-start min-w-32'}>
 				<p className={'pr-1 text-typo-secondary-variant'}>{'Strategy'}</p>
 				<div
 					onClick={(): void => set_sortBy((n): string => n === 'name' ? '-name' : n === '-name' ? '' : 'name')}
@@ -205,7 +205,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 					<ArrowDown />
 				</div>
 			</div>
-			<div className={'items-center cell-end row-4 min-w-36'}>
+			<div className={'flex flex-row col-span-4 items-center cell-end min-w-36'}>
 				<p className={'pr-1 text-typo-secondary-variant'}>{'Total Value Locked'}</p>
 				<div
 					onClick={(): void => set_sortBy((n): string => n === 'tvl' ? '-tvl' : n === '-tvl' ? '' : 'tvl')}
@@ -213,10 +213,10 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 					<ArrowDown />
 				</div>
 			</div>
-			<div className={'items-center cell-end row-4 min-w-36'}>
+			<div className={'flex flex-row col-span-4 items-center cell-end min-w-36'}>
 				<p className={'text-typo-secondary-variant'}>{'Debt Outstanding'}</p>
 			</div>
-			<div className={'items-center cell-end row-3 min-w-36'}>
+			<div className={'flex flex-row col-span-3 items-center cell-end min-w-36'}>
 				<div className={'pr-1 text-right text-typo-secondary-variant'}>{'Risk'}</div>
 				<div
 					onClick={(): void => set_sortBy((n): string => n === 'risk' ? '-risk' : n === '-risk' ? '' : 'risk')}
@@ -224,7 +224,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 					<ArrowDown />
 				</div>
 			</div>
-			<div className={'cell-end row-3 min-w-36'}>
+			<div className={'flex flex-row col-span-3 cell-end min-w-36'}>
 				<div className={'text-left text-typo-secondary-variant'}>{' ' || 'Activation'}</div>
 			</div>
 		</div>

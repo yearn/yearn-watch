@@ -6,7 +6,7 @@ function	Footer(): ReactElement {
 	const	{theme, switchTheme} = useUI();
 
 	return (
-		<footer className={'hidden flex-row items-center py-8 px-6 mx-auto mt-auto w-full max-w-6xl md:flex bg-white-blue-1'}>
+		<footer className={'hidden flex-row items-center py-8 px-6 mx-auto mt-auto max-w-6xl md:flex w-full bg-white-blue-1'}>
 			<a href={process.env.PROJECT_GITHUB_URL} target={'_blank'} className={'pr-6 hover:underline transition-colors text-typo-secondary hover:text-primary'} rel={'noreferrer'}>
 				{'Yearn.watch repo'}
 			</a>

@@ -168,8 +168,8 @@ function	AppWrapper(props: AppProps): ReactElement {
 	return (
 		<>
 			<AppHead />
-			<div id={'app'} className={'grid flex-col gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row md:mb-6 grid-cols-12'}>
-				<div className={'sticky top-0 z-50 col-span-12 md:relative md:col-span-2 h-auto md:h-full'}>
+			<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row md:mb-6'}>
+				<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2 md:h-full'}>
 					<div className={'flex flex-col justify-between h-full'}>
 						<Navbar
 							selected={router.pathname}
@@ -182,7 +182,7 @@ function	AppWrapper(props: AppProps): ReactElement {
 						</Navbar>
 					</div>
 				</div>
-				<div className={'flex flex-col col-span-12 px-4 min-h-[100vh] md:col-span-10 md:px-0 w-full'}>
+				<div className={'flex flex-col col-span-12 px-4 w-full min-h-[100vh] md:col-span-10 md:px-0'}>
 					<Header>
 						<HeaderTitle />
 					</Header>

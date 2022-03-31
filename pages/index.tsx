@@ -35,7 +35,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 	}
 	function	renderSummaryEnd(): ReactElement {
 		return (
-			<div className={'flex flex-row justify-start items-center md:justify-end w-full'}>
+			<div className={'flex flex-row justify-start items-center w-full md:justify-end'}>
 				{(vault.alerts || []).length > 0 ? (
 					<>
 						<div
@@ -43,7 +43,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 								e.stopPropagation();
 								set_isOpen(true);
 							}}
-							className={'flex flex-row items-center p-1 mr-5 rounded-lg border transition-colors cursor-pointer w-32 h-8 text-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant border-alert-warning-primary'}>
+							className={'flex flex-row items-center p-1 mr-5 w-32 h-8 rounded-lg border transition-colors cursor-pointer text-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant border-alert-warning-primary'}>
 							<AlertWarning className={'w-5 h-5'} />
 							<p className={'pl-2'}>{`${vault.alerts.length} warning${vault.alerts.length === 1 ? ' ' : 's'}`}</p>
 						</div>
@@ -60,7 +60,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					className={'font-mono text-sm text-typo-secondary'} />
 				<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
 					<Link href={`/vault/${vault.address}`}>
-						<button className={'mr-10 ml-0 min-w-[132px] md:ml-6 button button-outline'}>
+						<button className={'mr-10 ml-0 min-w-[132px] md:ml-6 button-outline'}>
 							{'Details'}
 						</button>
 					</Link>
@@ -146,7 +146,7 @@ function	Index(): ReactElement {
 	return (
 		<div className={'w-full'}>
 			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
-				<div className={'flex flex-col mt-2 space-y-2 md:mt-0 w-full'}>
+				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
 					<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
 					<div className={'flex flex-row items-center'}>
 						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Vaults Found: ${searchResult.vaults}`}</p>
@@ -155,7 +155,7 @@ function	Index(): ReactElement {
 				</div>
 				<div>
 					<Card isNarrow>
-						<label className={'flex flex-row justify-between p-2 space-x-6 cursor-pointer md:p-0 w-full md:w-max'}>
+						<label className={'flex flex-row justify-between p-2 space-x-6 w-full cursor-pointer md:p-0 md:w-max'}>
 							<p className={'text-typo-primary'}>{'Only vaults with warnings'}</p>
 							<Switch isEnabled={isOnlyWarning} set_isEnabled={set_isOnlyWarning} />
 						</label>
