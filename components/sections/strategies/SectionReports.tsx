@@ -51,52 +51,51 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 										)}
 										{...p} />
 								)}>
-								<StatisticCard.Wrapper cols={{mobile: 4, desktop: 4}}>
+								<StatisticCard.Wrapper>
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={`Dept Added (${currentVault.symbol})`}
 										value={format.bigNumberAsAmount(report?.debtAdded, currentVault.decimals, 4, '')} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={'Dept Limit'}
 										value={format.bigNumberAsAmount(report?.debtLimit, 2, 4, '%')} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 2}}
-										className={'col-span-2'}
+										className={'col-span-12 md:col-span-6'}
 										label={`Total Dept (${currentVault.symbol})`}
 										value={format.bigNumberAsAmount(report?.totalDebt, currentVault.decimals, 4, '')} />
 
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={`Profit (${currentVault.symbol})`}
 										value={format.bigNumberAsAmount(report?.gain, currentVault.decimals, 4, '')} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={`Total Profit (${currentVault.symbol})`}
 										value={format.bigNumberAsAmount(report?.totalGain, currentVault.decimals, 4, '')} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={`Loss (${currentVault.symbol})`}
 										value={format.bigNumberAsAmount(report?.loss, currentVault.decimals, 4, '')} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={`Total Loss (${currentVault.symbol})`}
 										value={format.bigNumberAsAmount(report?.totalLoss, currentVault.decimals, 4, '')} />
 
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={'Duration'}
 										value={format.duration(Number(report?.duration))} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={'Duration PR'}
 										value={`${format.amount(Number(report?.durationPR.toFixed(4)), 2)}%`} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={'APR'}
 										value={`${format.amount(Number((report?.apr * 100).toFixed(4)), 2)}%`} />
 									<StatisticCard
-										cols={{mobile: 1, desktop: 1}}
+										className={'col-span-12 md:col-span-3'}
 										label={'Dept Paid'}
 										value={format.bigNumberAsAmount(report?.debtPaid, currentVault.decimals, 4, '')} />
 								</StatisticCard.Wrapper>

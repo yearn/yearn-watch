@@ -7,7 +7,7 @@ import	* as utils									from	'@majorfi/web-lib/utils';
 type 		TStrategyBox = {strategy: TStrategy, symbol: string, decimals: number, vaultAddress: string, vaultExplorer: string}
 function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: TStrategyBox): ReactElement {
 	return (
-		<Card backgroundColor={'bg-background'} className={'mb-4'}>
+		<Card variant={'background'} className={'mb-4'}>
 			<div className={'flex flex-row justify-between items-start md:items-center'}>
 				<div>
 					<b className={'mb-2 text-base text-typo-primary'}>{strategy.name}</b>
@@ -44,23 +44,26 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 			<StatisticCard.Wrapper>
 				<StatisticCard
 					label={'Total debt'}
+					className={'col-span-6 md:col-span-4'}
 					value={utils.format.bigNumberAsAmount(strategy.totalDebt, decimals, 5)} />
 				<StatisticCard
 					label={'Credit available'}
+					className={'col-span-6 md:col-span-4'}
 					value={utils.format.bigNumberAsAmount(strategy.creditAvailable, decimals, 4)} />
 				<StatisticCard
 					label={'Total Estimated Assets'}
+					className={'col-span-6 md:col-span-4'}
 					value={utils.format.bigNumberAsAmount(strategy.estimatedTotalAssets, decimals, 4)} />
 				<StatisticCard
-					cols={{mobile: 1, desktop: 1}}
+					className={'col-span-6 md:col-span-4'}
 					label={'Debt ratio'}
 					value={utils.format.bigNumberAsAmount(strategy.debtRatio, 2, 2, '%')} />
 				<StatisticCard
-					cols={{mobile: 1, desktop: 1}}
+					className={'col-span-6 md:col-span-4'}
 					label={'Average APR'}
 					value={`${utils.format.amount((strategy?.apr || 0) * 100, 2)}%`} />
 				<StatisticCard
-					cols={{mobile: 1, desktop: 1}}
+					className={'col-span-6 md:col-span-4'}
 					label={'Index'}
 					value={utils.format.amount((strategy?.index === 21 ? -1 : strategy?.index || 0))} />
 			</StatisticCard.Wrapper>

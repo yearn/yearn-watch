@@ -19,6 +19,9 @@ module.exports = {
 	],
 	themes: {
 		extend: {
+			height: {
+				'inherit': 'inherit'
+			}
 		}
 	},
 	plugins: []

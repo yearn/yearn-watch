@@ -34,6 +34,7 @@ export type TStrategy = {
 	tvlImpact: number,
 	isEmergencyExit: boolean,
 	isActive: boolean,
+	isHidden: boolean,
 	shouldDoHealthCheck: boolean,
 	address: utils.TAddress,
 	addrHealthCheck: utils.TAddress,
@@ -91,6 +92,7 @@ export type TVault = {
 	updated: number, //From Yearn API
 	endorsed: boolean, //From Yearn API
 	emergency_shutdown: boolean, //From Yearn API
+	isHidden: boolean,
 	address: utils.TAddress, //From Yearn API
 	guardian: utils.TAddress, //From multicall
 	management: utils.TAddress, //From multicall

@@ -8,7 +8,7 @@ const	SectionHealthCheck = React.memo(function SectionHealthCheck({currentVault,
 		if (currentStrategy?.shouldDoHealthCheck) {
 			return (<b className={'uppercase text-primary'}>{'ENABLED'}</b>);
 		}
-		return (<b className={'uppercase text-error-primary'}>{'DISABLED'}</b>);
+		return (<b className={'uppercase text-alert-critical-primary'}>{'DISABLED'}</b>);
 	}
 
 	return (

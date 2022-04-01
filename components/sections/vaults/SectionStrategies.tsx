@@ -1,6 +1,6 @@
 import	React, {ReactElement}	from	'react';
 import	{TVault}				from	'contexts/useWatch';
-import	StrategyBox				from	'components/vaults/StrategyBox';
+import	StrategyBox				from	'components/sections/vaults/StrategyBox';
 
 type	TSectionStrategies = {currentVault: TVault};
 const	SectionStrategies = React.memo(function SectionStrategies({currentVault}: TSectionStrategies): ReactElement {

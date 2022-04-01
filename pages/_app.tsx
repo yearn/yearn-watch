@@ -6,7 +6,8 @@ import	useWatch, {WatchContextApp}		from	'contexts/useWatch';
 import	Footer							from	'components/StandardFooter';
 import	HeaderTitle						from	'components/HeaderTitle';
 import	IconAlert						from	'components/icons/IconAlert';
-import	IconLab							from	'components/icons/IconLab';
+import	IconRisk						from	'components/icons/IconRisk';
+import	IconSettings					from	'components/icons/IconSettings';
 import	IconVault						from	'components/icons/IconVault';
 import	IconHealthcheck					from	'components/icons/IconHealthcheck';
 import	IconQuery						from	'components/icons/IconQuery';
@@ -71,7 +72,7 @@ function	AppHead(): ReactElement {
 }
 
 function	AppSync(): ReactElement {
-	const	{network, lastUpdate, update} = useWatch();
+	const	{network, lastUpdate, isUpdating, update} = useWatch();
 	const	[blockDiff, set_blockDiff] = React.useState<number>(0);
 	const	[lastUpdateDiff, set_lastUpdateDiff] = React.useState<number>(0);
 
@@ -98,7 +99,6 @@ function	AppSync(): ReactElement {
 	**************************************************************************/
 	useInterval((): void => {
 		if (lastUpdate) {
-			console.warn({update: lastUpdate - new Date().valueOf()});
 			set_lastUpdateDiff(lastUpdate - new Date().valueOf());
 		}
 	}, 30 * 1000, true, [lastUpdate]);
@@ -115,8 +115,8 @@ function	AppSync(): ReactElement {
 	return (
 		<>
 			<div className={'flex flex-row items-center space-x-2 cursor-pointer'} onClick={update}>
-				<div className={`aspect-square w-2 h-2 rounded-full ${lastUpdateDiff < -300_000 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
-				<p className={'text-xs text-typo-secondary'}>{`Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
+				<div className={`aspect-square w-2 h-2 rounded-full ${isUpdating ? 'bg-background border-2 border-transparent border-t-primary border-l-primary animate-spin' : lastUpdateDiff < -300_000 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
+				<p className={'text-xs text-typo-secondary'}>{isUpdating ? 'Fetching data ...' : `Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
 			</div>
 			<div className={'flex flex-row items-center space-x-2'}>
 				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-error-primary' : blockDiff > 100 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
@@ -142,6 +142,12 @@ function	AppWrapper(props: AppProps): ReactElement {
 			icon: <IconQuery />
 		},
 		{
+			id: '/risk',
+			values: ['/risk'],
+			label: 'Risk',
+			icon: <IconRisk />
+		},
+		{
 			id: '/alerts',
 			values: ['/alerts'],
 			label: 'Alerts',
@@ -154,10 +160,10 @@ function	AppWrapper(props: AppProps): ReactElement {
 			icon: <IconHealthcheck />
 		},
 		{
-			id: '/risk',
-			values: ['/risk'],
-			label: 'Risk',
-			icon: <IconLab />
+			id: '/settings',
+			values: ['/settings'],
+			label: 'Settings',
+			icon: <IconSettings />
 		}
 	];
 
@@ -168,7 +174,7 @@ function	AppWrapper(props: AppProps): ReactElement {
 	return (
 		<>
 			<AppHead />
-			<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row md:mb-6'}>
+			<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row'}>
 				<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2 md:h-full'}>
 					<div className={'flex flex-col justify-between h-full'}>
 						<Navbar

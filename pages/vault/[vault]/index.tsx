@@ -1,9 +1,9 @@
 import	React, {ReactElement}	from	'react';
 import	{useRouter}				from	'next/router';
 import	useWatch, {TVault}		from	'contexts/useWatch';
-import	SectionAbout			from	'components/vaults/SectionAbout';
-import	SectionAllocations		from	'components/vaults/SectionAllocations';
-import	SectionStrategies		from	'components/vaults/SectionStrategies';
+import	SectionAbout			from	'components/sections/vaults/SectionAbout';
+import	SectionAllocations		from	'components/sections/vaults/SectionAllocations';
+import	SectionStrategies		from	'components/sections/vaults/SectionStrategies';
 import	{Card}					from	'@majorfi/web-lib/components';
 
 function	Index(): ReactElement {

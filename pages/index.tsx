@@ -2,11 +2,12 @@ import	React, {MouseEvent, ReactElement}				from	'react';
 import	Link											from	'next/link';
 import	Image											from	'next/image';
 import	useWatch, {TVault}								from	'contexts/useWatch';
-import	StrategyBox										from	'components/vaults/StrategyBox';
+import	StrategyBox										from	'components/sections/vaults/StrategyBox';
 import	ModalWarning									from	'components/ModalWarning';
 import	{Card, SearchBox, Switch, AddressWithActions}	from	'@majorfi/web-lib/components';
 import	{AlertWarning}									from	'@majorfi/web-lib/icons';
 import	* as utils										from	'@majorfi/web-lib/utils';
+import	{deepFindVaultBySearch}							from	'utils/filters';
 
 type 		TVaultBox = {vault: TVault}
 
@@ -71,7 +72,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 
 	return (
 		<Card.Detail
-			backgroundColor={'bg-surface'}
+			variant={'surface'}
 			summary={(p: unknown): ReactElement => (
 				<Card.Detail.Summary
 					startChildren={renderSummaryStart()}
@@ -114,26 +115,7 @@ function	Index(): ReactElement {
 		if (isOnlyWarning) {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (vault.alerts?.length || 0) > 0);
 		}
-		if (searchTerm.length > 0) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => {
-				return (
-					(vault?.display_name || '').toLowerCase().includes(searchTerm.toLowerCase())
-					|| (vault?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
-					|| (vault?.address || '').toLowerCase().includes(searchTerm.toLowerCase())
-					|| (vault?.symbol || '').toLowerCase().includes(searchTerm.toLowerCase())
-					|| (vault?.token?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
-					|| (vault?.token?.address || '').toLowerCase().includes(searchTerm.toLowerCase())
-					|| (vault?.token?.display_name || '').toLowerCase().includes(searchTerm.toLowerCase())
-					|| (vault?.strategies || []).some((strategy): boolean => {
-						return (
-							(strategy?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
-							|| (strategy?.address || '').toLowerCase().includes(searchTerm.toLowerCase())
-							|| (strategy?.description || '').toLowerCase().includes(searchTerm.toLowerCase())
-						);
-					})
-				);
-			});
-		}
+		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
 		utils.performBatchedUpdates((): void => {
 			set_filteredVaults(_filteredVaults);
 			set_searchResult({vaults: _filteredVaults.length, strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault?.strategies?.length || 0), 0)});
