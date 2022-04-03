@@ -14,8 +14,7 @@ import	IconHealthcheck					from	'components/icons/IconHealthcheck';
 import	IconQuery						from	'components/icons/IconQuery';
 import	LogoWatch						from	'components/logo/LogoWatch';
 import	{WithYearn}						from	'@majorfi/web-lib';
-import	{Header}						from	'@majorfi/web-lib/components';
-import	{Navbar}						from	'@majorfi/web-lib/layouts';
+import	{Header, Navbar}				from	'@majorfi/web-lib/layouts';
 import	{useInterval}					from	'@majorfi/web-lib/hooks';
 import	* as utils						from	'@majorfi/web-lib/utils';
 
