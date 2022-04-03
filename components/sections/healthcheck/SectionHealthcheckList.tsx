@@ -1,9 +1,10 @@
-import	React, {ReactElement}		from	'react';
-import	Image						from	'next/image';
-import	Link						from	'next/link';
-import	{TStrategy}					from	'contexts/useWatch';
-import	{Card, AddressWithActions}	from	'@majorfi/web-lib/components';
-import	* as utils					from	'@majorfi/web-lib/utils';
+import	React, {ReactElement}			from	'react';
+import	Image							from	'next/image';
+import	Link							from	'next/link';
+import	{TStrategy}						from	'contexts/useWatch';
+import	{List}							from	'@majorfi/web-lib/layouts';
+import	{AddressWithActions, Button}	from	'@majorfi/web-lib/components';
+import	* as utils						from	'@majorfi/web-lib/utils';
 
 function	humanizeRisk(risk: number): ReactElement {
 	if (risk === 0)
@@ -107,12 +108,14 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 						</div>
 					</div>
 					<div className={'flex flex-row col-span-3 items-center min-w-36 cell-end'}>
-						<Link href={`/vault/${strategy.vault.address}/${strategy.address}`}>
-							<button className={'px-5 min-w-fit button-light'}>
+						<Link passHref href={`/vault/${strategy.vault.address}/${strategy.address}`}>
+							<Button
+								as={'a'}
+								variant={'light'}
+								className={'px-5 min-w-fit'}>
 								{'Details'}
-							</button>
+							</Button>
 						</Link>
-						{/* <p>{utils.format.date(Number(strategy.activation) * 1000, false)}</p> */}
 					</div>
 				</div>
 			</div>
@@ -121,7 +124,7 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 
 
 	return (
-		<Card.VirtualizedList
+		<List.Virtualized
 			elements={sortedStrategies}
 			rowHeight={88}
 			rowRenderer={rowRenderer} />

@@ -1,5 +1,6 @@
 import	React, {ReactElement}			from	'react';
 import	Head							from	'next/head';
+import	Link							from	'next/link';
 import	{AppProps}						from	'next/app';
 import	{DefaultSeo}					from	'next-seo';
 import	useWatch, {WatchContextApp}		from	'contexts/useWatch';
@@ -13,7 +14,8 @@ import	IconHealthcheck					from	'components/icons/IconHealthcheck';
 import	IconQuery						from	'components/icons/IconQuery';
 import	LogoWatch						from	'components/logo/LogoWatch';
 import	{WithYearn}						from	'@majorfi/web-lib';
-import	{Navbar, Header}				from	'@majorfi/web-lib/components';
+import	{Header}						from	'@majorfi/web-lib/components';
+import	{Navbar}						from	'@majorfi/web-lib/layouts';
 import	{useInterval}					from	'@majorfi/web-lib/hooks';
 import	* as utils						from	'@majorfi/web-lib/utils';
 
@@ -130,37 +132,37 @@ function	AppWrapper(props: AppProps): ReactElement {
 	const	{Component, pageProps, router} = props;
 	const	navbarMenuOptions = [
 		{
-			id: '/',
+			route: '/',
 			values: ['/', '/vault/[vault]', '/vault/[vault]/[strategy]'],
 			label: 'Vaults',
 			icon: <IconVault  />
 		},
 		{
-			id: '/query',
+			route: '/query',
 			values: ['/query'],
 			label: 'Query',
 			icon: <IconQuery />
 		},
 		{
-			id: '/risk',
+			route: '/risk',
 			values: ['/risk'],
 			label: 'Risk',
 			icon: <IconRisk />
 		},
 		{
-			id: '/alerts',
+			route: '/alerts',
 			values: ['/alerts'],
 			label: 'Alerts',
 			icon: <IconAlert />
 		},
 		{
-			id: '/healthcheck',
+			route: '/healthcheck',
 			values: ['/healthcheck'],
 			label: 'Healthcheck',
 			icon: <IconHealthcheck />
 		},
 		{
-			id: '/settings',
+			route: '/settings',
 			values: ['/settings'],
 			label: 'Settings',
 			icon: <IconSettings />
@@ -181,7 +183,8 @@ function	AppWrapper(props: AppProps): ReactElement {
 							selected={router.pathname}
 							set_selected={onChangeRoute}
 							logo={<LogoWatch className={'w-full h-12 text-primary'} />}
-							options={navbarMenuOptions}>
+							options={navbarMenuOptions}
+							wrapper={<Link passHref href={''} />}>
 							<div className={'flex flex-col mt-auto space-y-2'}>
 								<AppSync />
 							</div>

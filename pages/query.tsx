@@ -1,10 +1,11 @@
-import	React, {ReactElement}						from	'react';
-import	useWatch, {TStrategy}						from	'contexts/useWatch';
-import	{useRouter}									from	'next/router';
-import	{SearchBox}									from	'@majorfi/web-lib/components';
-import	{deepFindVaultBySearch}						from	'utils/filters';
-import	SectionQueryList							from	'components/sections/query/SectionQueryList';
-import	{TableHead, TableHeadCell}					from	'components/TableHeadCell';
+import	React, {ReactElement}			from	'react';
+import	{GetServerSideProps}			from	'next';
+import	useWatch, {TStrategy}			from	'contexts/useWatch';
+import	{useRouter}						from	'next/router';
+import	{SearchBox}						from	'@majorfi/web-lib/components';
+import	{findStrategyBySearch}			from	'utils/filters';
+import	SectionQueryList				from	'components/sections/query/SectionQueryList';
+import	{TableHead, TableHeadCell}		from	'components/TableHeadCell';
 
 type		TRowHead = {
 	sortBy: string,
@@ -48,20 +49,20 @@ function	Index(): ReactElement {
 	**************************************************************************/
 	React.useEffect((): void => {
 		const	_vaults = vaults;
-		const	_filteredStrategies = [];
 		const	excludeStrategies = ((router.query?.exclude || []) as string[]).map((v): string => v.toLowerCase());
-		let		_filteredVaults = [..._vaults];
-		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
+		const		_filteredVaults = [..._vaults];
+		let		_filteredStrategies = [];
 
 		for (const vault of _filteredVaults) {
 			for (const strategy of vault.strategies) {
-				const	name = (strategy?.name || '').toLowerCase();
-				if (excludeStrategies.some((exclude): boolean => (name.search(exclude)) >= 0)) {
+				if (excludeStrategies.some((exclude): boolean => findStrategyBySearch(strategy, exclude))) {
 					continue;
 				}
 				_filteredStrategies.push(strategy);
 			}
 		}
+		_filteredStrategies = _filteredStrategies.filter((strategy): boolean => findStrategyBySearch(strategy, searchTerm));
+
 		set_filteredStrategies(_filteredStrategies);
 	}, [vaults, searchTerm, router.query]);
 
@@ -89,3 +90,9 @@ function	Index(): ReactElement {
 }
 
 export default Index;
+
+// Used to directly fetch the query params
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getServerSideProps: GetServerSideProps = async (): Promise<any> => {
+	return {props: {}};
+};

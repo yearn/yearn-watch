@@ -1,4 +1,5 @@
 declare module 'nprogress';
+declare module '@majorfi/web-lib/layouts';
 declare module '@majorfi/web-lib/components';
 declare module '@majorfi/web-lib/contexts';
 declare module '@majorfi/web-lib/hooks';

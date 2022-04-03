@@ -1,10 +1,10 @@
 import	React, {MouseEvent, ReactElement}						from	'react';
 import	Image													from	'next/image';
 import	{TVault, TStrategy}										from	'contexts/useWatch';
-import	{Card, AddressWithActions, AlertBox}					from	'@majorfi/web-lib/components';
+import	{List, Autosizer}										from	'@majorfi/web-lib/layouts';
+import	{Card, AddressWithActions, AlertBox, Button}			from	'@majorfi/web-lib/components';
 import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@majorfi/web-lib/icons';
 import	{useLocalStorage}										from	'@majorfi/web-lib/hooks';
-import {AutoSizer} from 'react-virtualized';
 
 type	TSectionAlertList = {
 	stratOrVault: (TStrategy | TVault)[],
@@ -180,14 +180,13 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 				<div className={'flex flex-row justify-start items-center w-full md:justify-end'}>
 					<div className={'pr-4 pl-3 text-sm font-medium text-right whitespace-nowrap sm:pr-6'}>
 						<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
-							<button
-								onClick={(e): void => {
-									e.stopPropagation();
-									onDismissOrTrack(stratOrVault.alertHash);
-								}}
-								className={'ml-0 min-w-[132px] md:ml-6 button button-outline'}>
+							<Button
+								variant={'outline'}
+								stopPropagation
+								onClick={(): void => onDismissOrTrack(stratOrVault.alertHash)}
+								className={'ml-0 min-w-[132px] md:ml-6'}>
 								{dismissed.includes(stratOrVault.alertHash) ? 'Track' : 'Dismiss'}
-							</button>
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -197,14 +196,13 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 				<div className={'flex flex-row justify-start items-center w-full md:justify-end'}>
 					<div className={'pr-4 pl-3 text-sm font-medium text-right whitespace-nowrap sm:pr-6'}>
 						<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
-							<button
-								onClick={(e): void => {
-									e.stopPropagation();
-									onDismissOrTrack(stratOrVault.alertHash);
-								}}
-								className={'ml-0 min-w-[132px] md:ml-6 button button-outline'}>
+							<Button
+								variant={'outline'}
+								stopPropagation
+								onClick={(): void => onDismissOrTrack(stratOrVault.alertHash)}
+								className={'ml-0 min-w-[132px] md:ml-6'}>
 								{dismissed.includes(stratOrVault.alertHash) ? 'Track' : 'Dismiss'}
-							</button>
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -219,34 +217,30 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 		<>
 			{renderTableHead()}
 			<section aria-label={'strats-vaults-alerts-list'} className={'min-w-full h-full'}>
-				<AutoSizer>
-					{({width, height}: {width: number, height: number}): ReactElement => (
-						<div style={{width, height}}>
-							<Card.List className={'overflow-y-scroll space-y-2 h-full rounded-lg'}>
-								{sortedStratOrVault.map((stratOrVault): ReactElement => (
-									<div key={stratOrVault.address}>
-										<Card.Detail
-											key={stratOrVault.address}
-											variant={'surface'}
-											isSticky={false}
-											summary={(p: unknown): ReactElement => (
-												<Card.Detail.Summary
-													startChildren={renderSummaryStart(stratOrVault)}
-													endChildren={renderSummaryEnd(stratOrVault)}
-													{...p} />
-											)}>
-											<div className={'space-y-2'}>
-												<AlertBox level={'critical'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'critical')} />
-												<AlertBox level={'error'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'error')} />
-												<AlertBox level={'warning'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'warning')} />
-											</div>
-										</Card.Detail>
+				<Autosizer>
+					<List.Animated className={'overflow-y-scroll space-y-2 h-full rounded-lg'}>
+						{sortedStratOrVault.map((stratOrVault): ReactElement => (
+							<div key={stratOrVault.address}>
+								<Card.Detail
+									key={stratOrVault.address}
+									variant={'surface'}
+									isSticky={false}
+									summary={(p: unknown): ReactElement => (
+										<Card.Detail.Summary
+											startChildren={renderSummaryStart(stratOrVault)}
+											endChildren={renderSummaryEnd(stratOrVault)}
+											{...p} />
+									)}>
+									<div className={'space-y-2'}>
+										<AlertBox level={'critical'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'critical')} />
+										<AlertBox level={'error'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'error')} />
+										<AlertBox level={'warning'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'warning')} />
 									</div>
-								))}
-							</Card.List>
-						</div>
-					)}
-				</AutoSizer>
+								</Card.Detail>
+							</div>
+						))}
+					</List.Animated>
+				</Autosizer>
 			</section>
 		</>
 	);

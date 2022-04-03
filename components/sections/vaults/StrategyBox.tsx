@@ -1,8 +1,8 @@
-import	React, {MouseEvent, ReactElement}			from	'react';
-import	Link										from	'next/link';
-import	{TStrategy}									from	'contexts/useWatch';
-import	{StatisticCard, Card, AddressWithActions}	from	'@majorfi/web-lib/components';
-import	* as utils									from	'@majorfi/web-lib/utils';
+import	React, {MouseEvent, ReactElement}					from	'react';
+import	Link												from	'next/link';
+import	{TStrategy}											from	'contexts/useWatch';
+import	{StatisticCard, Card, Button, AddressWithActions}	from	'@majorfi/web-lib/components';
+import	* as utils											from	'@majorfi/web-lib/utils';
 
 type 		TStrategyBox = {strategy: TStrategy, symbol: string, decimals: number, vaultAddress: string, vaultExplorer: string}
 function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: TStrategyBox): ReactElement {
@@ -28,10 +28,13 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 						wrapperClassName={'hidden md:flex'}
 						className={'font-mono text-sm text-typo-secondary'} />
 					<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
-						<Link href={`/vault/${vaultAddress}/${strategy.address}`}>
-							<button className={'mx-0 min-w-fit md:mr-10 md:ml-6 md:min-w-[132px] button button-outline'}>
+						<Link passHref href={`/vault/${vaultAddress}/${strategy.address}`}>
+							<Button
+								as={'a'}
+								variant={'outlined'}
+								className={'mx-0 min-w-fit md:mr-10 md:ml-6 md:min-w-[132px]'}>
 								{'Details'}
-							</button>
+							</Button>
 						</Link>
 					</div>
 				</div>

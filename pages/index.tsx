@@ -4,7 +4,8 @@ import	Image											from	'next/image';
 import	useWatch, {TVault}								from	'contexts/useWatch';
 import	StrategyBox										from	'components/sections/vaults/StrategyBox';
 import	ModalWarning									from	'components/ModalWarning';
-import	{Card, SearchBox, Switch, AddressWithActions}	from	'@majorfi/web-lib/components';
+import	{List}											from	'@majorfi/web-lib/layouts';
+import	{Card, SearchBox, Switch, AddressWithActions, Button}	from	'@majorfi/web-lib/components';
 import	{AlertWarning}									from	'@majorfi/web-lib/icons';
 import	* as utils										from	'@majorfi/web-lib/utils';
 import	{deepFindVaultBySearch}							from	'utils/filters';
@@ -60,10 +61,13 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					wrapperClassName={'hidden md:flex'}
 					className={'font-mono text-sm text-typo-secondary'} />
 				<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
-					<Link href={`/vault/${vault.address}`}>
-						<button className={'mr-10 ml-0 min-w-[132px] md:ml-6 button-outline'}>
+					<Link passHref href={`/vault/${vault.address}`}>
+						<Button
+							as={'a'}
+							variant={'outlined'}
+							className={'mr-10 ml-0 min-w-[132px] md:ml-6'}>
 							{'Details'}
-						</button>
+						</Button>
 					</Link>
 				</div>
 			</div>
@@ -144,13 +148,13 @@ function	Index(): ReactElement {
 					</Card>
 				</div>
 			</div>
-			<Card.List className={'flex flex-col space-y-4 w-full'}>
+			<List.Animated className={'flex flex-col space-y-4 w-full'}>
 				{filteredVaults.map((vault): ReactElement => (
 					<div key={vault.address}>
 						<VaultBox vault={vault} />
 					</div>
 				))}
-			</Card.List>
+			</List.Animated>
 		</div>
 	);
 }
