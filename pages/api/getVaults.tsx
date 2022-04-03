@@ -14,7 +14,7 @@ const MINUTES = 60 * 1000;
 const ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
 const FTM_ORACLE_CONTRACT_ADDRESS = '0x57aa88a0810dfe3f9b71a9b179dd8bf5f956c46a';
 const GRAPH_REQUEST= `{
-	_meta {
+  _meta {
 		hasIndexingErrors
 		block {
 			number
@@ -68,12 +68,39 @@ function getTvlImpact(tvl: number): number {
 type	TGetVaults = {
 	vaults: TVault[],
 	network: {
+		status: {
+			rpc: number,
+			graph: number,
+			yearnApi: number,
+			yearnMeta: number,
+		}
 		blockNumber: number,
 		graphBlockNumber: number,
 		hasGraphIndexingErrors: boolean,
 	}
 }
-async function getVaults(chainID: number): Promise<TGetVaults> {
+export async function getVaults(
+	chainID: number,
+	isLocal = false,
+	providedProvider?: string,
+	providedGraph?: string
+): Promise<TGetVaults> {
+	const	status = {
+		rpc: 1,
+		graph: 1,
+		yearnApi: 1,
+		yearnMeta: 1
+	};
+	let	rpcProvider = utils.providers.getProvider(chainID || 1);
+	if (isLocal && providedProvider) {
+		rpcProvider = new ethers.providers.JsonRpcProvider(providedProvider);
+	}
+
+	let	graphProvider = process.env.GRAPH_URL?.[chainID || 1] as string;
+	if (isLocal && providedGraph) {
+		graphProvider = providedGraph;
+	}
+
 	/* 🔵 - Yearn Finance ******************************************************
 	** Data are dispatched between the different sources, and thus we need to
 	** call them all to get the big picture:
@@ -83,12 +110,58 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 	** - the subgraph allows us to get some missing data, like the reports, the
 	**   apr etc.
 	**************************************************************************/
-	const	[_vaultsInitials, _strategies, _graph, _blockNumber] = await Promise.all([
+	const	[_vaultsInitialsRaw, _strategiesRaw, _graphRaw, _blockNumberRaw] = await Promise.allSettled([
 		axios.get(`https://api.yearn.finance/v1/chains/${chainID || 1}/vaults/all`),
 		axios.get(`https://meta.yearn.network/strategies/${chainID || 1}/all`),
-		request(process.env.GRAPH_URL?.[chainID || 1] as string, GRAPH_REQUEST),
-		utils.providers.getProvider(chainID || 1).getBlockNumber()
+		request(graphProvider, GRAPH_REQUEST),
+		rpcProvider.getBlockNumber()
 	]);
+
+	//If Yearn api is down, we are screwed (for now, fallback should be added)
+	if (_vaultsInitialsRaw.status === 'rejected') {
+		status.yearnApi = 0;
+		return ({
+			vaults: [],
+			network: {
+				status,
+				blockNumber: Number(0),
+				graphBlockNumber: 0,
+				hasGraphIndexingErrors: true
+			}
+		});
+	}
+	const _vaultsInitials = _vaultsInitialsRaw.value.data;
+
+	//If Yearn meta is down, that's ok, we can still display some data
+	let	_strategies = [];
+	if (_strategiesRaw.status === 'rejected') {
+		status.yearnMeta = 0;
+	} else {
+		_strategies = _strategiesRaw.value.data;
+	}
+
+	//If the graph is down, that's not great but we can still display some elements
+	let	_graph = [];
+	if (_graphRaw.status === 'rejected') {
+		status.graph = 0;
+	} else {
+		_graph = _graphRaw.value;
+	}
+
+	//If the RPC is down, that's bad, and it's time to kill
+	if (_blockNumberRaw.status === 'rejected') {
+		status.rpc = 0;
+		return ({
+			vaults: [],
+			network: {
+				status,
+				blockNumber: Number(0),
+				graphBlockNumber: 0,
+				hasGraphIndexingErrors: true
+			}
+		});
+	} 
+	const	_blockNumber = _blockNumberRaw.value;
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** We need to skip migrated vaults for now, as well as vaults that are
@@ -96,7 +169,7 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 	** TODO: Add type for the api call
 	** QUESTION: should we keep migrated vaults?
 	**************************************************************************/
-	let	_vaults: TVault[] = _vaultsInitials.data.filter((v: {migration?: {available: boolean}}): boolean => v.migration === null || !(v.migration?.available ?? true));
+	let	_vaults: TVault[] = _vaultsInitials.filter((v: {migration?: {available: boolean}}): boolean => v.migration === null || !(v.migration?.available ?? true));
 	_vaults = _vaults.filter((v: {type: string}): boolean => v.type === 'v2');
 
 	/* 🔵 - Yearn Finance ******************************************************
@@ -108,7 +181,7 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 	** vault, retrieve some more data from the vault contract but also from
 	** the strategy contract itself.
 	**************************************************************************/
-	const	ethcallProvider = await utils.providers.newEthCallProvider(utils.providers.getProvider(chainID || 1));
+	const	ethcallProvider = await utils.providers.newEthCallProvider(rpcProvider);
 	const	multiCalls = [];
 	const	priceOracleContract = new Contract(
 		(chainID || 1) === 1 ? ETH_ORACLE_CONTRACT_ADDRESS : FTM_ORACLE_CONTRACT_ADDRESS,
@@ -155,7 +228,7 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 	** strategies.
 	**************************************************************************/
 	let	rIndex = 0;
-	const	vaultsDetails = _graph.vaults;
+	const	vaultsDetails = _graph?.vaults || [];
 	for (const vault of _vaults) {
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3;
 		const	vaultDetails = vaultsDetails.find((detail: {id: string}): boolean => utils.toAddress(detail.id) === utils.toAddress(vault.address));
@@ -235,7 +308,7 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 				strategy.alerts.push({level: 'warning', message: `Strategy (${strategy.apiVersion}) and Vault (${vault.version}) version mismatch`});
 
 
-			const strategyMeta = _strategies.data.find((_detailFromMeta: {addresses: string[]}): boolean => _detailFromMeta.addresses.includes(strategy.address));
+			const strategyMeta = _strategies.find((_detailFromMeta: {addresses: string[]}): boolean => _detailFromMeta.addresses.includes(strategy.address));
 			if (strategyMeta) {
 				strategy.display_name = strategyMeta?.name || strategy.name;
 				strategy.description = strategyMeta.description;
@@ -288,9 +361,10 @@ async function getVaults(chainID: number): Promise<TGetVaults> {
 	return ({
 		vaults: _vaults,
 		network: {
+			status,
 			blockNumber: Number(_blockNumber),
-			graphBlockNumber: _graph._meta.block.number,
-			hasGraphIndexingErrors: _graph._meta.hasIndexingErrors
+			graphBlockNumber: _graph?._meta?.block?.number || 0,
+			hasGraphIndexingErrors: _graph?._meta ? _graph._meta.hasIndexingErrors : true
 		}
 	});
 }

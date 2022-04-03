@@ -1,7 +1,7 @@
 import	React, {ReactElement}			from	'react';
 import	Image							from	'next/image';
 import	Link							from	'next/link';
-import	{TStrategy}						from	'contexts/useWatch';
+import	{TStrategy}						from	'contexts/useWatch.d';
 import	{List}							from	'@majorfi/web-lib/layouts';
 import	{AddressWithActions, Button}	from	'@majorfi/web-lib/components';
 import	* as utils						from	'@majorfi/web-lib/utils';

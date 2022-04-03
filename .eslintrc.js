@@ -69,9 +69,9 @@ module.exports = {
 			{'selector': 'default', 'format': null, 'filter': {'regex': '^(0-9)$', 'match': false}},
 			{
 				'selector': 'variableLike',
-				'format': null,
 				'filter': {'regex': '^(set)', 'match': true},
-				'custom': {'regex': '^set_[a-z]+((\\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$', 'match': true}
+				'format': ['camelCase'],
+				'prefix': ['set_']
 			},
 			{'selector': 'variableLike', 'format': ['PascalCase'], 'filter': {'regex': '(Context)$|(ContextApp)$|^Component$', 'match': true}},
 			

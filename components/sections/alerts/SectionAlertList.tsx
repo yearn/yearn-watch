@@ -1,6 +1,6 @@
 import	React, {MouseEvent, ReactElement}						from	'react';
 import	Image													from	'next/image';
-import	{TVault, TStrategy}										from	'contexts/useWatch';
+import	{TVault, TStrategy}										from	'contexts/useWatch.d';
 import	{List, Autosizer}										from	'@majorfi/web-lib/layouts';
 import	{Card, AddressWithActions, AlertBox, Button}			from	'@majorfi/web-lib/components';
 import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@majorfi/web-lib/icons';
@@ -13,7 +13,7 @@ type	TSectionAlertList = {
 const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, shouldDisplayDismissed}: TSectionAlertList): ReactElement {
 	const	[sortBy, set_sortBy] = React.useState('');
 	const	[sortedStratOrVault, set_sortedStratOrVault] = React.useState([] as (TStrategy | TVault)[]);
-	const	[dismissed, set_dismissed] = useLocalStorage('dismissedAlerts', []) as [string[], (s: string[]) => void];
+	const	[dismissed, set_dismissed] = useLocalStorage('dismissedAlerts', []);
 	
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is used to display the alerts based on the level filter.
@@ -51,7 +51,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 	**************************************************************************/
 	function	onDismissOrTrack(s: string): void {
 		if (dismissed.includes(s))
-			set_dismissed(dismissed.filter((_s): boolean => _s !== s));
+			set_dismissed(dismissed.filter((_s: string): boolean => _s !== s));
 		else
 			set_dismissed([...new Set([...dismissed, s])]);
 	}

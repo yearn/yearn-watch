@@ -1,7 +1,8 @@
 import	React, {MouseEvent, ReactElement}				from	'react';
 import	Link											from	'next/link';
 import	Image											from	'next/image';
-import	useWatch, {TVault}								from	'contexts/useWatch';
+import	useWatch										from	'contexts/useWatch';
+import	{TVault}										from	'contexts/useWatch.d';
 import	StrategyBox										from	'components/sections/vaults/StrategyBox';
 import	ModalWarning									from	'components/ModalWarning';
 import	{List}											from	'@majorfi/web-lib/layouts';

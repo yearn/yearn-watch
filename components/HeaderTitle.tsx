@@ -44,6 +44,33 @@ function	HeaderTitle(): ReactElement {
 				</div>
 			);
 		}
+		if (router.asPath.includes('/query')) {
+			return (
+				<div className={'flex flex-row items-center'}>
+					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+						{'Query'}
+					</h1>
+				</div>
+			);
+		}
+		if (router.asPath.includes('/risk')) {
+			return (
+				<div className={'flex flex-row items-center'}>
+					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+						{'Risk'}
+					</h1>
+				</div>
+			);
+		}
+		if (router.asPath.includes('/settings')) {
+			return (
+				<div className={'flex flex-row items-center'}>
+					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+						{'Settings'}
+					</h1>
+				</div>
+			);
+		}
 		return (
 			<div className={'flex flex-row items-center'}>
 				<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
@@ -52,6 +79,7 @@ function	HeaderTitle(): ReactElement {
 			</div>
 		);
 	}
+	
 	return (
 		<div className={'flex flex-row items-center'}>
 			<Image width={32} height={32} src={currentVault.icon} quality={90} />

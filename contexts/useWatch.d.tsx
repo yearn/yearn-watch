@@ -139,3 +139,23 @@ export type TVault = {
 	},
 	strategies: TStrategy[]
 }
+
+export type	TNetworkData = {
+	status: {
+		rpc: number,
+		graph: number,
+		yearnApi: number,
+		yearnMeta: number
+	},
+	blockNumber: number,
+	graphBlockNumber: number,
+	hasGraphIndexingErrors: boolean
+}
+
+export type	TWatchContext = {
+	vaults: TVault[],
+	lastUpdate: number,
+	isUpdating: boolean,
+	network: TNetworkData,
+	update: () => void
+}

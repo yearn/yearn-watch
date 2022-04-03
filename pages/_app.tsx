@@ -1,22 +1,23 @@
-import	React, {ReactElement}			from	'react';
-import	Head							from	'next/head';
-import	Link							from	'next/link';
-import	{AppProps}						from	'next/app';
-import	{DefaultSeo}					from	'next-seo';
-import	useWatch, {WatchContextApp}		from	'contexts/useWatch';
-import	Footer							from	'components/StandardFooter';
-import	HeaderTitle						from	'components/HeaderTitle';
-import	IconAlert						from	'components/icons/IconAlert';
-import	IconRisk						from	'components/icons/IconRisk';
-import	IconSettings					from	'components/icons/IconSettings';
-import	IconVault						from	'components/icons/IconVault';
-import	IconHealthcheck					from	'components/icons/IconHealthcheck';
-import	IconQuery						from	'components/icons/IconQuery';
-import	LogoWatch						from	'components/logo/LogoWatch';
-import	{WithYearn}						from	'@majorfi/web-lib';
-import	{Header, Navbar}				from	'@majorfi/web-lib/layouts';
-import	{useInterval}					from	'@majorfi/web-lib/hooks';
-import	* as utils						from	'@majorfi/web-lib/utils';
+import	React, {ReactElement}		from	'react';
+import	Head						from	'next/head';
+import	Link						from	'next/link';
+import	{AppProps}					from	'next/app';
+import	{DefaultSeo}				from	'next-seo';
+import	useWatch, {WatchContextApp}	from	'contexts/useWatch';
+import	{SettingsContextApp}		from	'contexts/useSettings';
+import	Footer						from	'components/StandardFooter';
+import	HeaderTitle					from	'components/HeaderTitle';
+import	IconAlert					from	'components/icons/IconAlert';
+import	IconRisk					from	'components/icons/IconRisk';
+import	IconSettings				from	'components/icons/IconSettings';
+import	IconVault					from	'components/icons/IconVault';
+import	IconHealthcheck				from	'components/icons/IconHealthcheck';
+import	IconQuery					from	'components/icons/IconQuery';
+import	LogoWatch					from	'components/logo/LogoWatch';
+import	{WithYearn}					from	'@majorfi/web-lib';
+import	{Header, Navbar}			from	'@majorfi/web-lib/layouts';
+import	{useInterval}				from	'@majorfi/web-lib/hooks';
+import	* as utils					from	'@majorfi/web-lib/utils';
 
 import	'../style.css';
 
@@ -120,9 +121,41 @@ function	AppSync(): ReactElement {
 				<p className={'text-xs text-typo-secondary'}>{isUpdating ? 'Fetching data ...' : `Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
 			</div>
 			<div className={'flex flex-row items-center space-x-2'}>
-				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-error-primary' : blockDiff > 100 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
+				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-alert-error-primary' : blockDiff > 100 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
 				<p className={'text-xs text-typo-secondary'}>{renderBlockDiff()}</p>
 			</div>
+			{
+				network?.status?.rpc === 0 ? (
+					<div className={'flex flex-row items-center space-x-2'}>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
+						<p className={'text-xs text-typo-secondary'}>{'RPC is down'}</p>
+					</div>
+				) : null
+			}
+			{
+				network?.status?.graph === 0 ? (
+					<div className={'flex flex-row items-center space-x-2'}>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
+						<p className={'text-xs text-typo-secondary'}>{'SubGraph is down'}</p>
+					</div>
+				) : null
+			}
+			{
+				network?.status?.yearnApi === 0 ? (
+					<div className={'flex flex-row items-center space-x-2'}>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
+						<p className={'text-xs text-typo-secondary'}>{'Yearn API is down'}</p>
+					</div>
+				) : null
+			}
+			{
+				network?.status?.yearnMeta === 0 ? (
+					<div className={'flex flex-row items-center space-x-2'}>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
+						<p className={'text-xs text-typo-secondary'}>{'Yearn Meta is down'}</p>
+					</div>
+				) : null
+			}
 		</>
 	);
 }
@@ -209,14 +242,16 @@ function	MyApp(props: AppProps): ReactElement {
 	const	{Component, pageProps} = props;
 	
 	return (
-		<WithYearn>
-			<WatchContextApp>
-				<AppWrapper
-					Component={Component}
-					pageProps={pageProps}
-					router={props.router} />
-			</WatchContextApp>
-		</WithYearn>
+		<SettingsContextApp>
+			<WithYearn>
+				<WatchContextApp>
+					<AppWrapper
+						Component={Component}
+						pageProps={pageProps}
+						router={props.router} />
+				</WatchContextApp>
+			</WithYearn>
+		</SettingsContextApp>
 	);
 }
 

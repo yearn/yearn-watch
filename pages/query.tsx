@@ -1,6 +1,7 @@
 import	React, {ReactElement}			from	'react';
 import	{GetServerSideProps}			from	'next';
-import	useWatch, {TStrategy}			from	'contexts/useWatch';
+import	useWatch						from	'contexts/useWatch';
+import	{TStrategy}						from	'contexts/useWatch.d';
 import	{useRouter}						from	'next/router';
 import	{SearchBox}						from	'@majorfi/web-lib/components';
 import	{findStrategyBySearch}			from	'utils/filters';

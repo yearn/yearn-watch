@@ -1,19 +1,25 @@
-import	React, {ReactElement}							from	'react';
-import	axios											from	'axios';
-import	NProgress										from	'nprogress';
-import	{ethers}										from	'ethers';
-import	{TVault, TStrategy, TStrategyReport, TAlert}	from	'contexts/useWatch.d';
-import	{useWeb3}										from	'@majorfi/web-lib/contexts';
-import	{useLocalStorage}								from	'@majorfi/web-lib/hooks';
-import	* as utils										from	'@majorfi/web-lib/utils';
+import	React, {ReactElement}			from	'react';
+import	axios							from	'axios';
+import	NProgress						from	'nprogress';
+import	{ethers}						from	'ethers';
+import	* as useWatchTypes				from	'contexts/useWatch.d';
+import	{useWeb3}						from	'@majorfi/web-lib/contexts';
+import	{useLocalStorage}				from	'@majorfi/web-lib/hooks';
+import	* as utils						from	'@majorfi/web-lib/utils';
+import	useSettings						from	'contexts/useSettings';
+import	{getVaults}						from	'pages/api/getVaults';
 
-type	TNetworkData = {blockNumber: number, graphBlockNumber: number, hasGraphIndexingErrors: boolean}
-type	TYearnContext = {vaults: TVault[], lastUpdate: number, isUpdating: boolean, network: TNetworkData, update: () => void}
-const	WatchContext = React.createContext<TYearnContext>({
+const	WatchContext = React.createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
 	lastUpdate: 0,
 	isUpdating: false,
 	network: {
+		status: {
+			rpc: 1,
+			graph: 1,
+			yearnApi: 1,
+			yearnMeta: 1
+		},
 		blockNumber: 0,
 		graphBlockNumber: 0,
 		hasGraphIndexingErrors: false
@@ -23,9 +29,11 @@ const	WatchContext = React.createContext<TYearnContext>({
 
 export const WatchContextApp: React.FC = ({children}): ReactElement => {
 	const	{chainID} = useWeb3();
-	const	[vaults, set_vaults] = useLocalStorage('vaults', []) as [TVault[], (vaults: TVault[]) => void];
-	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {}) as [TNetworkData, (sync: TNetworkData) => void];
-	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0) as [number, (lastUpdate: number) => void];
+	const	{shouldUseRemoteFetch, rpcURI, subGraphURI} = useSettings();
+
+	const	[vaults, set_vaults] = useLocalStorage('vaults', []);
+	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {});
+	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0);
 	const	[isUpdating, set_isUpdating] = React.useState<boolean>(false);
 	const	getVaultIsRunning = React.useRef(false);
 	const	getVaultRunNonce = React.useRef(0);
@@ -45,7 +53,7 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 	** useless and heavy calls, and a loading bar is triggering when the
 	** process is starting.
 	**************************************************************************/
-	const	getVaults = React.useCallback(async (shouldRevalidate = false): Promise<void> => {
+	async function fetchVaults(shouldRevalidate = false): Promise<void> {
 		if (getVaultIsRunning.current) {
 			return;
 		}
@@ -53,6 +61,7 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 		getVaultIsRunning.current = true;
 		const currentNonce = getVaultRunNonce.current;
 		set_isUpdating(true);
+
 		/* 🔵 - Yearn Finance ******************************************************
 		** Data are dispatched between the different sources, and thus we need to
 		** call them all to get the big picture:
@@ -62,32 +71,60 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 		** - the subgraph allows us to get some missing data, like the reports, the
 		**   apr etc.
 		**************************************************************************/
-		const	{data} = await axios.get(`/api/getVaults?chainID=${chainID || 1}&revalidate=${shouldRevalidate}`);
-		//hack to get the bignumbers
-		const	_vaultsInitials = JSON.parse(JSON.stringify(data.data.vaults), (_key: unknown, value: {type: string}): unknown => {
-			if (value?.type === 'BigNumber') {
-				return ethers.BigNumber.from(value);
-			}
-			return value;
-		});
-		
-
-		getVaultIsRunning.current = false;
-		if (getVaultRunNonce.current === currentNonce) {
-			utils.performBatchedUpdates((): void => {
-				set_vaults(_vaultsInitials);
-				set_lastUpdate(Number(data.access));
-				set_networkSync(data.data.network);
-				set_isUpdating(false);
+		if (shouldUseRemoteFetch) {
+			const	{data} = await axios.get(`/api/getVaults?chainID=${chainID || 1}&revalidate=${shouldRevalidate}`);
+			//hack to get the bignumbers
+			const	_vaultsInitials = JSON.parse(JSON.stringify(data.data.vaults), (_key: unknown, value: {type: string}): unknown => {
+				if (value?.type === 'BigNumber') {
+					return ethers.BigNumber.from(value);
+				}
+				return value;
 			});
+			
+
+			getVaultIsRunning.current = false;
+			if (getVaultRunNonce.current === currentNonce) {
+				utils.performBatchedUpdates((): void => {
+					set_vaults(_vaultsInitials);
+					set_lastUpdate(Number(data.access));
+					set_networkSync(data.data.network);
+					set_isUpdating(false);
+				});
+			}
+		} else {
+			const	data = await getVaults(
+				chainID || 1,
+				true,
+				rpcURI[chainID || 1],
+				subGraphURI[chainID || 1]
+
+			);
+			//hack to get the bignumbers
+			const	_vaultsInitials = JSON.parse(JSON.stringify(data.vaults), (_key: unknown, value: {type: string}): unknown => {
+				if (value?.type === 'BigNumber') {
+					return ethers.BigNumber.from(value);
+				}
+				return value;
+			});
+			
+
+			getVaultIsRunning.current = false;
+			if (getVaultRunNonce.current === currentNonce) {
+				utils.performBatchedUpdates((): void => {
+					set_vaults(_vaultsInitials);
+					set_lastUpdate(new Date().valueOf());
+					set_networkSync(data.network);
+					set_isUpdating(false);
+				});
+			}
 		}
 		NProgress.done();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [chainID]);
+	}
 
 	React.useEffect((): void => {
-		getVaults();
-	}, [getVaults]);
+		fetchVaults();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<WatchContext.Provider
@@ -97,7 +134,7 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 				isUpdating,
 				network: networkSync,
 				update: (): void => {
-					getVaults(true);
+					fetchVaults(true);
 				}
 			}}>
 			{children}
@@ -105,6 +142,5 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 	);
 };
 
-export const useWatch = (): TYearnContext => React.useContext(WatchContext);
-export type {TVault, TStrategy, TStrategyReport, TAlert};
+export const useWatch = (): useWatchTypes.TWatchContext => React.useContext(WatchContext);
 export default useWatch;
