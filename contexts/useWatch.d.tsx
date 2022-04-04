@@ -87,10 +87,10 @@ export type TVault = {
 	explorer: string,
 	alertHash: string,
 	tokenPriceUSDC: number, //From multicall
-	inception: number, //From Yearn API
+	inception?: number, //From Yearn API
 	decimals: number, //From Yearn API
 	updated: number, //From Yearn API
-	endorsed: boolean, //From Yearn API
+	endorsed?: boolean, //From Yearn API
 	emergency_shutdown: boolean, //From Yearn API
 	isHidden: boolean,
 	address: utils.TAddress, //From Yearn API
@@ -114,12 +114,12 @@ export type TVault = {
         display_name: string
         icon: string
     },
-	tvl: {
+	tvl?: {
 		total_assets: number,
 		price: number,
 		tvl: number,
 	},
-	apy: {
+	apy?: {
 		type: string,
         gross_apr: number | null,
         net_apy: number | null,

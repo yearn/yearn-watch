@@ -238,6 +238,8 @@ export async function getVaults(
 			if (!utils.isZeroAddress(addr))
 				withdrawalQueue.push(addr as string);
 		}
+
+		//Let's build our data for the vault
 		vault.alerts = [];
 		vault.explorer = utils.chains[(chainID || '1') as keyof typeof utils.chains].block_explorer;
 		vault.guardian = utils.toAddress(callResult[rIndex++] as string);
@@ -262,6 +264,13 @@ export async function getVaults(
 			if (Number(vault.performanceFeeBps) === 0) vault.alerts.push({level: 'warning', message: 'Performance fee is zero'});
 		}
 		vault.alertHash = createHash('sha256').update(`${vault.address}_${JSON.stringify(vault.alerts)}`).digest('hex');
+
+		//Still for the vault, let's remove non-used data from the API
+		vault.apy = undefined;
+		vault.tvl = undefined;
+		vault.endorsed = undefined;
+		vault.inception = undefined;
+
 
 		for (const strategy of vault.strategies) {
 			strategy.alerts = [];
