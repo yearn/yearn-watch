@@ -54,6 +54,15 @@ function	HeaderTitle(): ReactElement {
 				</div>
 			);
 		}
+		if (router.asPath.includes('/alerts')) {
+			return (
+				<div className={'flex flex-row items-center'}>
+					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+						{'Alerts'}
+					</h1>
+				</div>
+			);
+		}
 		if (router.asPath.includes('/risk')) {
 			return (
 				<div className={'flex flex-row items-center'}>

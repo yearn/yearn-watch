@@ -81,9 +81,12 @@ function	Index(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex flex-col pb-0 h-full'}>
-					<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
-					<SectionQueryList sortBy={sortBy} strategies={filteredStrategies} />
+
+				<div className={'flex overflow-x-scroll pb-0 h-full'}>
+					<div className={'flex flex-col w-[965px] h-full md:w-full'}>
+						<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
+						<SectionQueryList sortBy={sortBy} strategies={filteredStrategies} />
+					</div>
 				</div>
 			</div>
 		</div>

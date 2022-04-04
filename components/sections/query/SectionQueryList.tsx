@@ -74,7 +74,7 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 		const strategy = sortedStrategies[index];
 		return (
 			<div key={key} style={style}>
-				<div className={`grid grid-cols-22 w-max md:w-full h-20 relative px-6 py-4 mb-2 rounded-lg ${index % 2 ? 'bg-surface' : 'bg-surface'}`}>
+				<div className={`grid grid-cols-22 w-[965px] md:w-full h-20 relative px-6 py-4 mb-2 rounded-lg ${index % 2 ? 'bg-surface' : 'bg-surface'}`}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex flex-row items-center'}>
@@ -84,7 +84,7 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 									<AddressWithActions
 										address={strategy.address}
 										explorer={strategy.vault.explorer}
-										wrapperClassName={'hidden md:flex'}
+										wrapperClassName={'flex'}
 										className={'font-mono text-sm text-typo-secondary'} />
 								</div>
 							</div>
@@ -116,7 +116,6 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 								{'Details'}
 							</Button>
 						</Link>
-						{/* <p>{utils.format.date(Number(strategy.activation) * 1000, false)}</p> */}
 					</div>
 				</div>
 			</div>

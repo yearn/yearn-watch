@@ -47,15 +47,15 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 			<StatisticCard.Wrapper>
 				<StatisticCard
 					label={'Total debt'}
-					className={'col-span-6 md:col-span-4'}
+					className={'col-span-12 md:col-span-4'}
 					value={utils.format.bigNumberAsAmount(strategy.totalDebt, decimals, 5)} />
 				<StatisticCard
 					label={'Credit available'}
-					className={'col-span-6 md:col-span-4'}
+					className={'col-span-12 md:col-span-4'}
 					value={utils.format.bigNumberAsAmount(strategy.creditAvailable, decimals, 4)} />
 				<StatisticCard
 					label={'Total Estimated Assets'}
-					className={'col-span-6 md:col-span-4'}
+					className={'col-span-12 md:col-span-4'}
 					value={utils.format.bigNumberAsAmount(strategy.estimatedTotalAssets, decimals, 4)} />
 				<StatisticCard
 					className={'col-span-6 md:col-span-4'}

@@ -15,20 +15,20 @@ function	AlertSelector({selectedLevel, onSelect}: TAlertSelector): ReactElement 
 	const	criticalClassName = 'border-alert-critical-primary bg-alert-critical-secondary';
 
 	return (
-		<div className={'flex flex-row items-center space-x-2'}>
+		<div className={'flex flex-row items-center space-x-1 md:space-x-2'}>
 			<div
 				onClick={(): void => onSelect('warning')}
-				className={`flex justify-center items-center cursor-pointer p-4 rounded-lg border transition-colors ${selectedLevel === 'warning' ? warningClassName : defaultClassName}`}>
+				className={`flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors ${selectedLevel === 'warning' ? warningClassName : defaultClassName}`}>
 				<AlertWarning className={'w-6 h-6 text-alert-warning-primary'} />
 			</div>
 			<div
 				onClick={(): void => onSelect('error')}
-				className={`flex justify-center items-center cursor-pointer p-4 rounded-lg border transition-colors ${selectedLevel === 'error' ? errorClassName : defaultClassName}`}>
+				className={`flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors ${selectedLevel === 'error' ? errorClassName : defaultClassName}`}>
 				<AlertError className={'w-6 h-6 text-alert-error-primary'} />
 			</div>
 			<div
 				onClick={(): void => onSelect('critical')}
-				className={`flex justify-center items-center cursor-pointer p-4 rounded-lg border transition-colors ${selectedLevel === 'critical' ? criticalClassName : defaultClassName}`}>
+				className={`flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors ${selectedLevel === 'critical' ? criticalClassName : defaultClassName}`}>
 				<AlertCritical className={'w-6 h-6 text-alert-critical-primary'} />
 			</div>
 		</div>

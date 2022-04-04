@@ -54,18 +54,20 @@ function	Index(): ReactElement {
 					<div className={'flex flex-col mt-2 w-full md:mt-0'}>
 						<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
 					</div>
-					<div>
-						<Card isNarrow>
-							<label className={'flex flex-row justify-between p-2 space-x-6 w-full cursor-pointer md:p-0 md:w-max'}>
-								<p className={'text-typo-secondary'}>{'Dismissed'}</p>
-								<Switch isEnabled={shouldDisplayDismissed} set_isEnabled={set_shouldDisplayDismissed} />
-							</label>
-						</Card>
-					</div>
-					<div>
-						<AlertSelector
-							selectedLevel={alertFilter}
-							onSelect={(s): void => set_alertFilter((c): TAlertLevels => c === s ? 'none' : s)} />
+					<div className={'flex flex-row justify-between items-center space-x-2 md:justify-start md:space-x-4'}>
+						<div>
+							<Card isNarrow>
+								<label className={'flex flex-row justify-between p-2 space-x-2 w-full cursor-pointer md:p-0 md:space-x-6 md:w-max'}>
+									<p className={'text-sm md:text-base text-typo-secondary'}>{'Dismissed'}</p>
+									<Switch isEnabled={shouldDisplayDismissed} set_isEnabled={set_shouldDisplayDismissed} />
+								</label>
+							</Card>
+						</div>
+						<div>
+							<AlertSelector
+								selectedLevel={alertFilter}
+								onSelect={(s): void => set_alertFilter((c): TAlertLevels => c === s ? 'none' : s)} />
+						</div>
 					</div>
 				</div>
 				<div className={'flex flex-col w-full h-full'}>

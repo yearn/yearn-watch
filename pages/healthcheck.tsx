@@ -71,7 +71,7 @@ function	Index(): ReactElement {
 	return (
 		<div className={'flex flex-col w-full h-full'}>
 			<div>
-				<AlertBanner title={'Alerts and warnings'} level={'info'}>
+				<AlertBanner title={'Alerts and warnings'} level={'info'} maxHeight={'max-h-[600px] md:max-h-[300px]'}>
 					<div>
 						<p>{'The healthchecks have been added since v0.4.2 for the Yearn\'s strategies in order to ensure that they are working properly. The healthchecks are automatically triggered on harvest if the doHealthCheck parameter is enabled, and if a valid address for this check is set. The strategies missing one of theses parameters will be displayed bellow.'}</p>
 						<p className={'block mt-4'}>{'Based on the Total Value Locked (TVL) in the strategy, a Risk score, from 5 (most risky) to 1 (least risky), is computed.'}</p>
@@ -95,9 +95,11 @@ function	Index(): ReactElement {
 				</div>
 			</div>
 
-			<div className={'flex flex-col pb-0 h-full'}>
-				<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
-				<SectionHealthcheckList sortBy={sortBy} strategies={filteredStrategies} />
+			<div className={'flex overflow-x-scroll pb-0 h-full'}>
+				<div className={'flex flex-col w-[965px] h-full md:w-full'}>
+					<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
+					<SectionHealthcheckList sortBy={sortBy} strategies={filteredStrategies} />
+				</div>
 			</div>
 		</div>
 	);

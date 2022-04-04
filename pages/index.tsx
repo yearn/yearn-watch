@@ -17,7 +17,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 	const		[isOpen, set_isOpen] = React.useState(false);
 	function	renderSummaryStart(): ReactElement {
 		return (
-			<div className={'flex flex-row justify-between items-start w-max'}>
+			<div className={'flex flex-row justify-between items-start w-full md:w-max'}>
 				<div className={'flex flex-row items-start'}>
 					<Image width={40} height={40} src={vault.icon} quality={90} className={'w-10 h-10'} />
 					<div className={'ml-2 md:ml-6'}>
@@ -46,9 +46,9 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 								e.stopPropagation();
 								set_isOpen(true);
 							}}
-							className={'flex flex-row items-center p-1 mr-5 w-32 h-8 rounded-lg border transition-colors cursor-pointer text-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant border-alert-warning-primary'}>
-							<AlertWarning className={'w-5 h-5'} />
-							<p className={'pl-2'}>{`${vault.alerts.length} warning${vault.alerts.length === 1 ? ' ' : 's'}`}</p>
+							className={'flex flex-row items-center p-1 mr-2 w-32 h-8 rounded-lg border transition-colors cursor-pointer md:mr-5 text-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant border-alert-warning-primary'}>
+							<AlertWarning className={'w-4 h-4 md:w-5 md:h-5'} />
+							<p className={'pl-1 md:pl-2'}>{`${vault.alerts.length} warning${vault.alerts.length === 1 ? ' ' : 's'}`}</p>
 						</div>
 						<ModalWarning
 							alerts={vault.alerts}

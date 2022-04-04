@@ -30,9 +30,9 @@ function	FormGraphURI(): ReactElement {
 				<div className={'pb-6'}>
 					<h4>{'Subgraph endpoints'}</h4>
 				</div>
-				<div className={'flex-row items-center w-full'}>
-					<div className={'w-3/12'}><p className={'test-sm'}>{'Ethereum graph URI'}</p></div>
-					<div className={'w-9/12'}>
+				<div className={'flex flex-col items-start w-full md:flex-row md:items-center'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Ethereum graph URI'}</label></div>
+					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary text-typo-primary bg-background'}>
 							<input
@@ -44,9 +44,9 @@ function	FormGraphURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex-row items-center w-full'}>
-					<div className={'w-3/12'}><p className={'test-sm'}>{'Fantom graph URI'}</p></div>
-					<div className={'w-9/12'}>
+				<div className={'flex flex-col items-start w-full md:flex-row md:items-center'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Fantom graph URI'}</label></div>
+					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary text-typo-primary bg-background'}>
 							<input
@@ -58,9 +58,9 @@ function	FormGraphURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex-row items-center w-full'}>
-					<div className={'w-3/12'}><p className={'test-sm'}>{'Arbitrum graph URI'}</p></div>
-					<div className={'w-9/12'}>
+				<div className={'flex flex-col items-start w-full md:flex-row md:items-center'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Arbitrum graph URI'}</label></div>
+					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary text-typo-primary bg-background focus-within:bg-background'}>
 							<input
@@ -72,7 +72,7 @@ function	FormGraphURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex-row w-full'}>
+				<div className={'flex flex-row w-full'}>
 					<Button
 						variant={'outline'}
 						type={'submit'}
@@ -112,9 +112,9 @@ function	FormRPCURI(): ReactElement {
 				<div className={'pb-6'}>
 					<h4>{'RPC endpoints'}</h4>
 				</div>
-				<div className={'flex-row items-center w-full'}>
-					<div className={'w-3/12'}><p className={'test-sm'}>{'Ethereum RPC URI'}</p></div>
-					<div className={'w-9/12'}>
+				<div className={'flex flex-col items-start w-full md:flex-row md:items-center'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Ethereum RPC URI'}</label></div>
+					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary text-typo-primary bg-background'}>
 							<input
@@ -126,9 +126,9 @@ function	FormRPCURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex-row items-center w-full'}>
-					<div className={'w-3/12'}><p className={'test-sm'}>{'Fantom RPC URI'}</p></div>
-					<div className={'w-9/12'}>
+				<div className={'flex flex-col items-start w-full md:flex-row md:items-center'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Fantom RPC URI'}</label></div>
+					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary text-typo-primary bg-background'}>
 							<input
@@ -140,9 +140,9 @@ function	FormRPCURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex-row items-center w-full'}>
-					<div className={'w-3/12'}><p className={'test-sm'}>{'Arbitrum RPC URI'}</p></div>
-					<div className={'w-9/12'}>
+				<div className={'flex flex-col items-start w-full md:flex-row md:items-center'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Arbitrum RPC URI'}</label></div>
+					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary text-typo-primary bg-background'}>
 							<input
@@ -154,7 +154,7 @@ function	FormRPCURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex-row w-full'}>
+				<div className={'flex flex-row w-full'}>
 					<Button
 						variant={'outline'}
 						type={'submit'}
@@ -183,9 +183,9 @@ function	Index(): ReactElement {
 				<div className={'pb-6'}>
 					<h4>{'Fetching method'}</h4>
 				</div>
-				<div className={'flex-row w-full'}>
-					<div className={'w-3/12'}><p className={'test-sm'}>{'Should use remote fetcher'}</p></div>
-					<div className={'w-9/12'}>
+				<div className={'flex flex-row w-full'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Should use remote fetcher'}</label></div>
+					<div className={'w-full md:w-9/12'}>
 						<Switch
 							isEnabled={shouldUseRemoteFetch}
 							set_isEnabled={(): void => switchShouldUseRemoteFetch()} />

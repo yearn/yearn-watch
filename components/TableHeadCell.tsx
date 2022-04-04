@@ -29,7 +29,7 @@ type		TTableHead = {
 };
 function	TableHead({children, sortBy, set_sortBy}: TTableHead): ReactElement {
 	return (
-		<div className={'grid grid-cols-22 px-6 pb-4 w-max md:w-full'}>
+		<div className={'grid grid-cols-22 px-6 pb-4 w-[965px] md:w-full'}>
 			{children?.map((child, i): ReactElement => React.cloneElement(child, {key: i, sortBy, set_sortBy}))}
 		</div>
 	);
