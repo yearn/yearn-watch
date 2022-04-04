@@ -1,5 +1,5 @@
 import	React, {ReactElement}	from	'react';
-import	{TVault}				from	'contexts/useWatch';
+import	{TVault}				from	'contexts/useWatch.d';
 import	StrategyBox				from	'components/sections/vaults/StrategyBox';
 
 type	TSectionStrategies = {currentVault: TVault};

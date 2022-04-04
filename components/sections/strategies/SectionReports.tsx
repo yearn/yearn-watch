@@ -1,5 +1,5 @@
 import	React, {ReactElement}						from	'react';
-import	{TVault, TStrategy, TStrategyReport}		from	'contexts/useWatch';
+import	{TVault, TStrategy, TStrategyReport}		from	'contexts/useWatch.d';
 import	{Card, TxHashWithActions, StatisticCard}	from	'@majorfi/web-lib/components';
 import	{format} 									from	'@majorfi/web-lib/utils';
 

@@ -1,8 +1,9 @@
-import	React, {ReactElement}				from	'react';
-import	Image								from	'next/image';
-import	{useRouter}							from	'next/router';
-import	useWatch, {TStrategy, TVault}		from	'contexts/useWatch';
-import	{toAddress} 						from	'@majorfi/web-lib/utils';
+import	React, {ReactElement}	from	'react';
+import	Image					from	'next/image';
+import	{useRouter}				from	'next/router';
+import	useWatch				from	'contexts/useWatch';
+import	{TStrategy, TVault}		from	'contexts/useWatch.d';
+import	{toAddress} 			from	'@majorfi/web-lib/utils';
 
 function	HeaderTitle(): ReactElement {
 	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);

@@ -1,7 +1,7 @@
 import	React, {ReactElement}			from	'react';
 import	{ethers}						from	'ethers';
 import	{Disclosure, Transition}		from	'@headlessui/react';
-import	{TVault, TStrategy}				from	'contexts/useWatch';
+import	{TVault, TStrategy}				from	'contexts/useWatch.d';
 import	{Chevron}						from	'@majorfi/web-lib/icons';
 import	{useClientEffect}				from	'@majorfi/web-lib/hooks';
 import	{format} 						from	'@majorfi/web-lib/utils';

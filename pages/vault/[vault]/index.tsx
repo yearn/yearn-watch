@@ -1,6 +1,7 @@
 import	React, {ReactElement}	from	'react';
 import	{useRouter}				from	'next/router';
-import	useWatch, {TVault}		from	'contexts/useWatch';
+import	useWatch				from	'contexts/useWatch';
+import	{TVault}				from	'contexts/useWatch.d';
 import	SectionAbout			from	'components/sections/vaults/SectionAbout';
 import	SectionAllocations		from	'components/sections/vaults/SectionAllocations';
 import	SectionStrategies		from	'components/sections/vaults/SectionStrategies';

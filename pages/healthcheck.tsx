@@ -1,5 +1,6 @@
 import	React, {ReactElement} 					from	'react';
-import	useWatch, {TStrategy}					from	'contexts/useWatch';
+import	useWatch								from	'contexts/useWatch';
+import	{TStrategy}								from	'contexts/useWatch.d';
 import	{Card, AlertBanner, Switch, SearchBox}	from	'@majorfi/web-lib/components';
 import	* as utils								from	'@majorfi/web-lib/utils';
 import	{deepFindVaultBySearch}					from	'utils/filters';

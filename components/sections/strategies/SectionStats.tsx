@@ -1,5 +1,5 @@
 import	React, {ReactElement}					from	'react';
-import	{TVault, TStrategy}						from	'contexts/useWatch';
+import	{TVault, TStrategy}						from	'contexts/useWatch.d';
 import	{DescriptionList, AddressWithActions}	from	'@majorfi/web-lib/components';
 import	{format} 								from	'@majorfi/web-lib/utils';
 

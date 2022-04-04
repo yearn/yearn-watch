@@ -1,5 +1,5 @@
 import	React, {ReactElement}	from	'react';
-import	{TAlert}				from	'contexts/useWatch';
+import	{TAlert}				from	'contexts/useWatch.d';
 import	{Modal}					from	'@majorfi/web-lib/components';
 import	{Cross, AlertWarning}	from	'@majorfi/web-lib/icons';
 

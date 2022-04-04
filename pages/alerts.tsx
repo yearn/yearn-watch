@@ -1,5 +1,6 @@
 import	React, {ReactElement}						from	'react';
-import	useWatch, {TVault, TStrategy}				from	'contexts/useWatch';
+import	useWatch									from	'contexts/useWatch';
+import	{TVault, TStrategy}							from	'contexts/useWatch.d';
 import	{Card, SearchBox, Switch}					from	'@majorfi/web-lib/components';
 import	{AlertSelector, TAlertLevels}				from	'components/AlertSelector';
 import	SectionAlertList							from	'components/sections/alerts/SectionAlertList';
