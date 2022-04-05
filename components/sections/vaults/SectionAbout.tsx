@@ -66,7 +66,7 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 				address={currentVault.address}
 				explorer={currentVault.explorer}
 				truncate={0}
-				className={'font-mono text-sm text-typo-secondary-variant'} />
+				className={'font-mono text-sm text-typo-secondary'} />
 
 			<DescriptionList
 				className={'mt-8'}

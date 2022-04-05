@@ -70,7 +70,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 						Object.entries(allocations.protocolsAllocation).map(([key, value]): ReactElement => {
 							return <div className={'flex flex-col'} key={key}>
 								<span className={'flex flex-row justify-between items-center mb-2'}>
-									<p className={'text-left text-typo-secondary-variant'}>{`${key}`}</p>
+									<p className={'text-left text-typo-secondary'}>{`${key}`}</p>
 									<b className={'text-left text-primary'}>
 										{`${format.amount(Number(value) / Number(allocations.totalProtocolsAllocation) * 100)}%`}
 									</b>
@@ -91,7 +91,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 				<div className={'space-y-4'}>
 					<div className={'flex flex-col'}>
 						<span className={'flex flex-row justify-between items-center mb-2'}>
-							<p className={'text-left text-typo-secondary-variant'}>{'Not Allocated'}</p>
+							<p className={'text-left text-typo-secondary'}>{'Not Allocated'}</p>
 							<b className={'text-left text-primary'}>
 								{`${format.amount(100 - Number(format.units(allocations.notAllocated, 2)), 2)}%`}
 							</b>
@@ -106,7 +106,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 						allocations.notEmpty.map((strategy: TStrategy): ReactElement => (
 							<div className={'flex flex-col'} key={strategy.address}>
 								<span className={'flex flex-row justify-between items-center mb-2'}>
-									<p className={'text-left text-typo-secondary-variant'}>{`${strategy.name}`}</p>
+									<p className={'text-left text-typo-secondary'}>{`${strategy.name}`}</p>
 									<b className={'text-left text-primary'}>
 										{`${format.amount(Number(format.units(strategy.debtRatio, 2)), 2)}%`}
 									</b>
@@ -126,7 +126,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 							<>
 								<Disclosure.Button as={'div'} className={'w-full'}>
 									<span className={'flex flex-row justify-between items-center mb-2 w-full cursor-pointer'}>
-										<p className={'text-left text-typo-secondary-variant'}>{'Empty Allocations'}</p>
+										<p className={'text-left text-typo-secondary'}>{'Empty Allocations'}</p>
 										<Chevron className={`w-4 h-4 transition-transform transform text-primary ${open ? '-rotate-90' : '-rotate-180'}`} />
 									</span>
 								</Disclosure.Button>
@@ -144,7 +144,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 											allocations.empty.map((strategy: TStrategy): ReactElement => (
 												<div className={'flex flex-col'} key={strategy.address}>
 													<span className={'flex flex-row justify-between items-center mb-2'}>
-														<p className={'text-left text-typo-secondary-variant'}>{`${strategy.name}`}</p>
+														<p className={'text-left text-typo-secondary'}>{`${strategy.name}`}</p>
 														<b className={'text-left text-primary'}>{'0%'}</b>
 													</span>
 												</div>

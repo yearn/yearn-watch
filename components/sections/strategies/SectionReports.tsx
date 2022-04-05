@@ -44,7 +44,7 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 													txHash={report?.id.split('-')[0]}
 													explorer={currentVault.explorer}
 													className={'font-mono font-bold text-typo-primary'} />
-												<p className={'block mt-2 text-typo-secondary-variant'}>
+												<p className={'block mt-2 text-typo-secondary'}>
 													{format.date(Number(report?.timestamp || 0))}
 												</p>
 											</div>

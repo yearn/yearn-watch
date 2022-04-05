@@ -64,13 +64,13 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 		return (
 			<div className={'flex flex-row justify-between items-center px-6 pb-2 w-max'}>
 				<div className={'flex flex-row items-start w-[300px]'}>
-					<p className={'text-typo-secondary-variant'}>{'Vault'}</p>
+					<p className={'text-typo-secondary'}>{'Vault'}</p>
 				</div>
 				<div className={'flex flex-row items-start w-[300px]'}>
-					<p className={'text-typo-secondary-variant'}>{'Strategy'}</p>
+					<p className={'text-typo-secondary'}>{'Strategy'}</p>
 				</div>
 				<div className={'flex flex-row items-center w-[125px] whitespace-nowrap'}>
-					<p className={'text-typo-secondary-variant'}>{'Level'}</p>
+					<p className={'text-typo-secondary'}>{'Level'}</p>
 					<ArrowDown
 						onClick={(): void => set_sortBy(sortBy === 'level' ? '-level' : sortBy === '-level' ? '' : 'level')}
 						className={`ml-1 w-4 h-4 hover:text-icons-variant transition-all cursor-pointer ${sortBy.includes('level') ? 'text-icon-variant' : 'text-icons-primary'} ${sortBy === '-level' ? 'rotate-180' : 'rotate-0'}`} />

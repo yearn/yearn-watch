@@ -33,6 +33,7 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 								as={'a'}
 								variant={'outlined'}
 								className={'mx-0 min-w-fit md:mr-10 md:ml-6 md:min-w-[132px]'}>
+								<span className={'sr-only'}>{'Access details about this strategy'}</span>
 								{'Details'}
 							</Button>
 						</Link>

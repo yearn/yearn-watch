@@ -15,14 +15,14 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStra
 						address={currentVault.address}
 						explorer={currentVault.explorer}
 						truncate={0}
-						className={'font-mono text-sm text-typo-secondary-variant'} />
+						className={'font-mono text-sm text-typo-secondary'} />
 				</div>
 
 				<div className={'mb-8'}>
 					<b className={'text-typo-primary'}>{'Description'}</b>
 					<div className={'flex flex-row items-center mt-4'}>
 						<p
-							className={'text-typo-secondary-variant'}
+							className={'text-typo-secondary'}
 							dangerouslySetInnerHTML={{__html: parseMarkdown((currentStrategy?.description || '').replace(/{{token}}/g, currentVault.symbol) || '')}} />
 					</div>
 				</div>

@@ -119,6 +119,7 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 								as={'a'}
 								variant={'light'}
 								className={'px-5 min-w-fit'}>
+								<span className={'sr-only'}>{'Access details about this strategy'}</span>
 								{'Details'}
 							</Button>
 						</Link>

@@ -16,7 +16,7 @@ const	SectionStats = React.memo(function SectionStats({currentVault, currentStra
 				address={currentStrategy.address}
 				explorer={currentVault.explorer}
 				truncate={0}
-				className={'font-mono text-sm text-typo-secondary-variant'} />
+				className={'font-mono text-sm text-typo-secondary'} />
 			<DescriptionList
 				className={'mt-8'}
 				options={[

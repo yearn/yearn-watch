@@ -35,7 +35,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					</div>
 				</div>
 				<AddressWithActions
-					address={vault.address}
+					address={`${vault.address}#code`}
 					explorer={vault.explorer}
 					truncate={3}
 					wrapperClassName={'flex md:hidden'}
@@ -74,6 +74,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 							as={'a'}
 							variant={'outlined'}
 							className={'mr-10 ml-0 min-w-[132px] md:ml-6'}>
+							<span className={'sr-only'}>{'Access details about this strategy'}</span>
 							{'Details'}
 						</Button>
 					</Link>
