@@ -75,7 +75,9 @@ function	Index(): ReactElement {
 			<div className={'flex flex-col space-y-4 w-full h-full'}>
 				<div className={'flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
 					<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
-						<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
+						<SearchBox
+							searchTerm={searchTerm}
+							onChange={set_searchTerm} />
 						<div className={'flex flex-row items-center'}>
 							<p className={'text-xs text-typo-secondary'}>{`Elements Found: ${filteredStrategies.length}`}</p>
 						</div>

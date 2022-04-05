@@ -141,7 +141,9 @@ function	Index(): ReactElement {
 		<div className={'w-full'}>
 			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
 				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
-					<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
+					<SearchBox
+						searchTerm={searchTerm}
+						onChange={set_searchTerm} />
 					<div className={'flex flex-row items-center'}>
 						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Vaults Found: ${searchResult.vaults}`}</p>
 						<p className={'text-xs text-typo-secondary'}>{`Strategies Found: ${searchResult.strategies}`}</p>

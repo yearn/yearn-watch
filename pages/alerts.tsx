@@ -52,7 +52,9 @@ function	Index(): ReactElement {
 			<div className={'flex flex-col space-y-4 w-full h-full'}>
 				<div className={'flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
 					<div className={'flex flex-col mt-2 w-full md:mt-0'}>
-						<SearchBox searchTerm={searchTerm} set_searchTerm={set_searchTerm} />
+						<SearchBox
+							searchTerm={searchTerm}
+							onChange={set_searchTerm} />
 					</div>
 					<div className={'flex flex-row justify-between items-center space-x-2 md:justify-start md:space-x-4'}>
 						<div>
