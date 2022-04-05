@@ -19,7 +19,14 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 		return (
 			<div className={'flex flex-row justify-between items-start w-full md:w-max'}>
 				<div className={'flex flex-row items-start'}>
-					<Image width={40} height={40} src={vault.icon} quality={90} className={'w-10 h-10'} />
+					<Image
+						alt={`token ${vault.name}`}
+						decoding={'async'}
+						width={40}
+						height={40}
+						src={vault.icon}
+						quality={70}
+						className={'w-10 h-10'} />
 					<div className={'ml-2 md:ml-6'}>
 						<b className={'text-base text-typo-primary'}>{vault.display_name}</b>
 						<p className={'text-xs text-typo-secondary'}>

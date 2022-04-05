@@ -72,13 +72,20 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 
 	function rowRenderer({key, index, style}: {key: string, index: number, style: {[key: string]: string}}): ReactElement {
 		const strategy = sortedStrategies[index];
+
 		return (
 			<div key={key} style={style}>
-				<div className={`grid grid-cols-22 w-[965px] md:w-full h-20 relative px-6 py-4 mb-2 rounded-lg ${index % 2 ? 'bg-surface' : 'bg-surface'}`}>
+				<div className={'grid relative py-4 px-6 mb-2 w-[965px] h-20 rounded-lg md:w-full grid-cols-22 bg-surface'}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex flex-row items-center'}>
-								<Image width={40} height={40} src={strategy.vault?.icon || ''} quality={60} loading={'eager'} />
+								<Image
+									alt={`token ${strategy?.vault.name}`}
+									decoding={'async'}
+									width={40}
+									height={40}
+									src={strategy.vault?.icon || ''}
+									quality={10} />
 								<div className={'ml-2 md:ml-6'}>
 									<b className={'text-base text-ellipsis line-clamp-1 text-typo-primary'}>{`${strategy.display_name || strategy.name}`}</b>
 									<AddressWithActions

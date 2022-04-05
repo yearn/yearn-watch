@@ -78,7 +78,13 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex flex-row items-center'}>
-								<Image width={40} height={40} src={strategy.vault?.icon || ''} quality={60} loading={'eager'} />
+								<Image
+									alt={`token ${strategy?.vault.name}`}
+									decoding={'async'}
+									width={40}
+									height={40}
+									src={strategy.vault?.icon || ''}
+									quality={60} />
 								<div className={'ml-2 md:ml-6'}>
 									<b className={'text-base text-ellipsis line-clamp-1 text-typo-primary'}>{`${strategy.display_name || strategy.name}`}</b>
 									<AddressWithActions
