@@ -51,7 +51,7 @@ function	Index(): ReactElement {
 	React.useEffect((): void => {
 		const	_vaults = vaults;
 		const	excludeStrategies = ((router.query?.exclude || []) as string[]).map((v): string => v.toLowerCase());
-		const		_filteredVaults = [..._vaults];
+		const	_filteredVaults = [..._vaults];
 		let		_filteredStrategies = [];
 
 		for (const vault of _filteredVaults) {
@@ -62,7 +62,7 @@ function	Index(): ReactElement {
 				_filteredStrategies.push(strategy);
 			}
 		}
-		_filteredStrategies = _filteredStrategies.filter((strategy): boolean => findStrategyBySearch(strategy, searchTerm));
+		_filteredStrategies = _filteredStrategies.filter((strategy): boolean => findStrategyBySearch(strategy, searchTerm || 'nothing'));
 
 		set_filteredStrategies(_filteredStrategies);
 	}, [vaults, searchTerm, router.query]);

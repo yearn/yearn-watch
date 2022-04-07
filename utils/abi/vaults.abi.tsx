@@ -20,6 +20,7 @@ const	VAULT_ABI_V02X = [
 	{'constant':true, 'inputs':[], 'name':'depositLimit', 'outputs':[{'name':'_limit', 'type':'uint256'}], 'payable':false, 'stateMutability':'view', 'type':'function'},
 	{'stateMutability':'view', 'type':'function', 'name':'debtOutstanding', 'inputs':[{'name':'strategy', 'type':'address'}], 'outputs':[{'name':'', 'type':'uint256'}]}
 ];
+
 const	VAULT_ABI = [
 	//creditAvailable
 	{'constant':true, 'inputs':[{'name':'_strategy', 'type':'address'}], 'name':'creditAvailable', 'outputs':[{'name':'amount', 'type':'uint256'}], 'payable':false, 'stateMutability':'view', 'type':'function'},

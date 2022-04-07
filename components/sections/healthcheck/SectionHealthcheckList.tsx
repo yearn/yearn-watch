@@ -2,23 +2,10 @@ import	React, {ReactElement}			from	'react';
 import	Image							from	'next/image';
 import	Link							from	'next/link';
 import	{TStrategy}						from	'contexts/useWatch.d';
+import	{HumanizeRisk}					from	'components/HumanizedRisk';
 import	{List}							from	'@majorfi/web-lib/layouts';
 import	{AddressWithActions, Button}	from	'@majorfi/web-lib/components';
 import	* as utils						from	'@majorfi/web-lib/utils';
-
-function	humanizeRisk(risk: number): ReactElement {
-	if (risk === 0)
-		return <p>{'None'}</p>;
-	if (risk === 1)
-		return <b>{'Low'}</b>;
-	if (risk === 2)
-		return <b className={'text-alert-warning-primary'}>{'Medium'}</b>;
-	if (risk === 3)
-		return <b className={'text-alert-error-primary'}>{'Severe'}</b>;
-	if (risk === 4)
-		return <b className={'text-alert-error-primary'}>{'High'}</b>;
-	return <b className={'text-alert-critical-primary'}>{'Critical'}</b>;
-}
 
 type		TSectionHealthcheckList = {
 	sortBy: string,
@@ -70,21 +57,21 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 		);
 	}
 
-	function rowRenderer({key, index, style}: {key: string, index: number, style: {[key: string]: string}}): ReactElement {
+	function rowRenderer(index: number): ReactElement {
 		const strategy = sortedStrategies[index];
 		return (
-			<div key={key} style={style}>
-				<div className={`grid grid-cols-22 w-[965px] md:w-full h-20 relative px-6 py-4 mb-2 rounded-lg ${index % 2 ? 'bg-surface' : 'bg-surface'}`}>
+			<div key={strategy.address}>
+				<div className={'grid relative py-4 px-6 mb-2 w-[965px] h-20 rounded-lg md:w-full grid-cols-22 bg-surface'}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex flex-row items-center'}>
-								<Image
+								{strategy.vault?.icon ? <Image
 									alt={`token ${strategy?.vault.name}`}
 									decoding={'async'}
 									width={40}
 									height={40}
-									src={strategy.vault?.icon || ''}
-									quality={60} />
+									src={strategy.vault.icon}
+									quality={60} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
 								<div className={'ml-2 md:ml-6'}>
 									<b className={'text-base text-ellipsis line-clamp-1 text-typo-primary'}>{`${strategy.display_name || strategy.name}`}</b>
 									<AddressWithActions
@@ -98,7 +85,7 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 					</div>
 					<div className={'flex flex-row col-span-4 items-center tabular-nums min-w-36 cell-end'}>
 						<div>
-							<b>{`${utils.format.amount(strategy.totalDebtUSDC, 4)}$`}</b>
+							<b>{`${utils.format.amount(strategy.totalDebtUSDC, 2)}$`}</b>
 							<p className={'text-sm'}>{`${computeTotalDebt(strategy.totalDebtUSDC)}%`}</p>
 						</div>
 					</div>
@@ -110,7 +97,7 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 					</div>
 					<div className={'flex flex-row col-span-3 justify-end items-center tabular-nums min-w-36'}>
 						<div>
-							{humanizeRisk(strategy.tvlImpact)}
+							<HumanizeRisk risk={strategy.tvlImpact} />
 						</div>
 					</div>
 					<div className={'flex flex-row col-span-3 items-center min-w-36 cell-end'}>
@@ -131,10 +118,9 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 
 
 	return (
-		<List.Virtualized
-			elements={sortedStrategies}
-			rowHeight={88}
-			rowRenderer={rowRenderer} />
+		<List.Animated>
+			{sortedStrategies.map((_, index): ReactElement => rowRenderer(index))}
+		</List.Animated>
 	);
 });
 

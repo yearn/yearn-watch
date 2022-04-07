@@ -9,11 +9,14 @@ import	STRATEGY_ABI						from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI					from	'utils/abi/priceOracle.abi';
 import	{TVault, TStrategyReport}			from	'contexts/useWatch.d';
 import	* as utils							from	'@majorfi/web-lib/utils';
+import	{getTvlImpact}						from	'utils';
 
-const MINUTES = 60 * 1000;
-const ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
-const FTM_ORACLE_CONTRACT_ADDRESS = '0x57aa88a0810dfe3f9b71a9b179dd8bf5f956c46a';
-const GRAPH_REQUEST= `{
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const	HAS_PRIORITY_TO_GRAPH = true;
+const	MINUTES = 60 * 1000;
+const	ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
+const	FTM_ORACLE_CONTRACT_ADDRESS = '0x57aa88a0810dfe3f9b71a9b179dd8bf5f956c46a';
+const	GRAPH_REQUEST= `{
   _meta {
 		hasIndexingErrors
 		block {
@@ -26,8 +29,22 @@ const GRAPH_REQUEST= `{
 		tokensDepositLimit
 		managementFeeBps
 		performanceFeeBps
+		apiVersion
+		shareToken {
+			decimals
+			id
+			name
+			symbol
+		}
+		token {
+			decimals
+			id
+			name
+			symbol
+		}
 		strategies {
 			address
+			name
 			reports(first: 10, orderBy: timestamp, orderDirection: desc) {
 				id
 				totalDebt
@@ -51,19 +68,54 @@ const GRAPH_REQUEST= `{
 	}
 }`;
 
-function getTvlImpact(tvl: number): number {
-	if (tvl === 0)
-		return 0;
-	if (tvl < 1_000_000)
-		return 1;
-	if (tvl < 10_000_000)
-		return 2;
-	if (tvl < 50_000_000)
-		return 3;
-	if (tvl < 100_000_000)
-		return 4;
-	return 5;
+/* 🔵 - Yearn Finance ******************************************************
+** We could use the API as source of truth. The API is the easy path, with
+** a lot of precompiled informations, but mostly on the current vaults.
+** Some vaults and/or strategies may not be included in the API.
+**************************************************************************/
+function	givePriorityToAPI(_vaultsInitials: any[], shouldExcludeMigrated: boolean): TVault[] {
+	// Shallow copy to clean work
+	let	_vaults: TVault[] = [..._vaultsInitials];
+
+	//Filter to only get V2 vaults
+	_vaults = _vaults.filter((v): boolean => v.type === 'v2');
+
+	//Remove migrated vaults is we should
+	if (shouldExcludeMigrated) {
+		_vaults = _vaultsInitials.filter((v: {migration?: {available: boolean}}): boolean => v.migration === null || !(v.migration?.available ?? true));
+	} else {
+		_vaults = _vaultsInitials.filter((v: {migration?: {available: boolean}}): boolean => v.migration === undefined || !v?.migration?.available);
+	}
+	return _vaults;
 }
+
+/* 🔵 - Yearn Finance ******************************************************
+** We could use the subgraph as source of truth. The subgraph may have much
+** more data than the API, but some may be irrelevant now (strategy and 
+** vaults no longer in production for example).
+**************************************************************************/
+function	givePriorityToGraph(vaults: TVault[], _vaultsInitials: any[]): TVault[] {
+	const _vaults: TVault[] = vaults.map((e: TVault): TVault => e);
+	for (const vault of _vaults) {
+		const	vaultFromAPI = _vaultsInitials.find((v: TVault): boolean => utils.toAddress(v.address) === utils.toAddress(vault.id));
+		if (vaultFromAPI) {
+			vault.display_name = vaultFromAPI.display_name;
+			vault.icon = vaultFromAPI.icon;
+			vault.emergency_shutdown = vaultFromAPI.emergency_shutdown;
+			vault.tvl = vaultFromAPI.tvl;
+			vault.apy = vaultFromAPI.apy;
+		}
+		vault.address = vault.id || utils.toAddress(0);
+		vault.version = vault.apiVersion || '0';
+		vault.token.address = vault.token.id || utils.toAddress(0);
+		vault.symbol = vault?.shareToken?.symbol || '';
+		vault.inception = vault?.activation || 0;
+		vault.decimals = vault?.shareToken?.decimals || 18;
+	}
+	return _vaults;
+}
+
+
 
 type	TGetVaults = {
 	vaults: TVault[],
@@ -91,6 +143,7 @@ export async function getVaults(
 		yearnApi: 1,
 		yearnMeta: 1
 	};
+	chainID = 250;
 	let	rpcProvider = utils.providers.getProvider(chainID || 1);
 	if (isLocal && providedProvider) {
 		rpcProvider = new ethers.providers.JsonRpcProvider(providedProvider);
@@ -169,8 +222,12 @@ export async function getVaults(
 	** TODO: Add type for the api call
 	** QUESTION: should we keep migrated vaults?
 	**************************************************************************/
-	let	_vaults: TVault[] = _vaultsInitials.filter((v: {migration?: {available: boolean}}): boolean => v.migration === null || !(v.migration?.available ?? true));
-	_vaults = _vaults.filter((v: {type: string}): boolean => v.type === 'v2');
+	let	_vaults: TVault[];
+	if (!HAS_PRIORITY_TO_GRAPH) {
+		_vaults = givePriorityToAPI(_vaultsInitials, true);
+	} else {
+		_vaults = givePriorityToGraph(_graph.vaults, _vaultsInitials);
+	}
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Prepare and execute a multicall to get some missing data. Right now,
@@ -188,7 +245,7 @@ export async function getVaults(
 		PRICE_ORACLE_ABI
 	);
 	for (const vault of _vaults) {
-		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3;
+		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3.1;
 		const	contractVault = new Contract(vault.address, isV2Vault ? VAULT_ABI['v0.2.x'] : VAULT_ABI['v0.4.x']);
 		[...Array(20).keys()].map((i): number => multiCalls.push(contractVault.withdrawalQueue(i)));
 		multiCalls.push(contractVault.guardian());
@@ -268,7 +325,6 @@ export async function getVaults(
 		//Still for the vault, let's remove non-used data from the API
 		vault.apy = undefined;
 		vault.tvl = undefined;
-		vault.endorsed = undefined;
 		vault.inception = undefined;
 
 

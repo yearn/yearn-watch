@@ -1,24 +1,11 @@
-import	React, {ReactElement}			from	'react';
-import	Image							from	'next/image';
-import	Link							from	'next/link';
-import	{TStrategy}						from	'contexts/useWatch.d';
-import	{List}							from	'@majorfi/web-lib/layouts';
-import	{AddressWithActions, Button}	from	'@majorfi/web-lib/components';
-import	* as utils						from	'@majorfi/web-lib/utils';
-
-function	humanizeRisk(risk: number): ReactElement {
-	if (risk === 0)
-		return <p>{'None'}</p>;
-	if (risk === 1)
-		return <b>{'Low'}</b>;
-	if (risk === 2)
-		return <b className={'text-alert-warning-primary'}>{'Medium'}</b>;
-	if (risk === 3)
-		return <b className={'text-alert-error-primary'}>{'Severe'}</b>;
-	if (risk === 4)
-		return <b className={'text-alert-error-primary'}>{'High'}</b>;
-	return <b className={'text-alert-critical-primary'}>{'Critical'}</b>;
-}
+import	React, {ReactElement}				from	'react';
+import	Image								from	'next/image';
+import	Link								from	'next/link';
+import	{TStrategy}							from	'contexts/useWatch.d';
+import	{HumanizeRisk}						from	'components/HumanizedRisk';
+import	{List}								from	'@majorfi/web-lib/layouts';
+import	{Card, AddressWithActions, Button}	from	'@majorfi/web-lib/components';
+import	* as utils							from	'@majorfi/web-lib/utils';
 
 type		TSectionQueryList = {
 	sortBy: string,
@@ -99,7 +86,7 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 					</div>
 					<div className={'flex flex-row col-span-4 items-center tabular-nums min-w-36 cell-end'}>
 						<div>
-							<b>{`${utils.format.amount(strategy.totalDebtUSDC, 4)}$`}</b>
+							<b>{`${utils.format.amount(strategy.totalDebtUSDC, 2)}$`}</b>
 							<p className={'text-sm'}>{`${computeTotalDebt(strategy.totalDebtUSDC)}%`}</p>
 						</div>
 					</div>
@@ -111,7 +98,7 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 					</div>
 					<div className={'flex flex-row col-span-3 justify-end items-center tabular-nums min-w-36'}>
 						<div>
-							{humanizeRisk(strategy.tvlImpact)}
+							<HumanizeRisk risk={strategy.tvlImpact} />
 						</div>
 					</div>
 					<div className={'flex flex-row col-span-3 items-center min-w-36 cell-end'}>
@@ -131,10 +118,18 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 	}
 
 	return (
-		<List.Virtualized
-			elements={sortedStrategies}
-			rowHeight={88}
-			rowRenderer={rowRenderer} />
+		<>
+			{sortedStrategies.length === 0 ? (
+				<Card className={'flex flex-row justify-center h-full text-center'}>
+					<p className={'pt-24 text-typo-secondary'}>{'No result for this query'}</p>
+				</Card>
+			) : (
+				<List.Virtualized
+					elements={sortedStrategies}
+					rowHeight={88}
+					rowRenderer={rowRenderer} />
+			)}
+		</>
 	);
 });
 
