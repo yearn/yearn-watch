@@ -66,13 +66,13 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex-row-center'}>
-								<Image
+								{strategy.vault?.icon ? <Image
 									alt={`token ${strategy?.vault.name}`}
 									decoding={'async'}
 									width={40}
 									height={40}
-									src={strategy.vault?.icon || ''}
-									quality={10} />
+									src={strategy.vault.icon}
+									quality={10} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
 								<div className={'ml-2 md:ml-6'}>
 									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.display_name || strategy.name}`}</b>
 									<AddressWithActions

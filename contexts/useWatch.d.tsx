@@ -16,6 +16,7 @@ export type TRiskGroup = {
 	id: string,
 	network: number,
 	label: string,
+	urlParams: string,
 	totalDebtRatio: number,
 	tvl: number, //TVL Impact
 	tvlImpact: number, //TVL Score

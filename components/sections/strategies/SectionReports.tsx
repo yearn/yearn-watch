@@ -12,6 +12,8 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 	}
 	function	computeMedianAPR(reports: TStrategyReport[]): number {
 		const	allAPRs = reports.map((v): number => Number(v.apr) * 100);
+		if (allAPRs.length === 0)
+			return (0);
 		allAPRs.sort((a, b): number => a - b);
 		const	middle = Math.floor(allAPRs.length / 2);
 		if (allAPRs.length % 2)

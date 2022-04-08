@@ -35,6 +35,19 @@ export function getLongevityScore(days: number): number {
 	return 1;
 }
 
+type TGenericListItem = {[x: string]: string[]};
+export function getExcludeIncludeUrlParams(item: TGenericListItem): string {
+	const include = ([...item?.include || [], ...item?.nameLike || []]).join('&include='); //Not existing rn
+	const exclude = (item?.exclude || []).join('&exclude=');
+	if (exclude.length === 0 && include.length === 0)
+		return ('');
+	if (exclude.length === 0)
+		return (`?include=${include}`);
+	if (include.length === 0)
+		return (`?exclude=${exclude}`);
+	return '';
+}
+
 export function median(values: number[]): number {
 	if (values.length === 0)
 		return 0;

@@ -7,7 +7,7 @@ import	useWatch					from	'contexts/useWatch';
 import	{TRowHead, TRiskGroup}		from	'contexts/useWatch.d';
 import	RISK						from	'utils/risks.json';
 import	{findStrategyBySearch}		from	'utils/filters';
-import	{getImpactScore, getTvlImpact, getLongevityScore, median}		from	'utils';
+import	{getImpactScore, getTvlImpact, getLongevityScore, getExcludeIncludeUrlParams, median}		from	'utils';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -97,12 +97,12 @@ function	Risk(): ReactElement {
 			]);
 			_group.tvlImpact = getTvlImpact(_group.tvl);
 			_group.impactScore = getImpactScore(_group.tvlImpact, _group.medianScore);
+			_group.urlParams = getExcludeIncludeUrlParams(group.criteria);
 			_groups.push(_group);
 		}
 		for (const group of _groups) {
 			group.totalDebtRatio = group.tvl / _totalDebt * 100;
 		}
-
 
 		set_groups(_groups);
 	}, [vaults, chainID]);

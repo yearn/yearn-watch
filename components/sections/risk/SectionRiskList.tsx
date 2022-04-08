@@ -46,7 +46,7 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): Rea
 					<div className={'w-4 h-4 rounded-full'} style={{backgroundColor: getImpactScoreColor(group.impactScore)}} />
 				</div>
 				<div className={'flex flex-row col-span-4 items-center min-w-36 cell-end'}>
-					<Link passHref href={`/query/${12356}`}>
+					<Link passHref href={`/query${group.urlParams}`}>
 						<Button
 							as={'a'}
 							variant={'light'}
@@ -182,7 +182,6 @@ const	SectionRiskList = React.memo(function SectionRiskList({sortBy, groups}: TS
 
 	return (
 		<List.Animated className={'flex flex-col space-y-2 w-full'}>
-			{/* {groups.map((_, index): ReactElement => rowRenderer(index))} */}
 			{sortedGroups.map((group): ReactElement => <GroupBox key={group.id} group={group} />)}
 		</List.Animated>
 	);

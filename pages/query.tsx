@@ -54,19 +54,26 @@ function	Query(): ReactElement {
 	**************************************************************************/
 	React.useEffect((): void => {
 		const	_vaults = vaults;
-		const	excludeStrategies = ((router.query?.exclude || []) as string[]).map((v): string => v.toLowerCase());
+		const	_routerExcludeUnknown = (router?.query?.exclude || []);
+		const	_routerExcludeArr = typeof(_routerExcludeUnknown) === 'string' ? [_routerExcludeUnknown] : _routerExcludeUnknown;
+		const	excludeStrategies = (_routerExcludeArr as string[]).map((v): string => v.toLowerCase());
+		const	_routerIncludeUnknown = (router?.query?.include || []);
+		const	_routerIncludeArr = typeof(_routerIncludeUnknown) === 'string' ? [_routerIncludeUnknown] : _routerIncludeUnknown;
+		const	includeStrategies = (_routerIncludeArr as string[]).map((v): string => v.toLowerCase());
 		const	_filteredVaults = [..._vaults];
-		let		_filteredStrategies = [];
 
+		let		_filteredStrategies = [];
 		for (const vault of _filteredVaults) {
 			for (const strategy of vault.strategies) {
 				if (excludeStrategies.some((exclude): boolean => findStrategyBySearch(strategy, exclude))) {
 					continue;
 				}
-				_filteredStrategies.push(strategy);
+				if (includeStrategies.some((include): boolean => findStrategyBySearch(strategy, include))) {
+					_filteredStrategies.push(strategy);
+				}
 			}
 		}
-		_filteredStrategies = _filteredStrategies.filter((strategy): boolean => findStrategyBySearch(strategy, searchTerm || 'nothing'));
+		_filteredStrategies = _filteredStrategies.filter((strategy): boolean => findStrategyBySearch(strategy, searchTerm));
 
 		set_filteredStrategies(_filteredStrategies);
 	}, [vaults, searchTerm, router.query]);

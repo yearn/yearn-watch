@@ -391,6 +391,7 @@ export async function getVaults(
 			if (vaultsDetails) {
 				const	strategyDetails = (vaultDetails?.strategies || []).find((detail: {address: string}): boolean => utils.toAddress(detail.address) === utils.toAddress(strategy.address));
 				if (strategyDetails) {
+					const	reportList = [...strategyDetails.reports];
 					const	cumulativeAPR = strategyDetails.reports.reduce((acc: number, report: any): number => acc + Number(report?.results?.[0]?.apr || 0), 0);
 					strategy.apr = cumulativeAPR / (strategyDetails?.reports?.length || 1);
 					strategy.shouldDoHealthCheck = strategyDetails.doHealthCheck;
@@ -398,7 +399,7 @@ export async function getVaults(
 
 					//Handle reports
 					strategy.reports = [];
-					for (const report of strategyDetails.reports) {
+					for (const report of reportList) {
 						const _report: TStrategyReport = {
 							id: report.id as string,
 							timestamp: report.timestamp as string,
