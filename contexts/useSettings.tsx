@@ -11,6 +11,21 @@ const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 	updateRPCURI: (): void => undefined
 });
 
+/* 🔵 - Yearn Finance **********************************************************
+** The settings context controls some specific settings you could set for the
+** whole app. This does not include the theming, which is handled by the 
+** useUI context from the web lib.
+** This includes the following settings:
+** - shouldUseRemoteFetch: by default, vaults and strategies data are fetched
+** from a serverless function hosted by Vercel/AWS. You can override this in
+** order to perform the request from your browser directly.
+** - subGraphURI: for each supported network (1, 250, 42161), provide a way
+** to override the default subgraph URI. Empty string will use the default,
+** aka env variables.
+** - rpcURI: for each supported network (1, 250, 42161), provide a way to
+** override the default RPC URI. Empty string will use the default, aka env
+** variables.
+******************************************************************************/
 export const SettingsContextApp: React.FC = ({children}): ReactElement => {
 	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true);
 	const	[subGraphURI, set_subGraphURI] = useLocalStorage('subGraphURI', {1: '', 250: '', 42161: ''});

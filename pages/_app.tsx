@@ -116,17 +116,17 @@ function	AppSync(): ReactElement {
 
 	return (
 		<>
-			<div className={'flex flex-row items-center space-x-2 cursor-pointer'} onClick={update}>
+			<div className={'space-x-2 cursor-pointer flex-row-center'} onClick={update}>
 				<div className={`aspect-square w-2 h-2 rounded-full ${isUpdating ? 'bg-background border-2 border-transparent border-t-primary border-l-primary animate-spin' : lastUpdateDiff < -300_000 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
 				<p className={'text-xs text-typo-secondary'}>{isUpdating ? 'Fetching data ...' : `Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
 			</div>
-			<div className={'flex flex-row items-center space-x-2'}>
+			<div className={'space-x-2 flex-row-center'}>
 				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-alert-error-primary' : blockDiff > 100 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
 				<p className={'text-xs text-typo-secondary'}>{renderBlockDiff()}</p>
 			</div>
 			{
 				network?.status?.rpc === 0 ? (
-					<div className={'flex flex-row items-center space-x-2'}>
+					<div className={'space-x-2 flex-row-center'}>
 						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
 						<p className={'text-xs text-typo-secondary'}>{'RPC is down'}</p>
 					</div>
@@ -134,7 +134,7 @@ function	AppSync(): ReactElement {
 			}
 			{
 				network?.status?.graph === 0 ? (
-					<div className={'flex flex-row items-center space-x-2'}>
+					<div className={'space-x-2 flex-row-center'}>
 						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
 						<p className={'text-xs text-typo-secondary'}>{'SubGraph is down'}</p>
 					</div>
@@ -142,7 +142,7 @@ function	AppSync(): ReactElement {
 			}
 			{
 				network?.status?.yearnApi === 0 ? (
-					<div className={'flex flex-row items-center space-x-2'}>
+					<div className={'space-x-2 flex-row-center'}>
 						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
 						<p className={'text-xs text-typo-secondary'}>{'Yearn API is down'}</p>
 					</div>
@@ -150,7 +150,7 @@ function	AppSync(): ReactElement {
 			}
 			{
 				network?.status?.yearnMeta === 0 ? (
-					<div className={'flex flex-row items-center space-x-2'}>
+					<div className={'space-x-2 flex-row-center'}>
 						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
 						<p className={'text-xs text-typo-secondary'}>{'Yearn Meta is down'}</p>
 					</div>

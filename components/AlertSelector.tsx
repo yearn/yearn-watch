@@ -1,13 +1,17 @@
-
-
 import	React, {ReactElement}						from	'react';
 import	{AlertWarning, AlertError, AlertCritical}	from	'@majorfi/web-lib/icons';
+import	{TAlertLevels}								from	'contexts/useWatch.d';
 
-type		TAlertLevels = 'none' | 'info' | 'warning' | 'error' | 'critical';
 type		TAlertSelector = {
 	selectedLevel: TAlertLevels,
 	onSelect: (s: TAlertLevels) => void
 }
+
+/* 🔵 - Yearn Finance **********************************************************
+** The AlertSelector component is a simple component that allows the user to
+** select the level of alerts to display on the /alerts page.
+** The params are used to display and change the selected alert level.
+******************************************************************************/
 function	AlertSelector({selectedLevel, onSelect}: TAlertSelector): ReactElement {
 	const	defaultClassName = 'border-transparent bg-surface';
 	const	warningClassName = 'border-alert-warning-primary bg-alert-warning-secondary';
@@ -15,20 +19,20 @@ function	AlertSelector({selectedLevel, onSelect}: TAlertSelector): ReactElement 
 	const	criticalClassName = 'border-alert-critical-primary bg-alert-critical-secondary';
 
 	return (
-		<div className={'flex flex-row items-center space-x-1 md:space-x-2'}>
+		<div className={'component--alertSelector-wrapper'}>
 			<div
 				onClick={(): void => onSelect('warning')}
-				className={`flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors ${selectedLevel === 'warning' ? warningClassName : defaultClassName}`}>
+				className={`component--alertSelector-base ${selectedLevel === 'warning' ? warningClassName : defaultClassName}`}>
 				<AlertWarning className={'w-6 h-6 text-alert-warning-primary'} />
 			</div>
 			<div
 				onClick={(): void => onSelect('error')}
-				className={`flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors ${selectedLevel === 'error' ? errorClassName : defaultClassName}`}>
+				className={`component--alertSelector-base ${selectedLevel === 'error' ? errorClassName : defaultClassName}`}>
 				<AlertError className={'w-6 h-6 text-alert-error-primary'} />
 			</div>
 			<div
 				onClick={(): void => onSelect('critical')}
-				className={`flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors ${selectedLevel === 'critical' ? criticalClassName : defaultClassName}`}>
+				className={`component--alertSelector-base ${selectedLevel === 'critical' ? criticalClassName : defaultClassName}`}>
 				<AlertCritical className={'w-6 h-6 text-alert-critical-primary'} />
 			</div>
 		</div>

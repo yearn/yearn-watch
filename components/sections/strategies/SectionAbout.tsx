@@ -10,7 +10,7 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStra
 			<div className={'flex flex-col'}>
 				<h4 className={'mb-4'}>{'Vault'}</h4>
 				<div className={'mb-8'}>
-					<b className={'block mb-2 text-typo-primary'}>{currentVault.name}</b>
+					<b className={'block mb-2'}>{currentVault.name}</b>
 					<AddressWithActions
 						address={currentVault.address}
 						explorer={currentVault.explorer}
@@ -19,8 +19,8 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStra
 				</div>
 
 				<div className={'mb-8'}>
-					<b className={'text-typo-primary'}>{'Description'}</b>
-					<div className={'flex flex-row items-center mt-4'}>
+					<b>{'Description'}</b>
+					<div className={'mt-4 flex-row-center'}>
 						<p
 							className={'text-typo-secondary'}
 							dangerouslySetInnerHTML={{__html: parseMarkdown((currentStrategy?.description || '').replace(/{{token}}/g, currentVault.symbol) || '')}} />

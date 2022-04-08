@@ -10,7 +10,7 @@ type		TTableHeadCell = {
 };
 function	TableHeadCell({label, sortId, className, sortBy, set_sortBy = (): void => undefined}: TTableHeadCell): ReactElement {
 	return (
-		<div className={`flex flex-row items-center tabular-nums ${className}`}>
+		<div className={`flex-row-center tabular-nums ${className}`}>
 			<p className={'pr-1 text-typo-secondary'}>{label}</p>
 			{sortId ? <div
 				onClick={(): void => set_sortBy((n): string => n === sortId ? `-${sortId}` : n === `-${sortId}` ? '' : sortId)}

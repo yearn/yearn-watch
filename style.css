@@ -1,34 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-* {@apply scroll-smooth font-roboto}
-
-input::placeholder {
-	@apply italic;
-}
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px rgb(var(--color-background) / 0) inset;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
+/* This will load Tailwindcss + all the overwrite from Yearn lib */
+@import '@majorfi/web-lib/dist/style.css';
 
 /* 🔵 - Yearn Finance ******************************************************
-** NsProgress is used to display the loading indicator. All of theses
-** styles are required to make it visible
+** Shorthand for some group of style used across the application
 **************************************************************************/
-.nprogress-custom-parent {@apply overflow-hidden relative}
-.nprogress-custom-parent #nprogress .spinner {@apply absolute}
-.nprogress-custom-parent #nprogress .bar {@apply absolute}
-#nprogress {@apply pointer-events-none}
-#nprogress .bar {@apply bg-primary fixed top-0 left-0 w-full h-1 z-[1031]}
-#nprogress .spinner {@apply block fixed z-[1031] top-4 right-4}
-#nprogress .spinner-icon {@apply w-4 h-4 box-border border-2 border-transparent border-t-primary border-l-primary rounded-[50%] animate-spin}
+.component--alertSelector-wrapper {
+	@apply flex flex-row items-center space-x-1 md:space-x-2;
+}
+.component--alertSelector-base {
+	@apply flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors;
+}
+.component--input-wrapper {
+	@apply flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary bg-background;
+}
+.component--input-base {
+	@apply p-0 w-full h-10 bg-transparent border-none focus:border-none outline-none focus:outline-none focus:ring-0;
+}
+.component--switchCard-wrapper {
+	@apply flex flex-row justify-between p-2 space-x-2 w-full cursor-pointer md:p-0 md:space-x-6 md:w-max
+}
+
+.flex-row-center {@apply flex flex-row items-center;}
+.flex-row-start {@apply flex flex-row items-start;}
+.flex-col-start {@apply flex flex-col items-start;}
+.flex-col-full {@apply flex flex-col w-full h-full;}
+/* flex flex-row items-start */

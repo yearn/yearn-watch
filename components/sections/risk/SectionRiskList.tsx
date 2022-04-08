@@ -4,45 +4,19 @@ import	{List}							from	'@majorfi/web-lib/layouts';
 import	{Card, Button, StatisticCard}	from	'@majorfi/web-lib/components';
 import	* as utils						from	'@majorfi/web-lib/utils';
 import	{Chevron}						from	'@majorfi/web-lib/icons';
-import	{TStrategy}						from	'contexts/useWatch.d';
+import	{TRiskGroup}					from	'contexts/useWatch.d';
 import	StrategyBox						from	'components/sections/vaults/StrategyBox';
 import	{getImpactScoreColor}			from	'utils';
 
-type TGroup = {
-	id: string,
-	network: number,
-	label: string,
-	totalDebtRatio: number,
-	tvl: number, //TVL Impact
-	tvlScore: number, //TVL Impact
-	tvlImpact: number, //TVL Impact
-	auditScore: number, //Audit Score
-	codeReviewScore: number, //Code Review Score
-	testingScore: number, //Testing Score
-	protocolSafetyScore: number, //Protocol Safety Score
-	complexityScore: number, //Complexity Score
-	teamKnowledgeScore: number, //Team Knowledge Score
-	longevityScore: number, //Longevity Score
-	oldestActivation: number,
-	medianScore: number,
-	impactScore: number,
-	strategiesCount: number,
-	criteria: {
-		nameLike: string[],
-		strategies: string[],
-		exclude: string[]
-	},
-	strategies: TStrategy[]
-}
-const	GroupBox = React.memo(function GroupBox({group}: {group: TGroup}): ReactElement {
+const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): ReactElement {
 	function	renderSummary(p: {open: boolean}): ReactElement {
 		return (
 			<div className={`grid relative py-4 px-6 w-[965px] h-20 rounded-lg md:w-full grid-cols-22 bg-surface transition-colors ${p.open ? '' : 'hover:bg-surface-variant'}`}>
 				<div className={'flex flex-row col-span-6 items-center min-w-32'}>
 					<div className={'text-typo-secondary'}>
-						<div className={'flex flex-row items-center'}>
+						<div className={'flex-row-center'}>
 							<div>
-								<b className={'text-base text-typo-primary'}>{group.label}</b>
+								<b>{group.label}</b>
 								<p className={'text-xs text-typo-secondary'}>
 									{group.strategiesCount > 1 ? `${group.strategiesCount} strats` : `${group.strategiesCount} strat`}
 								</p>
@@ -138,7 +112,7 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TGroup}): ReactEl
 					value={group.testingScore} />
 			</StatisticCard.Wrapper>
 			<div className={'mt-10'}>
-				<b className={'mb-1 ml-2 text-base text-typo-primary'}>{'Attached Strategies'}</b>
+				<b className={'mb-1 ml-2'}>{'Attached Strategies'}</b>
 				{
 					group.strategies
 						.sort((a, b): number => (a.index || 0) - (b.index || 0))
@@ -159,10 +133,10 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TGroup}): ReactEl
 
 type		TSectionRiskList = {
 	sortBy: string,
-	groups: TGroup[],
+	groups: TRiskGroup[],
 };
 const	SectionRiskList = React.memo(function SectionRiskList({sortBy, groups}: TSectionRiskList): ReactElement {
-	const	[sortedGroups, set_sortedGroups] = React.useState([] as (TGroup)[]);
+	const	[sortedGroups, set_sortedGroups] = React.useState([] as (TRiskGroup)[]);
 	
 	React.useEffect((): void => {
 		if (['risk', '-risk', ''].includes(sortBy)) {

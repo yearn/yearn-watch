@@ -1,10 +1,43 @@
 import {BigNumber} from 'ethers';
 import {utils} from '@majorfi/web-lib';
 
+export type TRowHead = {
+	sortBy: string,
+	set_sortBy: React.Dispatch<React.SetStateAction<string>>
+};
+
+export type	TAlertLevels = 'none' | 'info' | 'warning' | 'error' | 'critical';
 export type TAlert = {
-	level: 'warning' | 'error' | 'critical',
+	level: TAlertLevels,
 	message: string
 }
+
+export type TRiskGroup = {
+	id: string,
+	network: number,
+	label: string,
+	totalDebtRatio: number,
+	tvl: number, //TVL Impact
+	tvlImpact: number, //TVL Score
+	auditScore: number, //Audit Score
+	codeReviewScore: number, //Code Review Score
+	testingScore: number, //Testing Score
+	protocolSafetyScore: number, //Protocol Safety Score
+	complexityScore: number, //Complexity Score
+	teamKnowledgeScore: number, //Team Knowledge Score
+	longevityScore: number, //Longevity Score
+	oldestActivation: number,
+	medianScore: number,
+	impactScore: number,
+	strategiesCount: number,
+	criteria: {
+		nameLike: string[],
+		strategies: string[],
+		exclude: string[]
+	},
+	strategies: TStrategy[]
+}
+
 export type TStrategyReport = {
 	id: string;
 	timestamp: string,

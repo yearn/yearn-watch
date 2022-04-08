@@ -63,13 +63,13 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 	function	renderTableHead(): ReactElement {
 		return (
 			<div className={'flex flex-row justify-between items-center px-6 pb-2 w-max'}>
-				<div className={'flex flex-row items-start w-[300px]'}>
+				<div className={'w-[300px] flex-row-start'}>
 					<p className={'text-typo-secondary'}>{'Vault'}</p>
 				</div>
-				<div className={'flex flex-row items-start w-[300px]'}>
+				<div className={'w-[300px] flex-row-start'}>
 					<p className={'text-typo-secondary'}>{'Strategy'}</p>
 				</div>
-				<div className={'flex flex-row items-center w-[125px] whitespace-nowrap'}>
+				<div className={'w-[125px] whitespace-nowrap flex-row-center'}>
 					<p className={'text-typo-secondary'}>{'Level'}</p>
 					<ArrowDown
 						onClick={(): void => set_sortBy(sortBy === 'level' ? '-level' : sortBy === '-level' ? '' : 'level')}
@@ -117,7 +117,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 			stratOrVault = stratOrVault as TStrategy;
 			return (
 				<div className={'flex relative flex-col justify-between items-center w-full md:flex-row md:w-max'}>
-					<div className={'flex flex-row items-start w-full md:w-[300px]'}>
+					<div className={'w-full md:w-[300px] flex-row-start'}>
 						{stratOrVault.vault?.icon ? <Image
 							alt={`token ${stratOrVault.vault?.name}`}
 							decoding={'async'}
@@ -126,7 +126,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 							src={stratOrVault.vault?.icon}
 							quality={70} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
 						<div className={'ml-2 md:ml-6'}>
-							<b className={'text-base text-typo-primary'}>{stratOrVault.vault?.name}</b>
+							<b>{stratOrVault.vault?.name}</b>
 							<AddressWithActions
 								address={stratOrVault.vault.address}
 								explorer={stratOrVault.vault.explorer}
@@ -134,10 +134,10 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 								className={'font-mono text-xs text-typo-secondary'} />
 						</div>
 					</div>
-					<div className={'flex flex-row items-start my-4 w-full md:my-0 md:w-[300px]'}>
+					<div className={'my-4 w-full md:my-0 md:w-[300px] flex-row-start'}>
 						<div className={'flex mr-2 w-10 md:hidden'}/>
 						<div>
-							<b className={'text-base text-typo-primary'}>{stratOrVault.display_name}</b>
+							<b>{stratOrVault.display_name}</b>
 							<AddressWithActions
 								address={stratOrVault.address}
 								explorer={stratOrVault.vault.explorer}
@@ -152,7 +152,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 			stratOrVault = stratOrVault as TVault;
 			return (
 				<div className={'flex relative flex-col justify-between items-center w-full md:flex-row md:w-max'}>
-					<div className={'flex flex-row items-start w-full md:w-[300px]'}>
+					<div className={'w-full md:w-[300px] flex-row-start'}>
 						{stratOrVault.icon ? <Image
 							alt={`token ${stratOrVault.name}`}
 							decoding={'async'}
@@ -161,7 +161,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 							src={stratOrVault.icon}
 							quality={70} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
 						<div className={'ml-2 md:ml-6'}>
-							<b className={'text-base text-typo-primary'}>{stratOrVault.name}</b>
+							<b>{stratOrVault.name}</b>
 							<AddressWithActions
 								address={stratOrVault.address}
 								explorer={stratOrVault.explorer}
@@ -171,7 +171,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 					</div>
 					<div className={'hidden flex-row items-start w-full md:flex md:w-[300px]'}>
 						<div>
-							<b className={'text-base text-typo-primary'}>{'-'}</b>
+							<b>{'-'}</b>
 						</div>
 					</div>
 					{renderAlertLevel(stratOrVault)}

@@ -23,10 +23,10 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 		return <div />;
 	return (
 		<section aria-label={'reports-of-strategy'} className={'flex flex-col col-span-2 w-full'}>
-			<span className={'flex flex-row items-center mb-6 space-x-8 w-full'}>
-				<b className={'text-lg text-typo-primary'}>{'Last 10 reports'}</b>
-				<b className={'text-lg text-typo-primary'}>{`Average APR: ${format.amount(computeAverageAPR(currentStrategy?.reports || []))}%`}</b>
-				<b className={'text-lg text-typo-primary'}>{`Median APR: ${format.amount(computeMedianAPR(currentStrategy?.reports || []))}%`}</b>
+			<span className={'mb-6 space-x-8 w-full flex-row-center'}>
+				<b className={'text-lg'}>{'Last 10 reports'}</b>
+				<b className={'text-lg'}>{`Average APR: ${format.amount(computeAverageAPR(currentStrategy?.reports || []))}%`}</b>
+				<b className={'text-lg'}>{`Median APR: ${format.amount(computeMedianAPR(currentStrategy?.reports || []))}%`}</b>
 			</span>
 			<div className={'flex flex-col space-y-4'}>
 				{
@@ -43,7 +43,7 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 												<TxHashWithActions
 													txHash={report?.id.split('-')[0]}
 													explorer={currentVault.explorer}
-													className={'font-mono font-bold text-typo-primary'} />
+													className={'font-mono font-bold'} />
 												<p className={'block mt-2 text-typo-secondary'}>
 													{format.date(Number(report?.timestamp || 0))}
 												</p>

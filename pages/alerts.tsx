@@ -1,12 +1,15 @@
 import	React, {ReactElement}						from	'react';
 import	useWatch									from	'contexts/useWatch';
-import	{TVault, TStrategy}							from	'contexts/useWatch.d';
+import	{TVault, TStrategy, TAlertLevels}			from	'contexts/useWatch.d';
 import	{Card, SearchBox, Switch}					from	'@majorfi/web-lib/components';
-import	{AlertSelector, TAlertLevels}				from	'components/AlertSelector';
+import	{AlertSelector}								from	'components/AlertSelector';
 import	SectionAlertList							from	'components/sections/alerts/SectionAlertList';
 import	{findVaultBySearch, findStrategyBySearch}	from	'utils/filters';
 
-function	Index(): ReactElement {
+/* 🔵 - Yearn Finance **********************************************************
+** Main render of the Alerts page
+******************************************************************************/
+function	Alerts(): ReactElement {
 	const	{vaults} = useWatch();
 	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as (TStrategy | TVault)[]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
@@ -48,8 +51,8 @@ function	Index(): ReactElement {
 	** Main render of the page.
 	**************************************************************************/
 	return (
-		<div className={'flex flex-col w-full h-full'}>
-			<div className={'flex flex-col space-y-4 w-full h-full'}>
+		<div className={'flex-col-full'}>
+			<div className={'space-y-4 flex-col-full'}>
 				<div className={'flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
 					<div className={'flex flex-col mt-2 w-full md:mt-0'}>
 						<SearchBox
@@ -59,7 +62,7 @@ function	Index(): ReactElement {
 					<div className={'flex flex-row justify-between items-center space-x-2 md:justify-start md:space-x-4'}>
 						<div>
 							<Card isNarrow>
-								<label className={'flex flex-row justify-between p-2 space-x-2 w-full cursor-pointer md:p-0 md:space-x-6 md:w-max'}>
+								<label className={'component--switchCard-wrapper'}>
 									<p className={'text-sm md:text-base text-typo-secondary'}>{'Dismissed'}</p>
 									<Switch isEnabled={shouldDisplayDismissed} set_isEnabled={set_shouldDisplayDismissed} />
 								</label>
@@ -72,7 +75,7 @@ function	Index(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex flex-col w-full h-full'}>
+				<div className={'flex-col-full'}>
 					<SectionAlertList
 						shouldDisplayDismissed={shouldDisplayDismissed}
 						stratOrVault={filteredStrategies} />
@@ -82,4 +85,4 @@ function	Index(): ReactElement {
 	);
 }
 
-export default Index;
+export default Alerts;

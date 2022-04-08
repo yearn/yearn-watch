@@ -1,16 +1,17 @@
 import	React, {ReactElement} 					from	'react';
 import	useWatch								from	'contexts/useWatch';
-import	{TStrategy}								from	'contexts/useWatch.d';
+import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
 import	{Card, AlertBanner, Switch, SearchBox}	from	'@majorfi/web-lib/components';
 import	* as utils								from	'@majorfi/web-lib/utils';
 import	{deepFindVaultBySearch}					from	'utils/filters';
 import	SectionHealthcheckList					from	'components/sections/healthcheck/SectionHealthcheckList';
 import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
 
-type		TRowHead = {
-	sortBy: string,
-	set_sortBy: React.Dispatch<React.SetStateAction<string>>
-};
+/* 🔵 - Yearn Finance **********************************************************
+** This will render the head of the fake table we have, with the sortable
+** elements. This component asks for sortBy and set_sortBy in order to handle
+** the chevron displays and to set the sort based on the user's choice.
+******************************************************************************/
 function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 	return (
 		<TableHead sortBy={sortBy} set_sortBy={set_sortBy}>
@@ -33,7 +34,10 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 	);
 }
 
-function	Index(): ReactElement {
+/* 🔵 - Yearn Finance **********************************************************
+** Main render of the Healthcheck page
+******************************************************************************/
+function	Healthcheck(): ReactElement {
 	const	{vaults} = useWatch();
 	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as TStrategy[]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
@@ -44,6 +48,11 @@ function	Index(): ReactElement {
 	** This effect is triggered every time the vault list or the search term is
 	** changed. It filters the vault list based on the search term. This action
 	** takes into account the strategies too.
+	** Displayed strategies will be the one matching one of the following
+	** conditions:
+	** - ShouldDoHealthCheck is false
+	** - Healtchecker address is invalid
+	** - TVL is not 0 (can be forced with the isOnlyWithTVL variable)
 	**************************************************************************/
 	React.useEffect((): void => {
 		const	_vaults = vaults;
@@ -69,9 +78,9 @@ function	Index(): ReactElement {
 	** Main render of the page.
 	**************************************************************************/
 	return (
-		<div className={'flex flex-col w-full h-full'}>
+		<div className={'flex-col-full'}>
 			<div>
-				<AlertBanner title={'Alerts and warnings'} level={'info'} maxHeight={'max-h-[600px] md:max-h-[300px]'}>
+				<AlertBanner id={'healthchecks'} title={'Healthchecks'} level={'info'} maxHeight={'max-h-[600px] md:max-h-[300px]'}>
 					<div>
 						<p>{'The healthchecks have been added since v0.4.2 for the Yearn\'s strategies in order to ensure that they are working properly. The healthchecks are automatically triggered on harvest if the doHealthCheck parameter is enabled, and if a valid address for this check is set. The strategies missing one of theses parameters will be displayed bellow.'}</p>
 						<p className={'block mt-4'}>{'Based on the Total Value Locked (TVL) in the strategy, a Risk score, from 5 (most risky) to 1 (least risky), is computed.'}</p>
@@ -83,14 +92,14 @@ function	Index(): ReactElement {
 					<SearchBox
 						searchTerm={searchTerm}
 						onChange={set_searchTerm} />
-					<div className={'flex flex-row items-center'}>
+					<div className={'flex-row-center'}>
 						<p className={'text-xs text-typo-secondary'}>{`Strategies Found: ${filteredStrategies.length}`}</p>
 					</div>
 				</div>
 				<div>
 					<Card isNarrow>
-						<label className={'flex flex-row justify-between p-2 space-x-6 w-full cursor-pointer md:p-0 md:w-max'}>
-							<p className={'text-typo-primary'}>{'Hide vaults with no TVL'}</p>
+						<label className={'component--switchCard-wrapper'}>
+							<p>{'Hide vaults with no TVL'}</p>
 							<Switch isEnabled={isOnlyWithTvl} set_isEnabled={set_isOnlyWithTvl} />
 						</label>
 					</Card>
@@ -107,4 +116,4 @@ function	Index(): ReactElement {
 	);
 }
 
-export default Index;
+export default Healthcheck;

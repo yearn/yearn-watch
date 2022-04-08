@@ -65,7 +65,7 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 				<div className={'grid relative py-4 px-6 mb-2 w-[965px] h-20 rounded-lg md:w-full grid-cols-22 bg-surface'}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
-							<div className={'flex flex-row items-center'}>
+							<div className={'flex-row-center'}>
 								<Image
 									alt={`token ${strategy?.vault.name}`}
 									decoding={'async'}
@@ -74,7 +74,7 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 									src={strategy.vault?.icon || ''}
 									quality={10} />
 								<div className={'ml-2 md:ml-6'}>
-									<b className={'text-base text-ellipsis line-clamp-1 text-typo-primary'}>{`${strategy.display_name || strategy.name}`}</b>
+									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.display_name || strategy.name}`}</b>
 									<AddressWithActions
 										address={strategy.address}
 										explorer={strategy.vault.explorer}

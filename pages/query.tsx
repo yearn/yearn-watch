@@ -1,17 +1,18 @@
 import	React, {ReactElement}			from	'react';
 import	{GetServerSideProps}			from	'next';
-import	useWatch						from	'contexts/useWatch';
-import	{TStrategy}						from	'contexts/useWatch.d';
 import	{useRouter}						from	'next/router';
 import	{SearchBox}						from	'@majorfi/web-lib/components';
 import	{findStrategyBySearch}			from	'utils/filters';
+import	useWatch						from	'contexts/useWatch';
+import	{TStrategy, TRowHead}			from	'contexts/useWatch.d';
 import	SectionQueryList				from	'components/sections/query/SectionQueryList';
 import	{TableHead, TableHeadCell}		from	'components/TableHeadCell';
 
-type		TRowHead = {
-	sortBy: string,
-	set_sortBy: React.Dispatch<React.SetStateAction<string>>
-};
+/* 🔵 - Yearn Finance **********************************************************
+** This will render the head of the fake table we have, with the sortable
+** elements. This component asks for sortBy and set_sortBy in order to handle
+** the chevron displays and to set the sort based on the user's choice.
+******************************************************************************/
 function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 	return (
 		<TableHead sortBy={sortBy} set_sortBy={set_sortBy}>
@@ -34,7 +35,10 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 	);
 }
 
-function	Index(): ReactElement {
+/* 🔵 - Yearn Finance **********************************************************
+** Main render of the Query page
+******************************************************************************/
+function	Query(): ReactElement {
 	const	router = useRouter();
 	const	{vaults} = useWatch();
 	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as (TStrategy)[]);
@@ -71,14 +75,14 @@ function	Index(): ReactElement {
 	** Main render of the page.
 	**************************************************************************/
 	return (
-		<div className={'flex flex-col w-full h-full'}>
-			<div className={'flex flex-col space-y-4 w-full h-full'}>
+		<div className={'flex-col-full'}>
+			<div className={'space-y-4 flex-col-full'}>
 				<div className={'flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
 					<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
 						<SearchBox
 							searchTerm={searchTerm}
 							onChange={set_searchTerm} />
-						<div className={'flex flex-row items-center'}>
+						<div className={'flex-row-center'}>
 							<p className={'text-xs text-typo-secondary'}>{`Elements Found: ${filteredStrategies.length}`}</p>
 						</div>
 					</div>
@@ -95,7 +99,7 @@ function	Index(): ReactElement {
 	);
 }
 
-export default Index;
+export default Query;
 
 // Used to directly fetch the query params
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

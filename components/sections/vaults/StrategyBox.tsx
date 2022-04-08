@@ -8,9 +8,9 @@ type 		TStrategyBox = {strategy: TStrategy, symbol: string, decimals: number, va
 function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: TStrategyBox): ReactElement {
 	return (
 		<Card variant={'background'} className={'mb-4'}>
-			<div className={'flex flex-row justify-between items-start md:items-center'}>
+			<div className={'justify-between md:items-center flex-row-start'}>
 				<div>
-					<b className={'mb-2 text-base text-typo-primary'}>{strategy.name}</b>
+					<b className={'mb-2'}>{strategy.name}</b>
 					<p className={'text-xs text-typo-secondary'}>
 						{`Last report: ${strategy?.lastReport ? utils.format.since(Number(strategy.lastReport) * 1000) : 'never'}`}
 					</p>
@@ -21,7 +21,7 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 						wrapperClassName={'flex md:hidden mt-2'}
 						className={'font-mono text-sm text-typo-secondary'} />
 				</div>
-				<div className={'flex flex-row items-center'}>
+				<div className={'flex-row-center'}>
 					<AddressWithActions
 						address={strategy.address}
 						explorer={vaultExplorer}
@@ -42,7 +42,7 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 			</div>
 			<div className={'my-6 w-full md:w-3/4'}>
 				<p
-					className={'text-sm text-typo-primary'}
+					className={'text-sm'}
 					dangerouslySetInnerHTML={{__html: utils.parseMarkdown((strategy?.description || '').replace(/{{token}}/g, symbol) || '')}} />
 			</div>
 			<StatisticCard.Wrapper>

@@ -27,10 +27,18 @@ const	WatchContext = React.createContext<useWatchTypes.TWatchContext>({
 	update: (): void => undefined
 });
 
+
+/* 🔵 - Yearn Finance **********************************************************
+** The watch context controls the different element responsible of making the
+** data available for the app to use. This include fetching the vaults and
+** strategies data directly from here and serving them to the whole app.
+** In order to offload some work for the main UI thread, by default, the data
+** fetching is performed by the serverless function through the following req:
+** GET `/api/getVaults?chainID=${chainID}`
+******************************************************************************/
 export const WatchContextApp: React.FC = ({children}): ReactElement => {
 	const	{chainID} = useWeb3();
 	const	{shouldUseRemoteFetch, rpcURI, subGraphURI} = useSettings();
-
 	const	[vaults, set_vaults] = useLocalStorage('vaults', []);
 	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {});
 	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0);
