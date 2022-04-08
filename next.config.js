@@ -43,8 +43,8 @@ module.exports = ({
 		},
 		RPC_URL: {
 			1: process.env.RPC_URL_MAINNET,
-			250: 'https://rpc.ftm.tools',
-			42161: 'https://arbitrum.public-rpc.com'
+			250: process.env.RPC_URL_FANTOM || 'https://rpc.ftm.tools',
+			42161: process.env.RPC_URL_ARBITRUM || 'https://arbitrum.public-rpc.com'
 		}
 	}
 });
