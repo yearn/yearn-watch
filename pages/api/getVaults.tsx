@@ -12,7 +12,7 @@ import	* as utils							from	'@majorfi/web-lib/utils';
 import	{getTvlImpact}						from	'utils';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const	HAS_PRIORITY_TO_GRAPH = true;
+const	HAS_PRIORITY_TO_GRAPH = false;
 const	MINUTES = 60 * 1000;
 const	ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
 const	FTM_ORACLE_CONTRACT_ADDRESS = '0x57aa88a0810dfe3f9b71a9b179dd8bf5f956c46a';

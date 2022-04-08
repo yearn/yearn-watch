@@ -592,7 +592,7 @@
 		}
 	},
 	{
-        "id": "Stargate",
+        "id": "stargate",
         "network": 1,
         "label": "Stargate",
         "codeReviewScore": 3,
@@ -999,7 +999,7 @@
 		}
 	},
 	{
-        "id": "Stargate",
+        "id": "stargate_fantom",
         "network": 1,
         "label": "Stargate",
         "codeReviewScore": 3,
@@ -1080,7 +1080,7 @@
 		}
 	},
 	{
-        "id": "Stargate",
+        "id": "stargate_arbitrum",
         "network": 42161,
         "label": "Stargate",
         "codeReviewScore": 3,
