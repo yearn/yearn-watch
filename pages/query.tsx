@@ -70,7 +70,7 @@ function	Query(): ReactElement {
 				}
 				if (includeStrategies.some((include): boolean => findStrategyBySearch(strategy, include))) {
 					_filteredStrategies.push(strategy);
-				} else if (findStrategyBySearch(strategy, searchTerm)) {
+				} else if (searchTerm !== '' && findStrategyBySearch(strategy, searchTerm)) {
 					_filteredStrategies.push(strategy);
 				}
 			}

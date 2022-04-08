@@ -61,7 +61,7 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 	** useless and heavy calls, and a loading bar is triggering when the
 	** process is starting.
 	**************************************************************************/
-	async function fetchVaults(shouldRevalidate = false): Promise<void> {
+	async function fetchVaults(chainID = 1, shouldRevalidate = false): Promise<void> {
 		if (getVaultIsRunning.current) {
 			return;
 		}
@@ -130,9 +130,9 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 	}
 
 	React.useEffect((): void => {
-		fetchVaults();
+		fetchVaults(chainID);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [chainID]);
 
 	return (
 		<WatchContext.Provider
@@ -142,7 +142,7 @@ export const WatchContextApp: React.FC = ({children}): ReactElement => {
 				isUpdating,
 				network: networkSync,
 				update: (): void => {
-					fetchVaults(true);
+					fetchVaults(chainID, true);
 				}
 			}}>
 			{children}

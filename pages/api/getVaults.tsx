@@ -7,7 +7,7 @@ import	{createHash}						from	'crypto';
 import	VAULT_ABI							from	'utils/abi/vaults.abi';
 import	STRATEGY_ABI						from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI					from	'utils/abi/priceOracle.abi';
-import	{TVault, TStrategyReport}			from	'contexts/useWatch.d';
+import	{TVault, TStrategyReport, TGraphVault}			from	'contexts/useWatch.d';
 import	* as utils							from	'@majorfi/web-lib/utils';
 import	{getTvlImpact}						from	'utils';
 
@@ -26,6 +26,8 @@ const	GRAPH_REQUEST= `{
 	vaults(first: 1000) {
 		id
 		balanceTokens
+		balanceTokensIdle
+        balanceTokensInvested
 		tokensDepositLimit
 		managementFeeBps
 		performanceFeeBps
@@ -82,9 +84,9 @@ function	givePriorityToAPI(_vaultsInitials: any[], shouldExcludeMigrated: boolea
 
 	//Remove migrated vaults is we should
 	if (shouldExcludeMigrated) {
-		_vaults = _vaultsInitials.filter((v: {migration?: {available: boolean}}): boolean => v.migration === null || !(v.migration?.available ?? true));
+		_vaults = (_vaults as any).filter((v: {migration?: {available: boolean}}): boolean => v.migration === null || !(v.migration?.available ?? true));
 	} else {
-		_vaults = _vaultsInitials.filter((v: {migration?: {available: boolean}}): boolean => v.migration === undefined || !v?.migration?.available);
+		_vaults = (_vaults as any).filter((v: {migration?: {available: boolean}}): boolean => v.migration === undefined || !v?.migration?.available);
 	}
 	return _vaults;
 }
@@ -94,24 +96,51 @@ function	givePriorityToAPI(_vaultsInitials: any[], shouldExcludeMigrated: boolea
 ** more data than the API, but some may be irrelevant now (strategy and 
 ** vaults no longer in production for example).
 **************************************************************************/
-function	givePriorityToGraph(vaults: TVault[], _vaultsInitials: any[]): TVault[] {
-	const _vaults: TVault[] = vaults.map((e: TVault): TVault => e);
-	for (const vault of _vaults) {
+function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chainID: number): TVault[] {
+	let _vaults: TVault[] = [];
+	for (const vault of vaults) {
 		const	vaultFromAPI = _vaultsInitials.find((v: TVault): boolean => utils.toAddress(v.address) === utils.toAddress(vault.id));
-		if (vaultFromAPI) {
-			vault.display_name = vaultFromAPI.display_name;
-			vault.icon = vaultFromAPI.icon;
-			vault.emergency_shutdown = vaultFromAPI.emergency_shutdown;
-			vault.tvl = vaultFromAPI.tvl;
-			vault.apy = vaultFromAPI.apy;
+		const	_vault: TVault = {
+			name: vault.shareToken.name,
+			display_name: vaultFromAPI?.display_name || '',
+			symbol: vault.shareToken.symbol,
+			decimals: Number(vault.shareToken.decimals),
+			icon: vaultFromAPI?.icon || '',
+			version: vault.apiVersion || '0',
+			explorer: utils.chains[(chainID || '1') as keyof typeof utils.chains].block_explorer,
+			alertHash: '',
+			tokenPriceUSDC: 0,
+			inception: Number(vault.activation),
+			emergency_shutdown: vaultFromAPI?.emergency_shutdown || false,
+			isHidden: false,
+			address: utils.toAddress(vault.id),
+			guardian: utils.toAddress(0),
+			management: utils.toAddress(0),
+			governance: utils.toAddress(0),
+			rewards: utils.toAddress(0),
+			balanceTokens: utils.toAddress(vault.balanceTokens),
+			managementFeeBps: utils.toAddress(vault.managementFeeBps),
+			performanceFeeBps: utils.toAddress(vault.performanceFeeBps),
+			tokensDepositLimit: ethers.BigNumber.from(vault.tokensDepositLimit),
+			totalSupply: ethers.BigNumber.from(0),
+			depositLimit: ethers.BigNumber.from(0),
+			availableDepositLimit: ethers.BigNumber.from(0),
+			alerts: [],
+			token: {
+				name: vault.token.name,
+				symbol: vault.token.symbol,
+				address: utils.toAddress(vault?.token?.id),
+				decimals: Number(vault.token.decimals || 18),
+				display_name: '',
+				icon: ''
+			},
+			strategies: []
+		};
+		if (Number(vault.balanceTokensIdle) > 0 || Number(vault.balanceTokensInvested) > 0) {
+			_vaults.push(_vault as TVault);
 		}
-		vault.address = vault.id || utils.toAddress(0);
-		vault.version = vault.apiVersion || '0';
-		vault.token.address = vault.token.id || utils.toAddress(0);
-		vault.symbol = vault?.shareToken?.symbol || '';
-		vault.inception = vault?.activation || 0;
-		vault.decimals = vault?.shareToken?.decimals || 18;
 	}
+	_vaults = _vaults.filter((v): boolean => Number(v.version.replace('.', '')) >= 2);
 	return _vaults;
 }
 
@@ -143,7 +172,6 @@ export async function getVaults(
 		yearnApi: 1,
 		yearnMeta: 1
 	};
-	chainID = 250;
 	let	rpcProvider = utils.providers.getProvider(chainID || 1);
 	if (isLocal && providedProvider) {
 		rpcProvider = new ethers.providers.JsonRpcProvider(providedProvider);
@@ -226,8 +254,10 @@ export async function getVaults(
 	if (!HAS_PRIORITY_TO_GRAPH) {
 		_vaults = givePriorityToAPI(_vaultsInitials, true);
 	} else {
-		_vaults = givePriorityToGraph(_graph.vaults, _vaultsInitials);
+		_vaults = givePriorityToGraph(_graph.vaults as TGraphVault[], _vaultsInitials, chainID);
 	}
+	_vaults = _vaults.slice(0, 200);
+	console.log(_vaults.length);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Prepare and execute a multicall to get some missing data. Right now,
@@ -285,7 +315,7 @@ export async function getVaults(
 	** strategies.
 	**************************************************************************/
 	let	rIndex = 0;
-	const	vaultsDetails = _graph?.vaults || [];
+	const	vaultsDetails = _graph.vaults || [] as TGraphVault[];
 	for (const vault of _vaults) {
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3;
 		const	vaultDetails = vaultsDetails.find((detail: {id: string}): boolean => utils.toAddress(detail.id) === utils.toAddress(vault.address));
@@ -304,7 +334,12 @@ export async function getVaults(
 		vault.governance = utils.toAddress(callResult[rIndex++] as string);
 		vault.rewards = utils.toAddress(callResult[rIndex++] as string);
 		vault.availableDepositLimit = BigNumber.from(callResult[rIndex++] || 0);
-		vault.depositLimit = BigNumber.from(callResult[rIndex++] || 0);
+
+		const	_depositLimit = BigNumber.from(callResult[rIndex++] || 0);
+		//Keep that for testing later. The graph is giving us a bad result, with deposit limit always = 0. Issue reported.
+		// console.log({graph: vault.tokensDepositLimit.toString(), api: _depositLimit.toString()});
+
+		vault.depositLimit = _depositLimit;
 		vault.tokenPriceUSDC = Number(ethers.utils.formatUnits(BigNumber.from(callResult[rIndex++] || 0), 6));
 		if (utils.isZeroAddress(vault.guardian)) vault.alerts.push({level: 'warning', message: 'Guardian is not set'});
 		if (utils.isZeroAddress(vault.management)) vault.alerts.push({level: 'warning', message: 'Management is not set'});
@@ -322,11 +357,6 @@ export async function getVaults(
 		}
 		vault.alertHash = createHash('sha256').update(`${vault.address}_${JSON.stringify(vault.alerts)}`).digest('hex');
 
-		//Still for the vault, let's remove non-used data from the API
-		vault.apy = undefined;
-		vault.tvl = undefined;
-		vault.inception = undefined;
-
 
 		for (const strategy of vault.strategies) {
 			strategy.alerts = [];
@@ -342,7 +372,7 @@ export async function getVaults(
 			strategy.totalDebt = BigNumber.from(strategyData.totalDebt || 0);
 			strategy.totalGain = BigNumber.from(strategyData.totalGain || 0);
 			strategy.totalLoss = BigNumber.from(strategyData.totalLoss || 0);
-			strategy.expectedReturn = BigNumber.from(callResult[rIndex++]) || BigNumber.from(0);
+			strategy.expectedReturn = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
 			strategy.apiVersion = callResult[rIndex++] as string;
 			strategy.isEmergencyExit = callResult[rIndex++] as boolean;
 			strategy.estimatedTotalAssets = BigNumber.from(callResult[rIndex++] || 0);

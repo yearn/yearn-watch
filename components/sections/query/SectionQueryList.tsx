@@ -49,12 +49,10 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 	** converted to a human readable number.
 	**************************************************************************/
 	function	computeTotalDebt(totalDebtUSDC: number): string {
-		return (
-			utils.format.amount(
-				totalDebtUSDC / Number((sortedStrategies?.reduce((acc: number, strategy: TStrategy): number => acc + strategy.totalDebtUSDC, 0) || 0)) * 100,
-				2
-			)
-		);
+		const	acc = Number((sortedStrategies?.reduce((acc: number, strategy: TStrategy): number => acc + strategy.totalDebtUSDC, 0) || 0));
+		if (acc === 0)
+			return ('0');
+		return (utils.format.amount(totalDebtUSDC / acc * 100, 2));
 	}
 
 	function rowRenderer({key, index, style}: {key: string, index: number, style: {[key: string]: string}}): ReactElement {
@@ -74,7 +72,7 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 									src={strategy.vault.icon}
 									quality={10} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
 								<div className={'ml-2 md:ml-6'}>
-									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.display_name || strategy.name}`}</b>
+									<b className={'whitespace-pre-line break-words'}>{`${strategy.display_name || strategy.name}`}</b>
 									<AddressWithActions
 										address={strategy.address}
 										explorer={strategy.vault.explorer}

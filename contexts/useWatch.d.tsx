@@ -112,19 +112,16 @@ export type TStrategy = {
 }
 
 export type TVault = {
-	id?: string, //From subgraph = address
 	name: string, //From Yearn API or graph (shareToken.name)
 	display_name: string, //From Yearn API
 	symbol: string, //From Yearn API or graph (shareToken.symbol)
 	icon: string, //From Yearn API
 	version: string, //From Yearn API == apiVersion
-	apiVersion?: string, //Same but from Graph == version
 	type?: string, //From Yearn API
 	explorer: string, //from chainID (aka computed)
 	alertHash: string, //computed from app logic
 	tokenPriceUSDC: number, //From multicall
-	inception?: number, //From Yearn API == activation
-	activation?: number, //From Graph == inception
+	inception: number, //From Yearn API == activation
 	decimals: number, //From Yearn API
 	emergency_shutdown: boolean, //From Yearn API
 	isHidden: boolean,
@@ -142,7 +139,6 @@ export type TVault = {
 	availableDepositLimit: BigNumber, //From multicall
 	alerts: TAlert[],
 	token: {
-		id?: string, //From subgraph = address
 		name: string //From API & subgraph
 		symbol: string //From API & subgraph
 		address: utils.TAddress //From API, match subgraph ID
@@ -150,37 +146,56 @@ export type TVault = {
 		display_name: string //From API
 		icon: string //From API
 	},
-	shareToken?: { //From Graph
-		decimals: number //subgraph
-		id: string, //From subgraph = address
-		name: string //subgraph
-		symbol: string //subgraph
-	},
-	tvl?: { //From API
-		total_assets: number, //From API
-		price: number, //From API
-		tvl: number, //From API
-	},
-	apy?: { //From API
-		type: string, //From API
-		gross_apr: number | null, //From API
-		net_apy: number | null, //From API
-		fees: { //From API
-			performance: number | null, //From API
-			withdrawal: number | null, //From API
-			management: number | null, //From API
-			keep_crv: number | null, //From API
-			cvx_keep_crv: number | null //From API
-		},
-		points: { //From API
-			week_ago: number | null, //From API
-			month_ago: number | null, //From API
-			inception: number | null //From API
-		},
-		composite: number | null //From API
-	},
 	strategies: TStrategy[] //From API & subgraph & multicall
 }
+
+export type TGraphVault = {
+	id: string,
+	balanceTokens: string,
+	balanceTokensIdle: string,
+	balanceTokensInvested: string,
+	tokensDepositLimit: string,
+	managementFeeBps: string,
+	performanceFeeBps: string,
+	apiVersion: string,
+	activation: string,
+	shareToken: {
+		decimals: string,
+		id: string,
+		name: string,
+		symbol: string
+	},
+	token: {
+		decimals: string,
+		id: string,
+		name: string,
+		symbol: string
+	},
+	strategies: {
+		address: string,
+		name: string,
+		doHealthCheck: boolean,
+		healthCheck: string,
+		reports: [{
+			id: string;
+			timestamp: string,
+			totalDebt: string,
+			totalLoss: string,
+			totalGain: string,
+			debtLimit: string,
+			debtPaid: string,
+			debtAdded: string,
+			loss: string,
+			gain: string,
+			results: {
+				apr: string,
+				duration: string,
+				durationPr: string,				
+			}
+		}]
+	}[]
+}
+
 
 export type	TNetworkData = {
 	status: {
