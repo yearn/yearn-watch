@@ -62,7 +62,7 @@ function	Query(): ReactElement {
 		const	includeStrategies = (_routerIncludeArr as string[]).map((v): string => v.toLowerCase());
 		const	_filteredVaults = [..._vaults];
 
-		let		_filteredStrategies = [];
+		const		_filteredStrategies = [];
 		for (const vault of _filteredVaults) {
 			for (const strategy of vault.strategies) {
 				if (excludeStrategies.some((exclude): boolean => findStrategyBySearch(strategy, exclude))) {
@@ -70,11 +70,11 @@ function	Query(): ReactElement {
 				}
 				if (includeStrategies.some((include): boolean => findStrategyBySearch(strategy, include))) {
 					_filteredStrategies.push(strategy);
+				} else if (findStrategyBySearch(strategy, searchTerm)) {
+					_filteredStrategies.push(strategy);
 				}
 			}
 		}
-		_filteredStrategies = _filteredStrategies.filter((strategy): boolean => findStrategyBySearch(strategy, searchTerm));
-
 		set_filteredStrategies(_filteredStrategies);
 	}, [vaults, searchTerm, router.query]);
 
