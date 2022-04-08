@@ -24,7 +24,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 						quality={70}
 						className={'w-10 h-10'} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
 					<div className={'ml-2 md:ml-6'}>
-						<b>{vault.display_name}</b>
+						<b>{vault.display_name || vault.name}</b>
 						<p className={'text-xs text-typo-secondary'}>
 							{(vault.strategies).length > 1 ? `${(vault.strategies).length} strats` : `${(vault.strategies).length} strat`}
 						</p>
