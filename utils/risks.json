@@ -1000,7 +1000,7 @@
 	},
 	{
         "id": "stargate_fantom",
-        "network": 1,
+        "network": 250,
         "label": "Stargate",
         "codeReviewScore": 3,
         "testingScore": 4,
