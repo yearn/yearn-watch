@@ -37,9 +37,11 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 		const	_protocolsAllocation: {[key: string]: ethers.BigNumber} = {};
 		let		totalProtocolsAllocation = ethers.BigNumber.from(0);
 		for (const _strategy of _notEmpty) {
-			for (const _protocol of _strategy.protocols) {
-				_protocolsAllocation[_protocol] = (_protocolsAllocation[_protocol] || ethers.BigNumber.from(0)).add(ethers.BigNumber.from(_strategy.debtRatio));
-				totalProtocolsAllocation = totalProtocolsAllocation.add(ethers.BigNumber.from(_strategy.debtRatio));
+			if (_strategy?.protocols) {
+				for (const _protocol of _strategy.protocols) {
+					_protocolsAllocation[_protocol] = (_protocolsAllocation[_protocol] || ethers.BigNumber.from(0)).add(ethers.BigNumber.from(_strategy.debtRatio));
+					totalProtocolsAllocation = totalProtocolsAllocation.add(ethers.BigNumber.from(_strategy.debtRatio));
+				}
 			}
 		}
 

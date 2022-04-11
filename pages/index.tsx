@@ -1,4 +1,5 @@
 import	React, {ReactElement}			from	'react';
+import	{ethers}						from	'ethers';
 import	{List}							from	'@majorfi/web-lib/layouts';
 import	{Card, SearchBox, Switch}		from	'@majorfi/web-lib/components';
 import	* as utils						from	'@majorfi/web-lib/utils';
@@ -14,7 +15,7 @@ function	Index(): ReactElement {
 	const	[filteredVaults, set_filteredVaults] = React.useState(vaults);
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[isOnlyWarning, set_isOnlyWarning] = React.useState(false);
-	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0});
+	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0, notAllocated: 0});
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -30,8 +31,21 @@ function	Index(): ReactElement {
 		}
 		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
 		utils.performBatchedUpdates((): void => {
+			let	notAllocated = 0;
+			for (const vault of _filteredVaults) {
+				const reduceSum = vault.strategies.reduce((acc, _strategy): number => (
+					acc += Number(_strategy.totalDebtUSDC)
+				), 0);
+				const	totalAssetsUSDC = Number(utils.format.units((vault?.balanceTokens) || 0, vault?.decimals || 18)) * vault.tokenPriceUSDC;
+
+				notAllocated += (totalAssetsUSDC - reduceSum);
+			}
 			set_filteredVaults(_filteredVaults);
-			set_searchResult({vaults: _filteredVaults.length, strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault?.strategies?.length || 0), 0)});
+			set_searchResult({
+				vaults: _filteredVaults.length,
+				strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault?.strategies?.length || 0), 0),
+				notAllocated: notAllocated
+			});
 		});
 	}, [vaults, searchTerm, isOnlyWarning]);
 
@@ -47,7 +61,8 @@ function	Index(): ReactElement {
 						onChange={set_searchTerm} />
 					<div className={'flex-row-center'}>
 						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Vaults Found: ${searchResult.vaults}`}</p>
-						<p className={'text-xs text-typo-secondary'}>{`Strategies Found: ${searchResult.strategies}`}</p>
+						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Strategies Found: ${searchResult.strategies}`}</p>
+						<p className={'text-xs text-typo-secondary'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p>
 					</div>
 				</div>
 				<div>
