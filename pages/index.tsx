@@ -1,5 +1,4 @@
 import	React, {ReactElement}			from	'react';
-import	{ethers}						from	'ethers';
 import	{List}							from	'@majorfi/web-lib/layouts';
 import	{Card, SearchBox, Switch}		from	'@majorfi/web-lib/components';
 import	* as utils						from	'@majorfi/web-lib/utils';
