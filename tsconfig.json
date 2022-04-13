@@ -60,5 +60,5 @@
 	"next.config.js",
 	"theme.config.js",
 	".eslintrc.js"
-, "components/sections/healthcheck"  ]
+  ]
 }

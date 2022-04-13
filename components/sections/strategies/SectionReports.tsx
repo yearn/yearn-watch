@@ -37,6 +37,7 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 						.map((report): ReactElement => (
 							<Card.Detail
 								key={report.id}
+								variant={'background'}
 								isSticky={false}
 								summary={(p: unknown): ReactElement => (
 									<Card.Detail.Summary

@@ -65,9 +65,7 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): Rea
 	}
 
 	return (
-		<Card.Detail
-			variant={'surface'}
-			summary={(p: unknown): ReactElement => renderSummary(p as {open: boolean})}>
+		<Card.Detail summary={(p: unknown): ReactElement => renderSummary(p as {open: boolean})}>
 			<StatisticCard.Wrapper>
 				<StatisticCard
 					variant={'background'}

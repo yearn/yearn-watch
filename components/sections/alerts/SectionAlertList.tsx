@@ -217,7 +217,6 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 							<div key={stratOrVault.address}>
 								<Card.Detail
 									key={stratOrVault.address}
-									variant={'surface'}
 									isSticky={false}
 									summary={(p: unknown): ReactElement => (
 										<Card.Detail.Summary

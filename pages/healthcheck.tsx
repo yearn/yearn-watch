@@ -97,7 +97,7 @@ function	Healthcheck(): ReactElement {
 					</div>
 				</div>
 				<div>
-					<Card isNarrow>
+					<Card padding={'narrow'}>
 						<label className={'component--switchCard-wrapper'}>
 							<p>{'Hide vaults with no TVL'}</p>
 							<Switch isEnabled={isOnlyWithTvl} set_isEnabled={set_isOnlyWithTvl} />

@@ -61,7 +61,7 @@ function	Alerts(): ReactElement {
 					</div>
 					<div className={'flex flex-row justify-between items-center space-x-2 md:justify-start md:space-x-4'}>
 						<div>
-							<Card isNarrow>
+							<Card padding={'narrow'}>
 								<label className={'component--switchCard-wrapper'}>
 									<p className={'text-sm md:text-base text-typo-secondary'}>{'Dismissed'}</p>
 									<Switch isEnabled={shouldDisplayDismissed} set_isEnabled={set_shouldDisplayDismissed} />

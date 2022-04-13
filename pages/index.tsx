@@ -65,7 +65,7 @@ function	Index(): ReactElement {
 					</div>
 				</div>
 				<div>
-					<Card isNarrow>
+					<Card padding={'narrow'}>
 						<label className={'component--switchCard-wrapper'}>
 							<p>{'Only vaults with warnings'}</p>
 							<Switch isEnabled={isOnlyWarning} set_isEnabled={set_isOnlyWarning} />

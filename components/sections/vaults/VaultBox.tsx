@@ -81,7 +81,6 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 
 	return (
 		<Card.Detail
-			variant={'surface'}
 			summary={(p: unknown): ReactElement => (
 				<Card.Detail.Summary
 					startChildren={renderSummaryStart()}
