@@ -225,9 +225,27 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 											{...p} />
 									)}>
 									<div className={'space-y-2'}>
-										<AlertBox level={'critical'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'critical')} />
-										<AlertBox level={'error'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'error')} />
-										<AlertBox level={'warning'} alerts={stratOrVault.alerts.filter((a): unknown => a.level === 'warning')} />
+										<AlertBox
+											level={'critical'}
+											alerts={(
+												stratOrVault.alerts
+													.filter((a): unknown => a.level === 'critical')
+													.map((e): string => e.message)
+											)} />
+										<AlertBox
+											level={'error'}
+											alerts={(
+												stratOrVault.alerts
+													.filter((a): unknown => a.level === 'error')
+													.map((e): string => e.message)
+											)} />
+										<AlertBox
+											level={'warning'}
+											alerts={(
+												stratOrVault.alerts
+													.filter((a): unknown => a.level === 'warning')
+													.map((e): string => e.message)
+											)} />
 									</div>
 								</Card.Detail>
 							</div>
