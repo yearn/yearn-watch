@@ -1,5 +1,5 @@
 /* This will load Tailwindcss + all the overwrite from Yearn lib */
-@import '@majorfi/web-lib/dist/style.css';
+@import '@yearn/web-lib/dist/style.css';
 
 /* 🔵 - Yearn Finance ******************************************************
 ** Shorthand for some group of style used across the application

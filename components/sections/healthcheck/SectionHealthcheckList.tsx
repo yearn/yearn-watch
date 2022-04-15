@@ -3,9 +3,9 @@ import	Image							from	'next/image';
 import	Link							from	'next/link';
 import	{TStrategy}						from	'contexts/useWatch.d';
 import	{HumanizeRisk}					from	'components/HumanizedRisk';
-import	{List}							from	'@majorfi/web-lib/layouts';
-import	{AddressWithActions, Button}	from	'@majorfi/web-lib/components';
-import	* as utils						from	'@majorfi/web-lib/utils';
+import	{List}							from	'@yearn/web-lib/layouts';
+import	{AddressWithActions, Button}	from	'@yearn/web-lib/components';
+import	* as utils						from	'@yearn/web-lib/utils';
 
 type		TSectionHealthcheckList = {
 	sortBy: string,
@@ -61,7 +61,7 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 		const strategy = sortedStrategies[index];
 		return (
 			<div key={strategy.address}>
-				<div className={'grid relative py-4 px-6 mb-2 w-[965px] h-20 rounded-lg md:w-full grid-cols-22 bg-surface'}>
+				<div className={'grid relative grid-cols-22 py-4 px-6 mb-2 w-[965px] h-20 rounded-lg md:w-full bg-surface'}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex-row-center'}>

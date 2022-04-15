@@ -1,7 +1,7 @@
 import	React, {ReactElement}			from	'react';
-import	{List}							from	'@majorfi/web-lib/layouts';
-import	{Card, SearchBox, Switch}		from	'@majorfi/web-lib/components';
-import	* as utils						from	'@majorfi/web-lib/utils';
+import	{List}							from	'@yearn/web-lib/layouts';
+import	{Card, SearchBox, Switch}		from	'@yearn/web-lib/components';
+import	* as utils						from	'@yearn/web-lib/utils';
 import	useWatch						from	'contexts/useWatch';
 import	VaultBox						from	'components/sections/vaults/VaultBox';
 import	{deepFindVaultBySearch}			from	'utils/filters';
@@ -68,7 +68,7 @@ function	Index(): ReactElement {
 					<Card padding={'narrow'}>
 						<label className={'component--switchCard-wrapper'}>
 							<p>{'Only vaults with warnings'}</p>
-							<Switch isEnabled={isOnlyWarning} set_isEnabled={set_isOnlyWarning} />
+							<Switch isEnabled={isOnlyWarning} onSwitch={set_isOnlyWarning} />
 						</label>
 					</Card>
 				</div>

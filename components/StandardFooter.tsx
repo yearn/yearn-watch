@@ -1,6 +1,6 @@
 import	React, {ReactElement}		from	'react';
-import	{SwitchTheme}				from	'@majorfi/web-lib/components';
-import	{useUI}						from	'@majorfi/web-lib/contexts';
+import	{SwitchTheme}				from	'@yearn/web-lib/components';
+import	{useUI}						from	'@yearn/web-lib/contexts';
 
 function	Footer(): ReactElement {
 	const	{theme, switchTheme} = useUI();

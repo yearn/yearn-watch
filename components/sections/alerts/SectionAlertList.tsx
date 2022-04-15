@@ -1,10 +1,10 @@
 import	React, {MouseEvent, ReactElement}						from	'react';
 import	Image													from	'next/image';
 import	{TVault, TStrategy}										from	'contexts/useWatch.d';
-import	{List, Autosizer}										from	'@majorfi/web-lib/layouts';
-import	{Card, AddressWithActions, AlertBox, Button}			from	'@majorfi/web-lib/components';
-import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@majorfi/web-lib/icons';
-import	{useLocalStorage}										from	'@majorfi/web-lib/hooks';
+import	{List, Autosizer}										from	'@yearn/web-lib/layouts';
+import	{Card, AddressWithActions, AlertBox, Button}			from	'@yearn/web-lib/components';
+import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@yearn/web-lib/icons';
+import	{useLocalStorage}										from	'@yearn/web-lib/hooks';
 
 type	TSectionAlertList = {
 	stratOrVault: (TStrategy | TVault)[],

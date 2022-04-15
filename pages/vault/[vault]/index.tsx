@@ -5,7 +5,7 @@ import	{TVault}				from	'contexts/useWatch.d';
 import	SectionAbout			from	'components/sections/vaults/SectionAbout';
 import	SectionAllocations		from	'components/sections/vaults/SectionAllocations';
 import	SectionStrategies		from	'components/sections/vaults/SectionStrategies';
-import	{Card}					from	'@majorfi/web-lib/components';
+import	{Card}					from	'@yearn/web-lib/components';
 
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();

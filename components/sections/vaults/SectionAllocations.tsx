@@ -2,9 +2,9 @@ import	React, {ReactElement}			from	'react';
 import	{ethers}						from	'ethers';
 import	{Disclosure, Transition}		from	'@headlessui/react';
 import	{TVault, TStrategy}				from	'contexts/useWatch.d';
-import	{Chevron}						from	'@majorfi/web-lib/icons';
-import	{useClientEffect}				from	'@majorfi/web-lib/hooks';
-import	{format} 						from	'@majorfi/web-lib/utils';
+import	{Chevron}						from	'@yearn/web-lib/icons';
+import	{useClientEffect}				from	'@yearn/web-lib/hooks';
+import	{format} 						from	'@yearn/web-lib/utils';
 
 type	TSectionAllocations = {currentVault: TVault};
 const	SectionAllocations = React.memo(function SectionAllocations({currentVault}: TSectionAllocations): ReactElement {

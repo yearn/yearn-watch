@@ -1,5 +1,5 @@
 import	React, {ReactElement}	from	'react';
-import	{useLocalStorage}		from	'@majorfi/web-lib/hooks';
+import	{useLocalStorage}		from	'@yearn/web-lib/hooks';
 import	* as useSettingsTypes	from	'contexts/useSettings.d';
 
 const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({

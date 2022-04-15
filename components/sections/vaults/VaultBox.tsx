@@ -1,8 +1,8 @@
 import	React, {MouseEvent, ReactElement}	from	'react';
 import	Link								from	'next/link';
 import	Image								from	'next/image';
-import	{Card, AddressWithActions, Button}	from	'@majorfi/web-lib/components';
-import	{AlertWarning}						from	'@majorfi/web-lib/icons';
+import	{Card, AddressWithActions, Button}	from	'@yearn/web-lib/components';
+import	{AlertWarning}						from	'@yearn/web-lib/icons';
 import	{TVault}							from	'contexts/useWatch.d';
 import	StrategyBox							from	'components/sections/vaults/StrategyBox';
 import	ModalWarning						from	'components/ModalWarning';

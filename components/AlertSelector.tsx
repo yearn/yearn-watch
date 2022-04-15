@@ -1,5 +1,5 @@
 import	React, {ReactElement}						from	'react';
-import	{AlertWarning, AlertError, AlertCritical}	from	'@majorfi/web-lib/icons';
+import	{AlertWarning, AlertError, AlertCritical}	from	'@yearn/web-lib/icons';
 import	{TAlertLevels}								from	'contexts/useWatch.d';
 
 type		TAlertSelector = {
@@ -14,9 +14,9 @@ type		TAlertSelector = {
 ******************************************************************************/
 function	AlertSelector({selectedLevel, onSelect}: TAlertSelector): ReactElement {
 	const	defaultClassName = 'border-transparent bg-surface';
-	const	warningClassName = 'border-alert-warning-primary bg-alert-warning-secondary';
-	const	errorClassName = 'border-alert-error-primary bg-alert-error-secondary';
-	const	criticalClassName = 'border-alert-critical-primary bg-alert-critical-secondary';
+	const	warningClassName = 'border-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant';
+	const	errorClassName = 'border-alert-error-primary bg-alert-error-secondary hover:bg-alert-error-secondary-variant';
+	const	criticalClassName = 'border-alert-critical-primary bg-alert-critical-secondary hover:bg-alert-critical-secondary-variant';
 
 	return (
 		<div className={'component--alertSelector-wrapper'}>

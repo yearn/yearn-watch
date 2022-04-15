@@ -3,9 +3,9 @@ import	axios							from	'axios';
 import	NProgress						from	'nprogress';
 import	{ethers}						from	'ethers';
 import	* as useWatchTypes				from	'contexts/useWatch.d';
-import	{useWeb3}						from	'@majorfi/web-lib/contexts';
-import	{useLocalStorage}				from	'@majorfi/web-lib/hooks';
-import	* as utils						from	'@majorfi/web-lib/utils';
+import	{useWeb3}						from	'@yearn/web-lib/contexts';
+import	{useLocalStorage}				from	'@yearn/web-lib/hooks';
+import	* as utils						from	'@yearn/web-lib/utils';
 import	useSettings						from	'contexts/useSettings';
 import	{getVaults}						from	'pages/api/getVaults';
 

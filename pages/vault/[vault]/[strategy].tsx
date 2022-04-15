@@ -6,8 +6,8 @@ import	SectionStats				from	'components/sections/strategies/SectionStats';
 import	SectionAbout				from	'components/sections/strategies/SectionAbout';
 import	SectionHealthCheck			from	'components/sections/strategies/SectionHealthCheck';
 import	SectionReports				from	'components/sections/strategies/SectionReports';
-import	{Card}						from	'@majorfi/web-lib/components';
-import	* as utils					from	'@majorfi/web-lib/utils';
+import	{Card}						from	'@yearn/web-lib/components';
+import	* as utils					from	'@yearn/web-lib/utils';
 
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();

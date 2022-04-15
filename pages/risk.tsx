@@ -1,5 +1,5 @@
 import	React, {ReactElement} 		from	'react';
-import	{useWeb3}					from	'@majorfi/web-lib/contexts';
+import	{useWeb3}					from	'@yearn/web-lib/contexts';
 import	SectionRiskList				from	'components/sections/risk/SectionRiskList';
 import	SectionMatrix				from	'components/sections/risk/SectionMatrix';
 import	{TableHead, TableHeadCell}	from	'components/TableHeadCell';

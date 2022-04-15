@@ -1,7 +1,7 @@
 import	React, {ReactElement}						from	'react';
 import	useWatch									from	'contexts/useWatch';
 import	{TVault, TStrategy, TAlertLevels}			from	'contexts/useWatch.d';
-import	{Card, SearchBox, Switch}					from	'@majorfi/web-lib/components';
+import	{Card, SearchBox, Switch}					from	'@yearn/web-lib/components';
 import	{AlertSelector}								from	'components/AlertSelector';
 import	SectionAlertList							from	'components/sections/alerts/SectionAlertList';
 import	{findVaultBySearch, findStrategyBySearch}	from	'utils/filters';
@@ -64,7 +64,7 @@ function	Alerts(): ReactElement {
 							<Card padding={'narrow'}>
 								<label className={'component--switchCard-wrapper'}>
 									<p className={'text-sm md:text-base text-typo-secondary'}>{'Dismissed'}</p>
-									<Switch isEnabled={shouldDisplayDismissed} set_isEnabled={set_shouldDisplayDismissed} />
+									<Switch isEnabled={shouldDisplayDismissed} onSwitch={set_shouldDisplayDismissed} />
 								</label>
 							</Card>
 						</div>

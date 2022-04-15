@@ -1,5 +1,5 @@
 import {BigNumber} from 'ethers';
-import {utils} from '@majorfi/web-lib';
+import {utils} from '@yearn/web-lib';
 
 export type TRowHead = {
 	sortBy: string,

@@ -1,8 +1,8 @@
 import	React, {ReactElement}					from	'react';
 import	{BigNumber}								from	'ethers';
 import	{TVault, TStrategy}						from	'contexts/useWatch.d';
-import	{DescriptionList, AddressWithActions}	from	'@majorfi/web-lib/components';
-import	{format} 								from	'@majorfi/web-lib/utils';
+import	{DescriptionList, AddressWithActions}	from	'@yearn/web-lib/components';
+import	{format} 								from	'@yearn/web-lib/utils';
 
 type	TSectionAbout = {currentVault: TVault};
 const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAbout): ReactElement {

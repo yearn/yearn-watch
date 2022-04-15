@@ -1,5 +1,5 @@
 import	React, {ReactElement}		from	'react';
-import	{Card, Switch}				from	'@majorfi/web-lib/components';
+import	{Card, Switch}				from	'@yearn/web-lib/components';
 import	useSettings					from	'contexts/useSettings';
 import	SectionFormGraphURI			from	'components/sections/settings/SectionFormGraphURI';
 import	SectionFormRpcURI			from	'components/sections/settings/SectionFormRpcURI';
@@ -24,7 +24,7 @@ function	Settings(): ReactElement {
 					<div className={'w-full md:w-9/12'}>
 						<Switch
 							isEnabled={shouldUseRemoteFetch}
-							set_isEnabled={(): void => switchShouldUseRemoteFetch()} />
+							onSwitch={(): void => switchShouldUseRemoteFetch()} />
 					</div>
 				</div>
 			</Card>

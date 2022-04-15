@@ -1,7 +1,7 @@
 import	React, {ReactElement}	from	'react';
 import	{TVault, TStrategy}		from	'contexts/useWatch.d';
-import	{AddressWithActions} 	from	'@majorfi/web-lib/components';
-import	{parseMarkdown} 		from	'@majorfi/web-lib/utils';
+import	{AddressWithActions} 	from	'@yearn/web-lib/components';
+import	{parseMarkdown} 		from	'@yearn/web-lib/utils';
 
 type	TSectionAbout = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStrategy}: TSectionAbout): ReactElement {

@@ -7,17 +7,19 @@ import	useWatch, {WatchContextApp}	from	'contexts/useWatch';
 import	{SettingsContextApp}		from	'contexts/useSettings';
 import	Footer						from	'components/StandardFooter';
 import	HeaderTitle					from	'components/HeaderTitle';
-import	IconAlert					from	'components/icons/IconAlert';
 import	IconRisk					from	'components/icons/IconRisk';
-import	IconSettings				from	'components/icons/IconSettings';
-import	IconVault					from	'components/icons/IconVault';
 import	IconHealthcheck				from	'components/icons/IconHealthcheck';
 import	IconQuery					from	'components/icons/IconQuery';
 import	LogoWatch					from	'components/logo/LogoWatch';
-import	{WithYearn}					from	'@majorfi/web-lib';
-import	{Header, Navbar}			from	'@majorfi/web-lib/layouts';
-import	{useInterval}				from	'@majorfi/web-lib/hooks';
-import	* as utils					from	'@majorfi/web-lib/utils';
+import	{WithYearn}					from	'@yearn/web-lib';
+import	{Header, Navbar}			from	'@yearn/web-lib/layouts';
+import	{useInterval}				from	'@yearn/web-lib/hooks';
+import	* as utils					from	'@yearn/web-lib/utils';
+import	{
+	Vault as IconVault,
+	Settings as IconSettings,
+	AlertWarning as IconAlert
+}									from	'@yearn/web-lib/icons';
 
 import	'../style.css';
 

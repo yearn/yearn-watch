@@ -5,11 +5,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-		"@majorfi/web-lib/components": ["./node_modules/@majorfi/web-lib/dist/components/index.js"],
-		"@majorfi/web-lib/contexts": ["./node_modules/@majorfi/web-lib/dist/contexts/index.js"],
-		"@majorfi/web-lib/hooks": ["./node_modules/@majorfi/web-lib/dist/hooks/index.js"],
-		"@majorfi/web-lib/icons": ["./node_modules/@majorfi/web-lib/dist/icons/index.js"],
-		"@majorfi/web-lib/utils": ["./node_modules/@majorfi/web-lib/dist/utils/index.js"],
+		"@yearn/web-lib/components": ["./node_modules/@yearn/web-lib/dist/components/index.js"],
+		"@yearn/web-lib/contexts": ["./node_modules/@yearn/web-lib/dist/contexts/index.js"],
+		"@yearn/web-lib/hooks": ["./node_modules/@yearn/web-lib/dist/hooks/index.js"],
+		"@yearn/web-lib/icons": ["./node_modules/@yearn/web-lib/dist/icons/index.js"],
+		"@yearn/web-lib/utils": ["./node_modules/@yearn/web-lib/dist/utils/index.js"],
     },
     /* Basic Options */
     "target": "esnext",

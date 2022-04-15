@@ -1,8 +1,8 @@
 import	React, {ReactElement} 					from	'react';
 import	useWatch								from	'contexts/useWatch';
 import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
-import	{Card, AlertBanner, Switch, SearchBox}	from	'@majorfi/web-lib/components';
-import	* as utils								from	'@majorfi/web-lib/utils';
+import	{Card, AlertBanner, Switch, SearchBox}	from	'@yearn/web-lib/components';
+import	* as utils								from	'@yearn/web-lib/utils';
 import	{deepFindVaultBySearch}					from	'utils/filters';
 import	SectionHealthcheckList					from	'components/sections/healthcheck/SectionHealthcheckList';
 import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
@@ -100,7 +100,7 @@ function	Healthcheck(): ReactElement {
 					<Card padding={'narrow'}>
 						<label className={'component--switchCard-wrapper'}>
 							<p>{'Hide vaults with no TVL'}</p>
-							<Switch isEnabled={isOnlyWithTvl} set_isEnabled={set_isOnlyWithTvl} />
+							<Switch isEnabled={isOnlyWithTvl} onSwitch={set_isOnlyWithTvl} />
 						</label>
 					</Card>
 				</div>
