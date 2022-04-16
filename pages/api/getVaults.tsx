@@ -260,7 +260,6 @@ export async function getVaults(
 		_vaults = givePriorityToGraph(_graph.vaults as TGraphVault[], _vaultsInitials, chainID);
 	}
 	_vaults = _vaults.slice(0, 200);
-	console.log(_vaults.length);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Prepare and execute a multicall to get some missing data. Right now,

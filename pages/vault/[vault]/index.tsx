@@ -32,10 +32,20 @@ function	Index(): ReactElement {
 			return <div />;
 		}
 		return (
-			<>
+			<div className={'grid grid-cols-2 gap-x-4'}>
 				<SectionAbout currentVault={currentVault} />
 				<SectionAllocations currentVault={currentVault} />
-			</>
+			</div>
+		);
+	}
+	function	renderStrategyTab(): ReactElement {
+		if (!currentVault) {
+			return <div />;
+		}
+		return (
+			<div>
+				<SectionStrategies currentVault={currentVault} />
+			</div>
 		);
 	}
 	return (
@@ -43,7 +53,7 @@ function	Index(): ReactElement {
 			<Card.Tabs
 				tabs={[
 					{label: 'Details', children: renderDetailsTab()},
-					{label: 'Strategies', children: <SectionStrategies currentVault={currentVault} />}
+					{label: 'Strategies', children: renderStrategyTab()}
 				]}
 			/>
 		</div>

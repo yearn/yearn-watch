@@ -6,7 +6,9 @@ import	{parseMarkdown} 		from	'@yearn/web-lib/utils';
 type	TSectionAbout = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStrategy}: TSectionAbout): ReactElement {
 	return (
-		<section aria-label={'about-the-strategy'}  className={'col-span-1'}>
+		<section
+			aria-label={'about-the-strategy'}
+			className={'col-span-1'}>
 			<div className={'flex flex-col'}>
 				<h4 className={'mb-4'}>{'Vault'}</h4>
 				<div className={'mb-8'}>

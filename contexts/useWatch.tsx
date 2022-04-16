@@ -36,7 +36,7 @@ const	WatchContext = React.createContext<useWatchTypes.TWatchContext>({
 ** fetching is performed by the serverless function through the following req:
 ** GET `/api/getVaults?chainID=${chainID}`
 ******************************************************************************/
-export const WatchContextApp: React.FC = ({children}): ReactElement => {
+export const WatchContextApp = ({children}: {children: ReactElement}): ReactElement => {
 	const	{chainID} = useWeb3();
 	const	{shouldUseRemoteFetch, rpcURI, subGraphURI} = useSettings();
 	const	[vaults, set_vaults] = useLocalStorage('vaults', []);

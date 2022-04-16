@@ -177,10 +177,9 @@ const	SectionRiskList = React.memo(function SectionRiskList({sortBy, groups}: TS
 		}
 	}, [groups, sortBy]);
 
-
 	return (
 		<List.Animated className={'flex flex-col space-y-2 w-full'}>
-			{sortedGroups.map((group): ReactElement => <GroupBox key={group.id} group={group} />)}
+			{sortedGroups.map((group): ReactElement => <span key={group.id}><GroupBox group={group} /></span>)}
 		</List.Animated>
 	);
 });

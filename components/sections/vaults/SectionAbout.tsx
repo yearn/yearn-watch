@@ -60,7 +60,9 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	}
 
 	return (
-		<section aria-label={'about-vault'} className={'flex flex-col col-span-1'}>
+		<section
+			aria-label={'about-vault'}
+			className={'flex flex-col col-span-1'}>
 			<h4 className={'mb-4'}>{'About'}</h4>
 			<AddressWithActions
 				address={currentVault.address}

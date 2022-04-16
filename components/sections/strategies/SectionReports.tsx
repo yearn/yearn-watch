@@ -24,7 +24,9 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 	if (!currentStrategy)
 		return <div />;
 	return (
-		<section aria-label={'reports-of-strategy'} className={'flex flex-col col-span-2 w-full'}>
+		<section
+			aria-label={'reports-of-strategy'}
+			className={'flex flex-col w-full'}>
 			<span className={'mb-6 space-x-8 w-full flex-row-center'}>
 				<b className={'text-lg'}>{'Last 10 reports'}</b>
 				<b className={'text-lg'}>{`Average APR: ${format.amount(computeAverageAPR(currentStrategy?.reports || []))}%`}</b>

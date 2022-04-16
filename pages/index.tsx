@@ -5,13 +5,14 @@ import	* as utils						from	'@yearn/web-lib/utils';
 import	useWatch						from	'contexts/useWatch';
 import	VaultBox						from	'components/sections/vaults/VaultBox';
 import	{deepFindVaultBySearch}			from	'utils/filters';
+import {TVault} from 'contexts/useWatch.d';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** Main render of the home page
 ******************************************************************************/
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();
-	const	[filteredVaults, set_filteredVaults] = React.useState(vaults);
+	const	[filteredVaults, set_filteredVaults] = React.useState<TVault[]>([]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[isOnlyWarning, set_isOnlyWarning] = React.useState(false);
 	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0, notAllocated: 0});
@@ -73,13 +74,15 @@ function	Index(): ReactElement {
 					</Card>
 				</div>
 			</div>
-			<List.Animated className={'flex flex-col space-y-4 w-full'}>
-				{filteredVaults.map((vault): ReactElement => (
-					<div key={vault.address}>
-						<VaultBox vault={vault} />
-					</div>
-				))}
-			</List.Animated>
+			{filteredVaults ? (
+				<List.Animated className={'flex flex-col space-y-4 w-full'}>
+					{filteredVaults.map((vault): ReactElement => (
+						<div key={vault.address}>
+							<VaultBox vault={vault} />
+						</div>
+					))}
+				</List.Animated>
+			) : null}
 		</div>
 	);
 }

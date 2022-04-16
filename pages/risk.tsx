@@ -58,9 +58,10 @@ function	Risk(): ReactElement {
 	** filters.
 	**************************************************************************/
 	React.useEffect((): void => {
+		const	_chainID = chainID || 1;
 		const	_vaults = vaults;
 		const	_groups = [];
-		const	riskForNetworks = RISK.filter((r): boolean => r.network === chainID);
+		const	riskForNetworks = RISK.filter((r): boolean => r.network === _chainID);
 		let		_totalDebt = 0;
 
 		for (const group of riskForNetworks) {

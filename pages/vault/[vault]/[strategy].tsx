@@ -38,10 +38,28 @@ function	Index(): ReactElement {
 		if (!currentVault)
 			return <div />;
 		return (
-			<>
+			<div className={'grid grid-cols-2 gap-x-4'}>
 				<SectionStats currentVault={currentVault} currentStrategy={currentStrategy} />
 				<SectionAbout currentVault={currentVault} currentStrategy={currentStrategy} />
-			</>
+			</div>
+		);
+	}
+	function	renderSectionReport(): ReactElement {
+		if (!currentVault)
+			return <div />;
+		return (
+			<div>
+				<SectionReports currentVault={currentVault} currentStrategy={currentStrategy} />
+			</div>
+		);
+	}
+	function	renderSectionHealthcheck(): ReactElement {
+		if (!currentVault)
+			return <div />;
+		return (
+			<div>
+				<SectionHealthCheck currentVault={currentVault} currentStrategy={currentStrategy} />
+			</div>
 		);
 	}
 
@@ -50,8 +68,8 @@ function	Index(): ReactElement {
 			<Card.Tabs
 				tabs={[
 					{label: 'Details', children: renderDetailsTab()},
-					{label: 'Reports', children: <SectionReports currentVault={currentVault} currentStrategy={currentStrategy} />},
-					{label: 'Health Check', children: <SectionHealthCheck currentVault={currentVault} currentStrategy={currentStrategy} />}
+					{label: 'Reports', children: renderSectionReport()},
+					{label: 'Health Check', children: renderSectionHealthcheck()}
 				]}
 			/>
 		</div>

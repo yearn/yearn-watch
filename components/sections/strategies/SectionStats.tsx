@@ -10,7 +10,9 @@ const	SectionStats = React.memo(function SectionStats({currentVault, currentStra
 	}
 
 	return (
-		<section aria-label={'stats-of-the-strategy'} className={'flex flex-col col-span-1'}>
+		<section
+			aria-label={'stats-of-the-strategy'}
+			className={'flex flex-col col-span-1'}>
 			<h4 className={'mb-4'}>{'About'}</h4>
 			<AddressWithActions
 				address={currentStrategy.address}

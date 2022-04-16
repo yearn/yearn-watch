@@ -3,7 +3,7 @@ import	Link								from	'next/link';
 import	Image								from	'next/image';
 import	{Card, AddressWithActions, Button}	from	'@yearn/web-lib/components';
 import	{AlertWarning}						from	'@yearn/web-lib/icons';
-import	{TVault}							from	'contexts/useWatch.d';
+import	{TStrategy, TVault}							from	'contexts/useWatch.d';
 import	StrategyBox							from	'components/sections/vaults/StrategyBox';
 import	ModalWarning						from	'components/ModalWarning';
 
@@ -11,6 +11,12 @@ type 		TVaultBox = {vault: TVault}
 
 const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement {
 	const		[isOpen, set_isOpen] = React.useState(false);
+	const		[strategies, set_strategies] = React.useState<TStrategy[]>([]);
+
+	React.useEffect((): void => {
+		set_strategies(vault.strategies);
+	}, [vault.strategies]);
+
 	function	renderSummaryStart(): ReactElement {
 		return (
 			<div className={'justify-between w-full md:w-max flex-row-start'}>
@@ -88,7 +94,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					{...p} />
 			)}>
 			{
-				vault.strategies
+				strategies
 					.sort((a, b): number => (a.index || 0) - (b.index || 0))
 					.map((strategy, index: number): ReactElement => (
 						<StrategyBox

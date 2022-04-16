@@ -188,10 +188,10 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 		return (
 			<div className={'flex flex-row justify-start items-center w-full md:justify-end'}>
 				<div className={'text-sm font-medium text-right whitespace-nowrap sm:pr-6'}>
-					<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
+					<div>
 						<Button
 							variant={'outline'}
-							stopPropagation
+							shouldStopPropagation
 							onClick={(): void => onDismissOrTrack(stratOrVault.alertHash)}
 							className={'ml-0 min-w-[132px] md:ml-6'}>
 							{dismissed.includes(stratOrVault.alertHash) ? 'Track' : 'Dismiss'}
@@ -210,7 +210,9 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 			<div className={'hidden md:block'}>
 				{renderTableHead()}
 			</div>
-			<section aria-label={'strats-vaults-alerts-list'} className={'min-w-full h-full'}>
+			<section
+				aria-label={'strats-vaults-alerts-list'}
+				className={'min-w-full h-full'}>
 				<Autosizer>
 					<List.Animated className={'overflow-y-scroll space-y-2 h-full rounded-lg'}>
 						{sortedStratOrVault.map((stratOrVault): ReactElement => (

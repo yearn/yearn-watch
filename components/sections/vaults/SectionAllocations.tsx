@@ -64,7 +64,9 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 	}, [currentVault]);
 	
 	return (
-		<section aria-label={'vault-allocations'} className={'col-span-1'}>
+		<section
+			aria-label={'vault-allocations'}
+			className={'col-span-1'}>
 			<div className={'flex flex-col'}>
 				<h4 className={'mb-4'}>{'Protocols Allocation'}</h4>
 				<div className={'space-y-4'}>

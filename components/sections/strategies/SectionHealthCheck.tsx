@@ -12,7 +12,9 @@ const	SectionHealthCheck = React.memo(function SectionHealthCheck({currentVault,
 	}
 
 	return (
-		<section aria-label={'healthcheck-of-strategy'} className={'flex flex-col col-span-1 w-full'}>
+		<section
+			aria-label={'healthcheck-of-strategy'}
+			className={'flex flex-col w-full'}>
 			<DescriptionList
 				options={[
 					{
