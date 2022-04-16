@@ -1,11 +1,6 @@
 const DOTENV = require('dotenv-webpack');
 
 module.exports = ({
-	i18n: {
-		locales: ['en', 'fr', 'es', 'de', 'pt', 'el', 'tr', 'vi', 'zh', 'hi', 'ja'],
-		defaultLocale: 'en',
-		localeDetection: false
-	},
 	experimental: {
 		concurrentFeatures: true
 	},
@@ -21,6 +16,7 @@ module.exports = ({
 		WEBSITE_TITLE: 'Yearn Watch',
 		WEBSITE_DESCRIPTION: 'All the analytics for your Vaults',
 		PROJECT_GITHUB_URL: 'https://github.com/Major-Eth/yearn-watch',
+		USE_NETWORKS: true,
 		USE_PRICES: false,
 		USE_PRICE_TRI_CRYPTO: false,
 		CG_IDS: [],
