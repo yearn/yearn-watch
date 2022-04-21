@@ -184,7 +184,7 @@ export async function getVaults(
 	if (isLocal && providedGraph) {
 		graphProvider = providedGraph;
 	}
-
+	
 	/* 🔵 - Yearn Finance ******************************************************
 	** Data are dispatched between the different sources, and thus we need to
 	** call them all to get the big picture:
