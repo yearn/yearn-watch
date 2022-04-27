@@ -226,7 +226,7 @@ function	AppWrapper(props: AppProps): ReactElement {
 					</div>
 				</div>
 				<div className={'flex flex-col col-span-12 px-4 w-full min-h-[100vh] md:col-span-10'}>
-					<Header>
+					<Header shouldUseNetworks={process.env.USE_NETWORKS}>
 						<HeaderTitle />
 					</Header>
 					<Component

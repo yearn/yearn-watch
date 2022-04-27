@@ -5,7 +5,6 @@ import	{Contract}							from	'ethcall';
 import	{ethers, BigNumber}					from	'ethers';
 import	{createHash}						from	'crypto';
 import	VAULT_ABI							from	'utils/abi/vaults.abi';
-import	STRATEGY_ABI						from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI					from	'utils/abi/priceOracle.abi';
 import	{TVault, TStrategyReport, TGraphVault}			from	'contexts/useWatch.d';
 import	* as utils							from	'@yearn/web-lib/utils';
@@ -25,10 +24,15 @@ const	GRAPH_REQUEST= `{
 	}
 	vaults(first: 1000) {
 		id
+		guardian
+		management
+		governance
+		rewards
+		availableDepositLimit
+		depositLimit
 		balanceTokens
 		balanceTokensIdle
         balanceTokensInvested
-		tokensDepositLimit
 		managementFeeBps
 		performanceFeeBps
 		apiVersion
@@ -47,6 +51,13 @@ const	GRAPH_REQUEST= `{
 		strategies {
 			address
 			name
+			apiVersion
+			emergencyExit
+			estimatedTotalAssets
+			isActive
+			keeper
+			strategist
+			rewards
 			reports(first: 10, orderBy: timestamp, orderDirection: desc) {
 				id
 				totalDebt
@@ -114,17 +125,16 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 			emergency_shutdown: vaultFromAPI?.emergency_shutdown || false,
 			isHidden: false,
 			address: utils.toAddress(vault.id),
-			guardian: utils.toAddress(0),
-			management: utils.toAddress(0),
-			governance: utils.toAddress(0),
-			rewards: utils.toAddress(0),
+			guardian: utils.toAddress(vault.guardian),
+			management: utils.toAddress(vault.management),
+			governance: utils.toAddress(vault.governance),
+			rewards: utils.toAddress(vault.rewards),
 			balanceTokens: utils.toAddress(vault.balanceTokens),
 			managementFeeBps: utils.toAddress(vault.managementFeeBps),
 			performanceFeeBps: utils.toAddress(vault.performanceFeeBps),
-			tokensDepositLimit: ethers.BigNumber.from(vault.tokensDepositLimit),
 			totalSupply: ethers.BigNumber.from(0),
-			depositLimit: ethers.BigNumber.from(0),
-			availableDepositLimit: ethers.BigNumber.from(0),
+			depositLimit: ethers.BigNumber.from(vault.depositLimit),
+			availableDepositLimit: ethers.BigNumber.from(vault.availableDepositLimit),
 			alerts: [],
 			token: {
 				name: vault.token.name,
@@ -136,7 +146,8 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 			},
 			strategies: (vaultFromAPI?.strategies || [])?.map((s: any): any => ({
 				name: s.name,
-				address: utils.toAddress(s.address)
+				address: utils.toAddress(s.address),
+				apiVersion: s.apiVersion
 			}))
 		};
 		if (Number(vault.balanceTokensIdle) > 0 || Number(vault.balanceTokensInvested) > 0) {
@@ -146,8 +157,6 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 	_vaults = _vaults.filter((v): boolean => Number(v.version.replace('.', '')) >= 2);
 	return _vaults;
 }
-
-
 
 type	TGetVaults = {
 	vaults: TVault[],
@@ -280,26 +289,12 @@ export async function getVaults(
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3.1;
 		const	contractVault = new Contract(vault.address, isV2Vault ? VAULT_ABI['v0.2.x'] : VAULT_ABI['v0.4.x']);
 		[...Array(20).keys()].map((i): number => multiCalls.push(contractVault.withdrawalQueue(i)));
-		multiCalls.push(contractVault.guardian());
-		multiCalls.push(contractVault.management());
-		multiCalls.push(contractVault.governance());
-		multiCalls.push(contractVault.rewards());
-		multiCalls.push(contractVault.availableDepositLimit());
-		multiCalls.push(contractVault.depositLimit());
 		multiCalls.push(priceOracleContract.getPriceUsdcRecommended(vault.token.address));
 		for (const strategy of vault.strategies) {
 			multiCalls.push(contractVault.creditAvailable(strategy.address));
 			multiCalls.push(contractVault.debtOutstanding(strategy.address));
 			multiCalls.push(contractVault.strategies(strategy.address));
 			multiCalls.push(contractVault.expectedReturn(strategy.address));
-			const	contractStrat = new Contract(strategy.address, STRATEGY_ABI);
-			multiCalls.push(contractStrat.apiVersion());
-			multiCalls.push(contractStrat.emergencyExit());
-			multiCalls.push(contractStrat.estimatedTotalAssets());
-			multiCalls.push(contractStrat.isActive());
-			multiCalls.push(contractStrat.keeper());
-			multiCalls.push(contractStrat.strategist());
-			multiCalls.push(contractStrat.rewards());
 		}
 	}
 	const	callResult = await ethcallProvider.tryAll(multiCalls);
@@ -331,17 +326,6 @@ export async function getVaults(
 		//Let's build our data for the vault
 		vault.alerts = [];
 		vault.explorer = utils.chains[(chainID || '1') as keyof typeof utils.chains].block_explorer;
-		vault.guardian = utils.toAddress(callResult[rIndex++] as string);
-		vault.management = utils.toAddress(callResult[rIndex++] as string);
-		vault.governance = utils.toAddress(callResult[rIndex++] as string);
-		vault.rewards = utils.toAddress(callResult[rIndex++] as string);
-		vault.availableDepositLimit = BigNumber.from(callResult[rIndex++] || 0);
-
-		const	_depositLimit = BigNumber.from(callResult[rIndex++] || 0);
-		//Keep that for testing later. The graph is giving us a bad result, with deposit limit always = 0. Issue reported.
-		// console.log({graph: vault.tokensDepositLimit.toString(), api: _depositLimit.toString()});
-
-		vault.depositLimit = _depositLimit;
 		vault.tokenPriceUSDC = Number(ethers.utils.formatUnits(BigNumber.from(callResult[rIndex++] || 0), 6));
 		if (utils.isZeroAddress(vault.guardian)) vault.alerts.push({level: 'warning', message: 'Guardian is not set'});
 		if (utils.isZeroAddress(vault.management)) vault.alerts.push({level: 'warning', message: 'Management is not set'});
@@ -351,7 +335,6 @@ export async function getVaults(
 		if (Number(vault.depositLimit) === 0) vault.alerts.push({level: 'warning', message: 'Deposit limit is zero'});
 		if (vaultDetails) {
 			vault.balanceTokens = BigNumber.from(vaultDetails.balanceTokens);
-			vault.tokensDepositLimit = BigNumber.from(vaultDetails.tokensDepositLimit);
 			vault.managementFeeBps = BigNumber.from(vaultDetails.managementFeeBps);
 			vault.performanceFeeBps = BigNumber.from(vaultDetails.performanceFeeBps);
 			if (Number(vault.managementFeeBps) === 0) vault.alerts.push({level: 'warning', message: 'Management fee is zero'});
@@ -375,13 +358,6 @@ export async function getVaults(
 			strategy.totalGain = BigNumber.from(strategyData.totalGain || 0);
 			strategy.totalLoss = BigNumber.from(strategyData.totalLoss || 0);
 			strategy.expectedReturn = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
-			strategy.apiVersion = callResult[rIndex++] as string;
-			strategy.isEmergencyExit = callResult[rIndex++] as boolean;
-			strategy.estimatedTotalAssets = BigNumber.from(callResult[rIndex++] || 0);
-			strategy.isActive = callResult[rIndex++] as boolean;
-			strategy.addrKeeper = utils.toAddress(callResult[rIndex++] as string);
-			strategy.addrStrategist = utils.toAddress(callResult[rIndex++] as string);
-			strategy.addrRewards = utils.toAddress(callResult[rIndex++] as string);
 			strategy.totalDebtUSDC = Number(ethers.utils.formatUnits(strategy.totalDebt, vault.decimals)) * (vault.tokenPriceUSDC || 0);
 			strategy.tvlImpact = getTvlImpact(strategy.totalDebtUSDC);
 
@@ -400,7 +376,7 @@ export async function getVaults(
 			if (strategy.shouldDoHealthCheck || !utils.isZeroAddress(strategy.addrHealthCheck))
 				strategy.alerts.push({level: 'warning', message: 'Strategy has healthcheck issue'});
 
-			const	isV2Strategy = Number(strategy.apiVersion.replace('.', '')) <= 3;
+			const	isV2Strategy = Number((strategy?.apiVersion || '0').replace('.', '')) <= 3;
 			if ((isV2Strategy && !isV2Vault) || (!isV2Strategy && isV2Vault))
 				strategy.alerts.push({level: 'warning', message: `Strategy (${strategy.apiVersion}) and Vault (${vault.version}) version mismatch`});
 

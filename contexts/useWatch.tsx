@@ -114,7 +114,6 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 				}
 				return value;
 			});
-			
 
 			getVaultIsRunning.current = false;
 			if (getVaultRunNonce.current === currentNonce) {

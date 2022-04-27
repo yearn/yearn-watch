@@ -131,7 +131,6 @@ export type TVault = {
 	governance: utils.TAddress, //From multicall
 	rewards: utils.TAddress, //From multicall
 	balanceTokens: BigNumber, //From the GraphQL schema
-	tokensDepositLimit: BigNumber, //From the GraphQL schema
 	managementFeeBps: BigNumber, //From the GraphQL schema
 	performanceFeeBps: BigNumber, //From the GraphQL schema
 	totalSupply: BigNumber,
@@ -151,10 +150,15 @@ export type TVault = {
 
 export type TGraphVault = {
 	id: string,
+	guardian: string,
+	management: string,
+	governance: string,
+	rewards: string,
+	availableDepositLimit: string,
+	depositLimit: string,
 	balanceTokens: string,
 	balanceTokensIdle: string,
 	balanceTokensInvested: string,
-	tokensDepositLimit: string,
 	managementFeeBps: string,
 	performanceFeeBps: string,
 	apiVersion: string,
@@ -174,6 +178,13 @@ export type TGraphVault = {
 	strategies: {
 		address: string,
 		name: string,
+		apiVersion: string,
+		emergencyExit: string,
+		estimatedTotalAssets: string,
+		isActive: string,
+		keeper: string,
+		strategist: string,
+		rewards: string,
 		doHealthCheck: boolean,
 		healthCheck: string,
 		reports: [{
