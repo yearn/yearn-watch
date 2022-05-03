@@ -1,7 +1,7 @@
 import	React, {ReactElement}						from	'react';
 import	useWatch									from	'contexts/useWatch';
 import	{TVault, TStrategy, TAlertLevels}			from	'contexts/useWatch.d';
-import	{Card, SearchBox, Switch}					from	'@yearn/web-lib/components';
+import	{Card, SearchBox, Switch, Banner}			from	'@yearn/web-lib/components';
 import	{AlertSelector}								from	'components/AlertSelector';
 import	SectionAlertList							from	'components/sections/alerts/SectionAlertList';
 import	{findVaultBySearch, findStrategyBySearch}	from	'utils/filters';
@@ -52,12 +52,23 @@ function	Alerts(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'flex-col-full'}>
-			<div className={'space-y-4 flex-col-full'}>
-				<div className={'flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
-					<div className={'flex flex-col mt-2 w-full md:mt-0'}>
+			<div className={'mb-4'}>
+				<Banner title={'Alerts'}>
+					<div>
+						<p>{'The alert section is used to hightlight some potential issues. Issues are splitted in 3 categories: warning, error and critical. Alerts can be on the vault level or on the strategy level.'}</p>
+						<p className={'block mt-4'}>{'You can dismiss non-revelant alerts safely, they will no longer be displayed in your browser unless some new alerts are triggered on this same element.'}</p>
+					</div>
+				</Banner>
+			</div>
+			<div className={'space-y-5 flex-col-full'}>
+				<div className={'flex flex-col-reverse items-start space-x-0 md:flex-row md:space-x-4'}>
+					<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
 						<SearchBox
 							searchTerm={searchTerm}
 							onChange={set_searchTerm} />
+						<div className={'flex-row-center'}>
+							<p className={'text-xs text-typo-secondary'}>{`Search result: ${filteredStrategies.length}`}</p>
+						</div>
 					</div>
 					<div className={'flex flex-row justify-between items-center space-x-2 md:justify-start md:space-x-4'}>
 						<div>

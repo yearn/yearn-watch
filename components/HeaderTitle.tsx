@@ -92,13 +92,13 @@ function	HeaderTitle(): ReactElement {
 	
 	return (
 		<div className={'flex-row-center'}>
-			<Image
+			{currentVault.icon ? <Image
 				alt={`token ${currentVault.name}`}
 				decoding={'async'}
 				width={32}
 				height={32}
 				src={currentVault.icon}
-				quality={90} />
+				quality={90} /> : <div className={'w-8 h-8 rounded-full bg-background'} />}
 			<div className={'ml-2 md:ml-6'}>
 				<b>{currentVault.display_name}</b>
 				<p className={'text-xs text-typo-secondary'}>

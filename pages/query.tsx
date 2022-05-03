@@ -83,7 +83,7 @@ function	Query(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'flex-col-full'}>
-			<div className={'space-y-4 flex-col-full'}>
+			<div className={'space-y-5 flex-col-full'}>
 				<div className={'flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
 					<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
 						<SearchBox

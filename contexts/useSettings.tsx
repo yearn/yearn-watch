@@ -26,10 +26,13 @@ const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 ** override the default RPC URI. Empty string will use the default, aka env
 ** variables.
 ******************************************************************************/
+type TStorageShouldUseRemoteFetch = [boolean, (s: boolean) => boolean];
+type TStorageNetworkURI = [useSettingsTypes.TNetworkURI, (s: useSettingsTypes.TNetworkURI) => useSettingsTypes.TNetworkURI];
+
 export const SettingsContextApp = ({children}: {children: ReactElement}): ReactElement => {
-	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true);
-	const	[subGraphURI, set_subGraphURI] = useLocalStorage('subGraphURI', {1: '', 250: '', 42161: ''});
-	const	[rpcURI, set_rpcURI] = useLocalStorage('rpcURI', {1: '', 250: '', 42161: ''});
+	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true) as TStorageShouldUseRemoteFetch;
+	const	[subGraphURI, set_subGraphURI] = useLocalStorage('subGraphURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
+	const	[rpcURI, set_rpcURI] = useLocalStorage('rpcURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
 
 	return (
 		<SettingsContext.Provider

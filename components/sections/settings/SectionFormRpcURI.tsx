@@ -24,7 +24,7 @@ function	SectionFormRpcURI(): ReactElement {
 					_rpcURI[key] = value;
 				}
 				updateRPCURI(_rpcURI);
-				toast.success('RPC endpoints updated');
+				(toast as any).success('RPC endpoints updated');
 			}}>
 			<Card className={`flex flex-col space-y-4 w-full transition-opacity ${shouldUseRemoteFetch ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}>
 				<div className={'pb-6'}>

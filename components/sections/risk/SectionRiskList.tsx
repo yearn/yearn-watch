@@ -71,43 +71,43 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): Rea
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'TVL Impact'}
-					value={group.tvlImpact} />
+					value={(group.tvlImpact).toString()} />
 				<StatisticCard
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'Audit Score'}
-					value={group.auditScore} />
+					value={(group.auditScore).toString()} />
 				<StatisticCard
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'Code Review Score'}
-					value={group.codeReviewScore} />
+					value={(group.codeReviewScore).toString()} />
 				<StatisticCard
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'Complexity Score'}
-					value={group.complexityScore} />
+					value={(group.complexityScore).toString()} />
 				
 				<StatisticCard
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'Longevity Impact'}
-					value={group.longevityScore} />
+					value={(group.longevityScore).toString()} />
 				<StatisticCard
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'Protocol Safety Score'}
-					value={group.protocolSafetyScore} />
+					value={(group.protocolSafetyScore).toString()} />
 				<StatisticCard
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'Team Knowledge Score'}
-					value={group.teamKnowledgeScore} />
+					value={(group.teamKnowledgeScore).toString()} />
 				<StatisticCard
 					variant={'background'}
 					className={'col-span-12 md:col-span-3'}
 					label={'Testing Score'}
-					value={group.testingScore} />
+					value={(group.testingScore).toString()} />
 			</StatisticCard.Wrapper>
 			<div className={'mt-10'}>
 				<b className={'mb-1 ml-2'}>{'Attached Strategies'}</b>

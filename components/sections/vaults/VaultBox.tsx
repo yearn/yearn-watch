@@ -2,8 +2,8 @@ import	React, {MouseEvent, ReactElement}	from	'react';
 import	Link								from	'next/link';
 import	Image								from	'next/image';
 import	{Card, AddressWithActions, Button}	from	'@yearn/web-lib/components';
-import	{AlertWarning}						from	'@yearn/web-lib/icons';
-import	{TStrategy, TVault}							from	'contexts/useWatch.d';
+import	{AlertWarning, Chevron}				from	'@yearn/web-lib/icons';
+import	{TStrategy, TVault}					from	'contexts/useWatch.d';
 import	StrategyBox							from	'components/sections/vaults/StrategyBox';
 import	ModalWarning						from	'components/ModalWarning';
 
@@ -37,7 +37,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					</div>
 				</div>
 				<AddressWithActions
-					address={`${vault.address}#code`}
+					address={vault.address}
 					explorer={vault.explorer}
 					truncate={3}
 					wrapperClassName={'flex md:hidden'}
@@ -70,7 +70,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					explorer={vault.explorer}
 					wrapperClassName={'hidden md:flex'}
 					className={'font-mono text-sm text-typo-secondary'} />
-				<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
+				<div className={'contents'} onClick={(e: MouseEvent): void => e.stopPropagation()}>
 					<Link passHref href={`/vault/${vault.address}`}>
 						<Button
 							as={'a'}
@@ -82,6 +82,24 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					</Link>
 				</div>
 			</div>
+		);
+	}
+
+	if (strategies.length === 0) {
+		return (
+			<Card padding={'none'} className={'justify-between w-full h-full text-justify rounded-lg transition-colors bg-surface'}>
+				<div className={'flex flex-col justify-between items-start p-6 w-full rounded-lg cursor-default md:flex-row md:items-center'}>
+					<div className={'w-inherit'}>
+						{renderSummaryStart()}
+					</div>
+					<div className={'flex flex-row items-center mt-4 w-full md:mt-0'}>
+						{renderSummaryEnd()}
+						<div className={'ml-auto'}>
+							<Chevron className={'w-6 h-6 text-primary/0'} />
+						</div>
+					</div>
+				</div>
+			</Card>
 		);
 	}
 

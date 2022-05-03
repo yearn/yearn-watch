@@ -1,11 +1,12 @@
-import	React, {ReactElement}			from	'react';
-import	Image							from	'next/image';
-import	Link							from	'next/link';
-import	{TStrategy}						from	'contexts/useWatch.d';
-import	{HumanizeRisk}					from	'components/HumanizedRisk';
-import	{List}							from	'@yearn/web-lib/layouts';
-import	{AddressWithActions, Button}	from	'@yearn/web-lib/components';
-import	* as utils						from	'@yearn/web-lib/utils';
+import	React, {ReactElement}				from	'react';
+import	Image								from	'next/image';
+import	Link								from	'next/link';
+import	{List}								from	'@yearn/web-lib/layouts';
+import	{AddressWithActions, Button, Card}	from	'@yearn/web-lib/components';
+import	* as utils							from	'@yearn/web-lib/utils';
+import	{TStrategy}							from	'contexts/useWatch.d';
+import	{HumanizeRisk}						from	'components/HumanizedRisk';
+import	{PageController}					from	'components/PageController';
 
 type		TSectionHealthcheckList = {
 	sortBy: string,
@@ -13,7 +14,9 @@ type		TSectionHealthcheckList = {
 };
 const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortBy, strategies}: TSectionHealthcheckList): ReactElement {
 	const	[sortedStrategies, set_sortedStrategies] = React.useState([] as (TStrategy)[]);
-	
+	const	[pageIndex, set_pageIndex] = React.useState(0);
+	const	[amountToDisplay] = React.useState(20);
+
 	React.useEffect((): void => {
 		if (['risk', '-risk', ''].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
@@ -21,14 +24,20 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 					return a.tvlImpact - b.tvlImpact;
 				return b.tvlImpact - a.tvlImpact;
 			});
-			set_sortedStrategies(_strategies);
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
 		} else if (['tvl', '-tvl'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				if (sortBy === '-tvl')
 					return a.totalDebtUSDC - b.totalDebtUSDC;
 				return b.totalDebtUSDC - a.totalDebtUSDC;
 			});
-			set_sortedStrategies(_strategies);
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
 		} else if (['name', '-name'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				const	aName = a.display_name || a.name || '';
@@ -37,7 +46,10 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 					return aName.localeCompare(bName);
 				return bName.localeCompare(aName);
 			});
-			set_sortedStrategies(_strategies);
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
 		}
 	}, [strategies, sortBy]);
 
@@ -60,8 +72,8 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 	function rowRenderer(index: number): ReactElement {
 		const strategy = sortedStrategies[index];
 		return (
-			<div key={strategy.address}>
-				<div className={'grid relative grid-cols-22 py-4 px-6 mb-2 w-[965px] h-20 rounded-lg md:w-full bg-surface'}>
+			<Card key={strategy.address} className={'mb-2 w-[965px] md:w-full'}>
+				<div className={'grid relative grid-cols-22 w-full'}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex-row-center'}>
@@ -112,15 +124,30 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 						</Link>
 					</div>
 				</div>
-			</div>
+			</Card>
 		);
 	}
 
-
 	return (
-		<List.Animated>
-			{sortedStrategies.map((_, index): ReactElement => rowRenderer(index))}
-		</List.Animated>
+		<section
+			aria-label={'strats-vaults-healthcheck-list'}
+			className={'min-w-full h-full'}>
+			<List>
+				{sortedStrategies.slice(pageIndex, pageIndex + amountToDisplay).map((_, index): ReactElement => rowRenderer(
+					index + pageIndex
+				))}
+			</List>
+			<div className={'flex flex-row justify-end items-center'}>
+				<PageController
+					pageIndex={pageIndex}
+					pageLen={sortedStrategies.length}
+					amountToDisplay={amountToDisplay}
+					nextPage={(): void => set_pageIndex(pageIndex + amountToDisplay)}
+					previousPage={(): void => set_pageIndex(
+						pageIndex - amountToDisplay >= 0 ? pageIndex - amountToDisplay : 0
+					)} />
+			</div>
+		</section>
 	);
 });
 

@@ -36,12 +36,16 @@ const	WatchContext = React.createContext<useWatchTypes.TWatchContext>({
 ** fetching is performed by the serverless function through the following req:
 ** GET `/api/getVaults?chainID=${chainID}`
 ******************************************************************************/
+type	TStorageVaults = [useWatchTypes.TVault[], (s: useWatchTypes.TVault[]) => useWatchTypes.TVault[]];
+type	TStorageNetworkSync = [useWatchTypes.TNetworkData, (s: useWatchTypes.TNetworkData) => useWatchTypes.TNetworkData];
+type	TStorageLastUpdate = [number, (s: number) => number];
+
 export const WatchContextApp = ({children}: {children: ReactElement}): ReactElement => {
 	const	{chainID} = useWeb3();
 	const	{shouldUseRemoteFetch, rpcURI, subGraphURI} = useSettings();
-	const	[vaults, set_vaults] = useLocalStorage('vaults', []);
-	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {});
-	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0);
+	const	[vaults, set_vaults] = useLocalStorage('vaults', []) as TStorageVaults;
+	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {}) as TStorageNetworkSync;
+	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0) as TStorageLastUpdate;
 	const	[isUpdating, set_isUpdating] = React.useState<boolean>(false);
 	const	getVaultIsRunning = React.useRef(false);
 	const	getVaultRunNonce = React.useRef(0);

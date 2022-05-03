@@ -24,4 +24,3 @@
 .flex-row-start {@apply flex flex-row items-start;}
 .flex-col-start {@apply flex flex-col items-start;}
 .flex-col-full {@apply flex flex-col w-full h-full;}
-/* flex flex-row items-start */

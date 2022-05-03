@@ -20,7 +20,7 @@ function	SectionFormGraphURI(): ReactElement {
 					_subGraphURI[key] = value;
 				}
 				updateSubGraphURI(_subGraphURI);
-				toast.success('Subgraph endpoints updated');
+				(toast as any).success('Subgraph endpoints updated');
 			}}>
 			<Card className={`flex flex-col space-y-4 w-full transition-opacity ${shouldUseRemoteFetch ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}>
 				<div className={'pb-6'}>

@@ -1,11 +1,12 @@
 import	React, {ReactElement}				from	'react';
 import	Image								from	'next/image';
 import	Link								from	'next/link';
-import	{TStrategy}							from	'contexts/useWatch.d';
-import	{HumanizeRisk}						from	'components/HumanizedRisk';
 import	{List}								from	'@yearn/web-lib/layouts';
-import	{Card, AddressWithActions, Button}	from	'@yearn/web-lib/components';
+import	{AddressWithActions, Button, Card}	from	'@yearn/web-lib/components';
 import	* as utils							from	'@yearn/web-lib/utils';
+import	{TStrategy}							from	'contexts/useWatch.d';
+import	{PageController}					from	'components/PageController';
+import	{HumanizeRisk}						from	'components/HumanizedRisk';
 
 type		TSectionQueryList = {
 	sortBy: string,
@@ -13,7 +14,9 @@ type		TSectionQueryList = {
 };
 const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategies}: TSectionQueryList): ReactElement {
 	const	[sortedStrategies, set_sortedStrategies] = React.useState([] as (TStrategy)[]);
-	
+	const	[pageIndex, set_pageIndex] = React.useState(0);
+	const	[amountToDisplay] = React.useState(20);
+
 	React.useEffect((): void => {
 		if (['risk', '-risk', ''].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
@@ -21,14 +24,20 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 					return a.tvlImpact - b.tvlImpact;
 				return b.tvlImpact - a.tvlImpact;
 			});
-			set_sortedStrategies(_strategies);
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
 		} else if (['tvl', '-tvl'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				if (sortBy === '-tvl')
 					return a.totalDebtUSDC - b.totalDebtUSDC;
 				return b.totalDebtUSDC - a.totalDebtUSDC;
 			});
-			set_sortedStrategies(_strategies);
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
 		} else if (['name', '-name'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				const	aName = a.display_name || a.name || '';
@@ -37,10 +46,12 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 					return aName.localeCompare(bName);
 				return bName.localeCompare(aName);
 			});
-			set_sortedStrategies(_strategies);
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
 		}
 	}, [strategies, sortBy]);
-
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** The total debt represents the total amount of want tokens that are lent
@@ -55,12 +66,12 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 		return (utils.format.amount(totalDebtUSDC / acc * 100, 2));
 	}
 
-	function rowRenderer({key, index, style}: {key: string, index: number, style: {[key: string]: string}}): ReactElement {
+	function	rowRenderer(index: number): ReactElement {
 		const strategy = sortedStrategies[index];
 
 		return (
-			<div key={key} style={style}>
-				<div className={'grid relative grid-cols-22 py-4 px-6 mb-2 w-[965px] h-20 rounded-lg md:w-full bg-surface'}>
+			<Card key={index} className={'mb-2 w-[965px] md:w-full'}>
+				<div className={'grid relative grid-cols-22 w-full'}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex-row-center'}>
@@ -111,23 +122,30 @@ const	SectionQueryList = React.memo(function SectionQueryList({sortBy, strategie
 						</Link>
 					</div>
 				</div>
-			</div>
+			</Card>
 		);
 	}
 
 	return (
-		<>
-			{sortedStrategies.length === 0 ? (
-				<Card className={'flex flex-row justify-center h-full text-center'}>
-					<p className={'pt-24 text-typo-secondary'}>{'No result for this query'}</p>
-				</Card>
-			) : (
-				<List.Virtualized
-					elements={sortedStrategies}
-					rowHeight={88}
-					rowRenderer={rowRenderer} />
-			)}
-		</>
+		<section
+			aria-label={'strats-vaults-query-list'}
+			className={'min-w-full h-full'}>
+			<List>
+				{sortedStrategies.slice(pageIndex, pageIndex + amountToDisplay).map((_, index): ReactElement => rowRenderer(
+					index + pageIndex
+				))}
+			</List>
+			<div className={'flex flex-row justify-end items-center'}>
+				<PageController
+					pageIndex={pageIndex}
+					pageLen={sortedStrategies.length}
+					amountToDisplay={amountToDisplay}
+					nextPage={(): void => set_pageIndex(pageIndex + amountToDisplay)}
+					previousPage={(): void => set_pageIndex(
+						pageIndex - amountToDisplay >= 0 ? pageIndex - amountToDisplay : 0
+					)} />
+			</div>
+		</section>
 	);
 });
 

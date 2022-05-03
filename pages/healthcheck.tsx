@@ -1,7 +1,7 @@
 import	React, {ReactElement} 					from	'react';
 import	useWatch								from	'contexts/useWatch';
 import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
-import	{Card, AlertBanner, Switch, SearchBox}	from	'@yearn/web-lib/components';
+import	{Card, Banner, Switch, SearchBox}		from	'@yearn/web-lib/components';
 import	* as utils								from	'@yearn/web-lib/utils';
 import	{deepFindVaultBySearch}					from	'utils/filters';
 import	SectionHealthcheckList					from	'components/sections/healthcheck/SectionHealthcheckList';
@@ -79,13 +79,13 @@ function	Healthcheck(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'flex-col-full'}>
-			<div>
-				<AlertBanner id={'healthchecks'} title={'Healthchecks'} level={'info'} maxHeight={'max-h-[600px] md:max-h-[300px] mb-4'}>
+			<div className={'mb-4'}>
+				<Banner title={'Healthchecks'}>
 					<div>
 						<p>{'The healthchecks have been added since v0.4.2 for the Yearn\'s strategies in order to ensure that they are working properly. The healthchecks are automatically triggered on harvest if the doHealthCheck parameter is enabled, and if a valid address for this check is set. The strategies missing one of theses parameters will be displayed bellow.'}</p>
 						<p className={'block mt-4'}>{'Based on the Total Value Locked (TVL) in the strategy, a Risk score, from 5 (most risky) to 1 (least risky), is computed.'}</p>
 					</div>
-				</AlertBanner>
+				</Banner>
 			</div>
 			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
 				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>

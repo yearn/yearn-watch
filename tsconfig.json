@@ -5,11 +5,12 @@
     ],
     "baseUrl": ".",
     "paths": {
-		"@yearn/web-lib/components": ["./node_modules/@yearn/web-lib/dist/components/index.js"],
-		"@yearn/web-lib/contexts": ["./node_modules/@yearn/web-lib/dist/contexts/index.js"],
-		"@yearn/web-lib/hooks": ["./node_modules/@yearn/web-lib/dist/hooks/index.js"],
-		"@yearn/web-lib/icons": ["./node_modules/@yearn/web-lib/dist/icons/index.js"],
-		"@yearn/web-lib/utils": ["./node_modules/@yearn/web-lib/dist/utils/index.js"],
+		"@yearn/web-lib/components": ["./node_modules/@yearn/web-lib/dist/components"],
+		"@yearn/web-lib/layouts": ["./node_modules/@yearn/web-lib/dist/layouts"],
+		"@yearn/web-lib/contexts": ["./node_modules/@yearn/web-lib/dist/contexts"],
+		"@yearn/web-lib/hooks": ["./node_modules/@yearn/web-lib/dist/hooks"],
+		"@yearn/web-lib/icons": ["./node_modules/@yearn/web-lib/dist/icons"],
+		"@yearn/web-lib/utils": ["./node_modules/@yearn/web-lib/dist/utils"],
     },
     /* Basic Options */
     "target": "esnext",

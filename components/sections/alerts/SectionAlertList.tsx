@@ -1,19 +1,24 @@
 import	React, {ReactElement}									from	'react';
 import	Image													from	'next/image';
-import	{TVault, TStrategy}										from	'contexts/useWatch.d';
-import	{List, Autosizer}										from	'@yearn/web-lib/layouts';
+import	{List}													from	'@yearn/web-lib/layouts';
 import	{Card, AddressWithActions, AlertBox, Button}			from	'@yearn/web-lib/components';
-import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@yearn/web-lib/icons';
 import	{useLocalStorage}										from	'@yearn/web-lib/hooks';
+import	{performBatchedUpdates}									from	'@yearn/web-lib/utils';
+import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@yearn/web-lib/icons';
+import	{TVault, TStrategy}										from	'contexts/useWatch.d';
+import	{PageController}										from	'components/PageController';
 
 type	TSectionAlertList = {
 	stratOrVault: (TStrategy | TVault)[],
 	shouldDisplayDismissed: boolean
 };
+type	TStorageDismissed = [string[], (s: string[]) => string[]];
 const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, shouldDisplayDismissed}: TSectionAlertList): ReactElement {
 	const	[sortBy, set_sortBy] = React.useState('');
+	const	[pageIndex, set_pageIndex] = React.useState(0);
+	const	[amountToDisplay] = React.useState(20);
 	const	[sortedStratOrVault, set_sortedStratOrVault] = React.useState([] as (TStrategy | TVault)[]);
-	const	[dismissed, set_dismissed] = useLocalStorage('dismissedAlerts', []);
+	const	[dismissed, set_dismissed] = useLocalStorage('dismissedAlerts', []) as TStorageDismissed;
 	
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is used to display the alerts based on the level filter.
@@ -36,12 +41,16 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 				_warnings.push(_stratOrVault);
 			_default.push(_stratOrVault);
 		}
-		if (sortBy === 'level')
-			set_sortedStratOrVault([..._criticals, ..._errors, ..._warnings]);
-		else if (sortBy === '-level')
-			set_sortedStratOrVault([..._warnings, ..._errors, ..._criticals]);
-		else 
-			set_sortedStratOrVault(_default);
+
+		performBatchedUpdates((): void => {
+			if (sortBy === 'level')
+				set_sortedStratOrVault([..._criticals, ..._errors, ..._warnings]);
+			else if (sortBy === '-level')
+				set_sortedStratOrVault([..._warnings, ..._errors, ..._criticals]);
+			else 
+				set_sortedStratOrVault(_default);
+			set_pageIndex(0);
+		});
 	}, [stratOrVault, sortBy, dismissed, shouldDisplayDismissed]);
 
 	/* 🔵 - Yearn Finance ******************************************************
@@ -202,6 +211,47 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 		);
 	}
 
+	function	rowRenderer(index: number): ReactElement {
+		const stratOrVault = sortedStratOrVault[index];
+		return (
+			<div key={index} className={'mb-2'}>
+				<Card.Detail
+					key={stratOrVault.address}
+					isSticky={false}
+					summary={(p: unknown): ReactElement => (
+						<Card.Detail.Summary
+							startChildren={renderSummaryStart(stratOrVault)}
+							endChildren={renderSummaryEnd(stratOrVault)}
+							{...p} />
+					)}>
+					<div className={'space-y-2'}>
+						<AlertBox
+							level={'critical'}
+							alerts={(
+								stratOrVault.alerts
+									.filter((a): unknown => a.level === 'critical')
+									.map((e): string => e.message)
+							)} />
+						<AlertBox
+							level={'error'}
+							alerts={(
+								stratOrVault.alerts
+									.filter((a): unknown => a.level === 'error')
+									.map((e): string => e.message)
+							)} />
+						<AlertBox
+							level={'warning'}
+							alerts={(
+								stratOrVault.alerts
+									.filter((a): unknown => a.level === 'warning')
+									.map((e): string => e.message)
+							)} />
+					</div>
+				</Card.Detail>
+			</div>
+		);
+	}
+
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the section
 	**************************************************************************/
@@ -213,47 +263,21 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 			<section
 				aria-label={'strats-vaults-alerts-list'}
 				className={'min-w-full h-full'}>
-				<Autosizer>
-					<List.Animated className={'overflow-y-scroll space-y-2 h-full rounded-lg'}>
-						{sortedStratOrVault.map((stratOrVault): ReactElement => (
-							<div key={stratOrVault.address}>
-								<Card.Detail
-									key={stratOrVault.address}
-									isSticky={false}
-									summary={(p: unknown): ReactElement => (
-										<Card.Detail.Summary
-											startChildren={renderSummaryStart(stratOrVault)}
-											endChildren={renderSummaryEnd(stratOrVault)}
-											{...p} />
-									)}>
-									<div className={'space-y-2'}>
-										<AlertBox
-											level={'critical'}
-											alerts={(
-												stratOrVault.alerts
-													.filter((a): unknown => a.level === 'critical')
-													.map((e): string => e.message)
-											)} />
-										<AlertBox
-											level={'error'}
-											alerts={(
-												stratOrVault.alerts
-													.filter((a): unknown => a.level === 'error')
-													.map((e): string => e.message)
-											)} />
-										<AlertBox
-											level={'warning'}
-											alerts={(
-												stratOrVault.alerts
-													.filter((a): unknown => a.level === 'warning')
-													.map((e): string => e.message)
-											)} />
-									</div>
-								</Card.Detail>
-							</div>
-						))}
-					</List.Animated>
-				</Autosizer>
+				<List>
+					{sortedStratOrVault.slice(pageIndex, pageIndex + amountToDisplay).map((_, index): ReactElement => rowRenderer(
+						index + pageIndex
+					))}
+				</List>
+				<div className={'flex flex-row justify-end items-center'}>
+					<PageController
+						pageIndex={pageIndex}
+						pageLen={sortedStratOrVault.length}
+						amountToDisplay={amountToDisplay}
+						nextPage={(): void => set_pageIndex(pageIndex + amountToDisplay)}
+						previousPage={(): void => set_pageIndex(
+							pageIndex - amountToDisplay >= 0 ? pageIndex - amountToDisplay : 0
+						)} />
+				</div>
 			</section>
 		</>
 	);

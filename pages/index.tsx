@@ -62,7 +62,7 @@ function	Index(): ReactElement {
 					<div className={'flex-row-center'}>
 						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Vaults Found: ${searchResult.vaults}`}</p>
 						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Strategies Found: ${searchResult.strategies}`}</p>
-						<p className={'text-xs text-typo-secondary'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p>
+						{/* <p className={'text-xs text-typo-secondary'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p> */}
 					</div>
 				</div>
 				<div>
@@ -75,7 +75,7 @@ function	Index(): ReactElement {
 				</div>
 			</div>
 			{filteredVaults ? (
-				<List.Animated className={'flex flex-col space-y-4 w-full'}>
+				<List.Animated className={'flex flex-col space-y-2 w-full'}>
 					{filteredVaults.map((vault): ReactElement => (
 						<div key={vault.address}>
 							<VaultBox vault={vault} />
