@@ -339,6 +339,8 @@ export async function getVaults(
 			vault.performanceFeeBps = BigNumber.from(vaultDetails.performanceFeeBps);
 			if (Number(vault.managementFeeBps) === 0) vault.alerts.push({level: 'warning', message: 'Management fee is zero'});
 			if (Number(vault.performanceFeeBps) === 0) vault.alerts.push({level: 'warning', message: 'Performance fee is zero'});
+			if (Number(vault.managementFeeBps) !== 200) vault.alerts.push({level: 'warning', message: 'Invalid value for management fee'});
+			if (Number(vault.performanceFeeBps) !== 2000) vault.alerts.push({level: 'warning', message: 'Invalid value for performance fee'});
 		}
 		vault.alertHash = createHash('sha256').update(`${vault.address}_${JSON.stringify(vault.alerts)}`).digest('hex');
 
