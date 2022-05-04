@@ -7,7 +7,7 @@ import	useWatch, {WatchContextApp}	from	'contexts/useWatch';
 import	{SettingsContextApp}		from	'contexts/useSettings';
 import	Footer						from	'components/StandardFooter';
 import	HeaderTitle					from	'components/HeaderTitle';
-import	IconRisk					from	'components/icons/IconRisk';
+// import	IconRisk					from	'components/icons/IconRisk';
 import	IconHealthcheck				from	'components/icons/IconHealthcheck';
 import	IconQuery					from	'components/icons/IconQuery';
 import	LogoWatch					from	'components/logo/LogoWatch';
