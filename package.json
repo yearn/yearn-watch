@@ -13,8 +13,8 @@
     "lintfix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
-    "@headlessui/react": "^1.6.0",
-    "@yearn/web-lib": "^0.3.5",
+    "@headlessui/react": "^1.6.1",
+    "@yearn/web-lib": "^0.3.6",
     "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
     "ethcall": "^4.6.5",

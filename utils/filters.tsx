@@ -23,7 +23,7 @@ export function	deepFindVaultBySearch(vault: TVault, term: string): boolean {
 			return (
 				(strategy?.name || '').toLowerCase().includes(term.toLowerCase())
 				|| (strategy?.address || '').toLowerCase().includes(term.toLowerCase())
-				|| (strategy?.description || '').toLowerCase().includes(term.toLowerCase())
+				// || (strategy?.description || '').toLowerCase().includes(term.toLowerCase())
 			);
 		})
 	);

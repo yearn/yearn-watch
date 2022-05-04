@@ -1,4 +1,4 @@
-import	React, {ReactElement}			from	'react';
+import	React, {MouseEvent, MouseEventHandler, ReactElement}			from	'react';
 import	Link							from	'next/link';
 import	{List}							from	'@yearn/web-lib/layouts';
 import	{Card, Button, StatisticCard}	from	'@yearn/web-lib/components';
@@ -48,6 +48,7 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): Rea
 				<div className={'flex flex-row col-span-4 items-center min-w-36 cell-end'}>
 					<Link passHref href={`/query${group.urlParams}`}>
 						<Button
+							onClick={(e: MouseEvent): void => e.stopPropagation()}
 							as={'a'}
 							variant={'light'}
 							className={'px-5 min-w-fit'}>
@@ -178,9 +179,9 @@ const	SectionRiskList = React.memo(function SectionRiskList({sortBy, groups}: TS
 	}, [groups, sortBy]);
 
 	return (
-		<List.Animated className={'flex flex-col space-y-2 w-full'}>
+		<List className={'flex flex-col space-y-2 w-full'}>
 			{sortedGroups.map((group): ReactElement => <span key={group.id}><GroupBox group={group} /></span>)}
-		</List.Animated>
+		</List>
 	);
 });
 

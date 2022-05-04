@@ -45,6 +45,15 @@ function	Query(): ReactElement {
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[sortBy, set_sortBy] = React.useState('risk');
 
+	React.useEffect((): void => {
+		if (router?.query?.include) {
+			const	_routerIncludeUnknown = (router?.query?.include || []);
+			const	_routerIncludeArr = typeof(_routerIncludeUnknown) === 'string' ? [_routerIncludeUnknown] : _routerIncludeUnknown;
+			const	includeStrategies = (_routerIncludeArr as string[]).map((v): string => v.toLowerCase());
+			set_searchTerm(includeStrategies.join(', '));
+		}
+	}, [router.query]);
+
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
 	** changed. It filters the vault list based on the search term. This action
