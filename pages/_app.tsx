@@ -177,12 +177,12 @@ function	AppWrapper(props: AppProps): ReactElement {
 			label: 'Query',
 			icon: <IconQuery />
 		},
-		{
-			route: '/risk',
-			values: ['/risk'],
-			label: 'Risk',
-			icon: <IconRisk />
-		},
+		// {
+		// 	route: '/risk',
+		// 	values: ['/risk'],
+		// 	label: 'Risk',
+		// 	icon: <IconRisk />
+		// },
 		{
 			route: '/alerts',
 			values: ['/alerts'],
