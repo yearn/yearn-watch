@@ -1,12 +1,12 @@
-import	React, {MouseEvent, MouseEventHandler, ReactElement}			from	'react';
-import	Link							from	'next/link';
-import	{List}							from	'@yearn/web-lib/layouts';
-import	{Card, Button, StatisticCard}	from	'@yearn/web-lib/components';
-import	* as utils						from	'@yearn/web-lib/utils';
-import	{Chevron}						from	'@yearn/web-lib/icons';
-import	{TRiskGroup}					from	'contexts/useWatch.d';
-import	StrategyBox						from	'components/sections/vaults/StrategyBox';
-import	{getImpactScoreColor}			from	'utils';
+import	React, {MouseEvent, ReactElement}	from	'react';
+import	Link								from	'next/link';
+import	{List}								from	'@yearn/web-lib/layouts';
+import	{Card, Button, StatisticCard}		from	'@yearn/web-lib/components';
+import	* as utils							from	'@yearn/web-lib/utils';
+import	{Chevron}							from	'@yearn/web-lib/icons';
+import	{TRiskGroup}						from	'contexts/useWatch.d';
+import	StrategyBox							from	'components/sections/vaults/StrategyBox';
+import	{getImpactScoreColor}				from	'utils';
 
 const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): ReactElement {
 	function	renderSummary(p: {open: boolean}): ReactElement {
