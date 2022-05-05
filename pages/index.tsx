@@ -75,13 +75,13 @@ function	Index(): ReactElement {
 				</div>
 			</div>
 			{filteredVaults ? (
-				<List.Animated className={'flex flex-col space-y-2 w-full'}>
+				<List className={'flex flex-col space-y-2 w-full'}>
 					{filteredVaults.map((vault): ReactElement => (
 						<div key={vault.address}>
 							<VaultBox vault={vault} />
 						</div>
 					))}
-				</List.Animated>
+				</List>
 			) : null}
 		</div>
 	);

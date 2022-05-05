@@ -11,11 +11,11 @@ module.exports = ({
 		]
 	},
 	env: {
-		WEBSITE_URI: 'https://watch.major.tax/',
+		WEBSITE_URI: 'https://yearn.watch/',
 		WEBSITE_NAME: 'Yearn Watch',
 		WEBSITE_TITLE: 'Yearn Watch',
 		WEBSITE_DESCRIPTION: 'All the analytics for your Vaults',
-		PROJECT_GITHUB_URL: 'https://github.com/Major-Eth/yearn-watch',
+		PROJECT_GITHUB_URL: 'https://github.com/yearn/yearn-watch',
 		USE_NETWORKS: true,
 		USE_PRICES: false,
 		USE_PRICE_TRI_CRYPTO: false,
