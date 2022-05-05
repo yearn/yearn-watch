@@ -69,7 +69,7 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 				<StatisticCard
 					className={'col-span-6 md:col-span-4'}
 					label={'Index'}
-					value={utils.format.amount((strategy?.index === 21 ? -1 : strategy?.index || 0))} />
+					value={utils.format.amount((strategy?.index === 21 ? -1 : strategy?.index || 0), 0, 0)} />
 			</StatisticCard.Wrapper>
 		</Card>
 	);

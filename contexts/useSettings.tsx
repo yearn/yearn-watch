@@ -3,6 +3,8 @@ import	{useLocalStorage}		from	'@yearn/web-lib/hooks';
 import	* as useSettingsTypes	from	'contexts/useSettings.d';
 
 const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
+	shouldDisplayStratsInQueue: true,
+	switchShouldDisplayStratsInQueue: (): void => undefined,
 	shouldUseRemoteFetch: true,
 	switchShouldUseRemoteFetch: (): void => undefined,
 	subGraphURI: {1: '', 250: '', 42161: ''},
@@ -26,17 +28,22 @@ const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 ** override the default RPC URI. Empty string will use the default, aka env
 ** variables.
 ******************************************************************************/
-type TStorageShouldUseRemoteFetch = [boolean, (s: boolean) => boolean];
+type TStorageBoolean = [boolean, (s: boolean) => boolean];
 type TStorageNetworkURI = [useSettingsTypes.TNetworkURI, (s: useSettingsTypes.TNetworkURI) => useSettingsTypes.TNetworkURI];
 
 export const SettingsContextApp = ({children}: {children: ReactElement}): ReactElement => {
-	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true) as TStorageShouldUseRemoteFetch;
+	const	[shouldDisplayStratsInQueue, set_shouldDisplayStratsInQueue] = useLocalStorage('shouldDisplayStratsInQueue', true) as TStorageBoolean;
+	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true) as TStorageBoolean;
 	const	[subGraphURI, set_subGraphURI] = useLocalStorage('subGraphURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
 	const	[rpcURI, set_rpcURI] = useLocalStorage('rpcURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
 
 	return (
 		<SettingsContext.Provider
 			value={{
+				shouldDisplayStratsInQueue,
+				switchShouldDisplayStratsInQueue: (): void => {
+					set_shouldDisplayStratsInQueue(!shouldDisplayStratsInQueue);
+				},
 				shouldUseRemoteFetch,
 				switchShouldUseRemoteFetch: (): void => {
 					set_shouldUseRemoteFetch(!shouldUseRemoteFetch);

@@ -7,15 +7,15 @@ import	{TStrategy, TVault}					from	'contexts/useWatch.d';
 import	StrategyBox							from	'components/sections/vaults/StrategyBox';
 import	ModalWarning						from	'components/ModalWarning';
 
-type 		TVaultBox = {vault: TVault}
+type 		TVaultBox = {vault: TVault, isOnlyInQueue?: boolean}
 
-const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement {
+const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TVaultBox): ReactElement {
 	const		[isOpen, set_isOpen] = React.useState(false);
 	const		[strategies, set_strategies] = React.useState<TStrategy[]>([]);
 
 	React.useEffect((): void => {
-		set_strategies(vault.strategies);
-	}, [vault.strategies]);
+		set_strategies(vault.strategies.filter((strat): boolean => isOnlyInQueue ? strat.index !== 21 : true));
+	}, [vault.strategies, isOnlyInQueue]);
 
 	function	renderSummaryStart(): ReactElement {
 		return (
@@ -32,7 +32,7 @@ const VaultBox = React.memo(function VaultBox({vault}: TVaultBox): ReactElement 
 					<div className={'ml-2 md:ml-6'}>
 						<b>{vault.display_name || vault.name}</b>
 						<p className={'text-xs text-typo-secondary'}>
-							{(vault.strategies).length > 1 ? `${(vault.strategies).length} strats` : `${(vault.strategies).length} strat`}
+							{(strategies).length > 1 ? `${(strategies).length} strats` : `${(strategies).length} strat`}
 						</p>
 					</div>
 				</div>

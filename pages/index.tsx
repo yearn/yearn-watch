@@ -3,15 +3,17 @@ import	{List}							from	'@yearn/web-lib/layouts';
 import	{Card, SearchBox, Switch}		from	'@yearn/web-lib/components';
 import	* as utils						from	'@yearn/web-lib/utils';
 import	useWatch						from	'contexts/useWatch';
+import	{TVault}						from	'contexts/useWatch.d';
+import	useSettings						from	'contexts/useSettings';
 import	VaultBox						from	'components/sections/vaults/VaultBox';
 import	{deepFindVaultBySearch}			from	'utils/filters';
-import {TVault} from 'contexts/useWatch.d';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** Main render of the home page
 ******************************************************************************/
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();
+	const	{shouldDisplayStratsInQueue, switchShouldDisplayStratsInQueue} = useSettings();
 	const	[filteredVaults, set_filteredVaults] = React.useState<TVault[]>([]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[isOnlyWarning, set_isOnlyWarning] = React.useState(false);
@@ -40,14 +42,15 @@ function	Index(): ReactElement {
 
 				notAllocated += (totalAssetsUSDC - reduceSum);
 			}
+
 			set_filteredVaults(_filteredVaults);
 			set_searchResult({
 				vaults: _filteredVaults.length,
-				strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault?.strategies?.length || 0), 0),
+				strategies: _filteredVaults.reduce((acc, vault): number => acc + ((vault.strategies.filter((strat): boolean => shouldDisplayStratsInQueue ? strat.index !== 21 : true))?.length || 0), 0),
 				notAllocated: notAllocated
 			});
 		});
-	}, [vaults, searchTerm, isOnlyWarning]);
+	}, [vaults, searchTerm, isOnlyWarning, shouldDisplayStratsInQueue]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
@@ -68,8 +71,16 @@ function	Index(): ReactElement {
 				<div>
 					<Card padding={'narrow'}>
 						<label className={'component--switchCard-wrapper'}>
-							<p>{'Only vaults with warnings'}</p>
+							<p>{'Only with warnings'}</p>
 							<Switch isEnabled={isOnlyWarning} onSwitch={set_isOnlyWarning} />
+						</label>
+					</Card>
+				</div>
+				<div>
+					<Card padding={'narrow'}>
+						<label className={'component--switchCard-wrapper'}>
+							<p>{'Only in queue'}</p>
+							<Switch isEnabled={shouldDisplayStratsInQueue} onSwitch={switchShouldDisplayStratsInQueue} />
 						</label>
 					</Card>
 				</div>
@@ -78,7 +89,7 @@ function	Index(): ReactElement {
 				<List className={'flex flex-col space-y-2 w-full'}>
 					{filteredVaults.map((vault): ReactElement => (
 						<div key={vault.address}>
-							<VaultBox vault={vault} />
+							<VaultBox vault={vault} isOnlyInQueue={shouldDisplayStratsInQueue} />
 						</div>
 					))}
 				</List>
