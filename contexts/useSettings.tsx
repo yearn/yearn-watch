@@ -5,6 +5,8 @@ import	* as useSettingsTypes	from	'contexts/useSettings.d';
 const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 	shouldDisplayStratsInQueue: true,
 	switchShouldDisplayStratsInQueue: (): void => undefined,
+	shouldDisplayWithNoDebt: true,
+	switchShouldDisplayWithNoDebt: (): void => undefined,
 	shouldGivePriorityToSubgraph: true,
 	switchShouldGivePriorityToSubgraph: (): void => undefined,
 	shouldUseRemoteFetch: true,
@@ -35,7 +37,8 @@ type TStorageNetworkURI = [useSettingsTypes.TNetworkURI, (s: useSettingsTypes.TN
 
 export const SettingsContextApp = ({children}: {children: ReactElement}): ReactElement => {
 	const	[shouldDisplayStratsInQueue, set_shouldDisplayStratsInQueue] = useLocalStorage('shouldDisplayStratsInQueue', true) as TStorageBoolean;
-	const	[shouldGivePriorityToSubgraph, set_shouldGivePriorityToSubgraph] = useLocalStorage('shouldDisplayStratsInQueue', true) as TStorageBoolean;
+	const	[shouldGivePriorityToSubgraph, set_shouldGivePriorityToSubgraph] = useLocalStorage('shouldGivePriorityToSubgraph', true) as TStorageBoolean;
+	const	[shouldDisplayWithNoDebt, set_shouldDisplayWithNoDebt] = useLocalStorage('shouldDisplayWithNoDebt', true) as TStorageBoolean;
 	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true) as TStorageBoolean;
 	const	[subGraphURI, set_subGraphURI] = useLocalStorage('subGraphURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
 	const	[rpcURI, set_rpcURI] = useLocalStorage('rpcURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
@@ -46,6 +49,10 @@ export const SettingsContextApp = ({children}: {children: ReactElement}): ReactE
 				shouldDisplayStratsInQueue,
 				switchShouldDisplayStratsInQueue: (): void => {
 					set_shouldDisplayStratsInQueue(!shouldDisplayStratsInQueue);
+				},
+				shouldDisplayWithNoDebt,
+				switchShouldDisplayWithNoDebt: (): void => {
+					set_shouldDisplayWithNoDebt(!shouldDisplayWithNoDebt);
 				},
 				shouldGivePriorityToSubgraph,
 				switchShouldGivePriorityToSubgraph: (): void => {

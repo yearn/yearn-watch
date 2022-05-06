@@ -10,6 +10,7 @@ import	SectionFormRpcURI			from	'components/sections/settings/SectionFormRpcURI'
 function	Settings(): ReactElement {
 	const {
 		shouldDisplayStratsInQueue, switchShouldDisplayStratsInQueue,
+		shouldDisplayWithNoDebt, switchShouldDisplayWithNoDebt,
 		shouldGivePriorityToSubgraph, switchShouldGivePriorityToSubgraph,
 		shouldUseRemoteFetch, switchShouldUseRemoteFetch
 	} = useSettings();
@@ -50,6 +51,18 @@ function	Settings(): ReactElement {
 						<Switch
 							isEnabled={shouldGivePriorityToSubgraph}
 							onSwitch={(): void => switchShouldGivePriorityToSubgraph()} />
+					</div>
+				</div>
+				<div className={`flex flex-row w-full ${shouldUseRemoteFetch ? 'opacity-60 cursor-not-allowed' : ''}`}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}>
+						<label className={'test-sm'}>
+							{'Display vault with balanceTokensIdle and balanceTokensInvested equal to 0'}
+						</label>
+					</div>
+					<div className={'w-full md:w-7/12'}>
+						<Switch
+							isEnabled={shouldDisplayWithNoDebt}
+							onSwitch={(): void => switchShouldDisplayWithNoDebt()} />
 					</div>
 				</div>
 			</Card>

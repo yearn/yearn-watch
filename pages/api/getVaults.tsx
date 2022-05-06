@@ -1,14 +1,14 @@
-import	{NextApiRequest, NextApiResponse}	from	'next';
-import	axios								from	'axios';
-import	{request}							from	'graphql-request';
-import	{Contract}							from	'ethcall';
-import	{ethers, BigNumber}					from	'ethers';
-import	{createHash}						from	'crypto';
-import	VAULT_ABI							from	'utils/abi/vaults.abi';
-import	PRICE_ORACLE_ABI					from	'utils/abi/priceOracle.abi';
-import	{TVault, TStrategyReport, TGraphVault}			from	'contexts/useWatch.d';
-import	* as utils							from	'@yearn/web-lib/utils';
-import	{getTvlImpact}						from	'utils';
+import	{NextApiRequest, NextApiResponse}		from	'next';
+import	axios									from	'axios';
+import	{request}								from	'graphql-request';
+import	{Contract}								from	'ethcall';
+import	{ethers, BigNumber}						from	'ethers';
+import	{createHash}							from	'crypto';
+import	VAULT_ABI								from	'utils/abi/vaults.abi';
+import	PRICE_ORACLE_ABI						from	'utils/abi/priceOracle.abi';
+import	{TVault, TStrategyReport, TGraphVault}	from	'contexts/useWatch.d';
+import	* as utils								from	'@yearn/web-lib/utils';
+import	{getTvlImpact}							from	'utils';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const	MINUTES = 60 * 1000;
@@ -100,7 +100,7 @@ function	givePriorityToAPI(_vaultsInitials: any[]): TVault[] {
 ** more data than the API, but some may be irrelevant now (strategy and 
 ** vaults no longer in production for example).
 **************************************************************************/
-function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chainID: number): TVault[] {
+function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chainID: number, shouldDisplayWithNoDebt = true): TVault[] {
 	let _vaults: TVault[] = [];
 	for (const vault of vaults) {
 		const	vaultFromAPI = _vaultsInitials.find((v: TVault): boolean => utils.toAddress(v.address) === utils.toAddress(vault.id));
@@ -143,7 +143,9 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 				apiVersion: s.apiVersion
 			}))
 		};
-		if (Number(vault.balanceTokensIdle) > 0 || Number(vault.balanceTokensInvested) > 0) {
+		if (shouldDisplayWithNoDebt) {
+			_vaults.push(_vault as TVault);
+		} else if (Number(vault.balanceTokensIdle) > 0 || Number(vault.balanceTokensInvested) > 0) {
 			_vaults.push(_vault as TVault);
 		}
 	}
@@ -169,6 +171,7 @@ export async function getVaults(
 	chainID: number,
 	isLocal = false,
 	shouldGivePriorityToSubgraph = true,
+	shouldDisplayWithNoDebt = true,
 	providedProvider?: string,
 	providedGraph?: string
 ): Promise<TGetVaults> {
@@ -258,7 +261,7 @@ export async function getVaults(
 	**************************************************************************/
 	let	_vaults: TVault[];
 	if (shouldGivePriorityToSubgraph) {
-		_vaults = givePriorityToGraph(_graph.vaults as TGraphVault[], _vaultsInitials, chainID);
+		_vaults = givePriorityToGraph(_graph.vaults as TGraphVault[], _vaultsInitials, chainID, shouldDisplayWithNoDebt);
 	} else {
 		_vaults = givePriorityToAPI(_vaultsInitials);
 	}

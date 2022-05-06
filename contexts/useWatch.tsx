@@ -42,7 +42,7 @@ type	TStorageLastUpdate = [number, (s: number) => number];
 
 export const WatchContextApp = ({children}: {children: ReactElement}): ReactElement => {
 	const	{chainID} = useWeb3();
-	const	{shouldGivePriorityToSubgraph, shouldUseRemoteFetch, rpcURI, subGraphURI} = useSettings();
+	const	{shouldGivePriorityToSubgraph, shouldDisplayWithNoDebt, shouldUseRemoteFetch, rpcURI, subGraphURI} = useSettings();
 	const	[vaults, set_vaults] = useLocalStorage('vaults', []) as TStorageVaults;
 	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {}) as TStorageNetworkSync;
 	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0) as TStorageLastUpdate;
@@ -108,6 +108,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 				chainID || 1,
 				true,
 				shouldGivePriorityToSubgraph,
+				shouldDisplayWithNoDebt,
 				rpcURI[chainID || 1],
 				subGraphURI[chainID || 1]
 
