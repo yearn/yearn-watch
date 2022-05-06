@@ -11,7 +11,6 @@ import	* as utils							from	'@yearn/web-lib/utils';
 import	{getTvlImpact}						from	'utils';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const	HAS_PRIORITY_TO_GRAPH = true;
 const	MINUTES = 60 * 1000;
 const	ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
 const	FTM_ORACLE_CONTRACT_ADDRESS = '0x57aa88a0810dfe3f9b71a9b179dd8bf5f956c46a';
@@ -86,19 +85,13 @@ const	GRAPH_REQUEST= `{
 ** a lot of precompiled informations, but mostly on the current vaults.
 ** Some vaults and/or strategies may not be included in the API.
 **************************************************************************/
-function	givePriorityToAPI(_vaultsInitials: any[], shouldExcludeMigrated: boolean): TVault[] {
+function	givePriorityToAPI(_vaultsInitials: any[]): TVault[] {
 	// Shallow copy to clean work
 	let	_vaults: TVault[] = [..._vaultsInitials];
 
 	//Filter to only get V2 vaults
 	_vaults = _vaults.filter((v): boolean => v.type === 'v2');
 
-	//Remove migrated vaults is we should
-	if (shouldExcludeMigrated) {
-		_vaults = (_vaults as any).filter((v: {migration?: {available: boolean}}): boolean => v.migration === null || !(v.migration?.available ?? true));
-	} else {
-		_vaults = (_vaults as any).filter((v: {migration?: {available: boolean}}): boolean => v.migration === undefined || !v?.migration?.available);
-	}
 	return _vaults;
 }
 
@@ -175,6 +168,7 @@ type	TGetVaults = {
 export async function getVaults(
 	chainID: number,
 	isLocal = false,
+	shouldGivePriorityToSubgraph = true,
 	providedProvider?: string,
 	providedGraph?: string
 ): Promise<TGetVaults> {
@@ -263,12 +257,11 @@ export async function getVaults(
 	** QUESTION: should we keep migrated vaults?
 	**************************************************************************/
 	let	_vaults: TVault[];
-	if (!HAS_PRIORITY_TO_GRAPH) {
-		_vaults = givePriorityToAPI(_vaultsInitials, true);
-	} else {
+	if (shouldGivePriorityToSubgraph) {
 		_vaults = givePriorityToGraph(_graph.vaults as TGraphVault[], _vaultsInitials, chainID);
+	} else {
+		_vaults = givePriorityToAPI(_vaultsInitials);
 	}
-	_vaults = _vaults.slice(0, 200);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Prepare and execute a multicall to get some missing data. Right now,

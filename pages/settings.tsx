@@ -10,6 +10,7 @@ import	SectionFormRpcURI			from	'components/sections/settings/SectionFormRpcURI'
 function	Settings(): ReactElement {
 	const {
 		shouldDisplayStratsInQueue, switchShouldDisplayStratsInQueue,
+		shouldGivePriorityToSubgraph, switchShouldGivePriorityToSubgraph,
 		shouldUseRemoteFetch, switchShouldUseRemoteFetch
 	} = useSettings();
 	/* 🔵 - Yearn Finance ******************************************************
@@ -22,8 +23,8 @@ function	Settings(): ReactElement {
 					<h4>{'Strategies'}</h4>
 				</div>
 				<div className={'flex flex-row w-full'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Hide strategies not in withdraw queue'}</label></div>
-					<div className={'w-full md:w-9/12'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>{'Hide strategies not in withdraw queue'}</label></div>
+					<div className={'w-full md:w-7/12'}>
 						<Switch
 							isEnabled={shouldDisplayStratsInQueue}
 							onSwitch={(): void => switchShouldDisplayStratsInQueue()} />
@@ -36,11 +37,19 @@ function	Settings(): ReactElement {
 					<h4>{'Fetching method'}</h4>
 				</div>
 				<div className={'flex flex-row w-full'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Should use remote fetcher'}</label></div>
-					<div className={'w-full md:w-9/12'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>{'Should use remote fetcher'}</label></div>
+					<div className={'w-full md:w-7/12'}>
 						<Switch
 							isEnabled={shouldUseRemoteFetch}
 							onSwitch={(): void => switchShouldUseRemoteFetch()} />
+					</div>
+				</div>
+				<div className={`flex flex-row w-full ${shouldUseRemoteFetch ? 'opacity-60 cursor-not-allowed' : ''}`}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>{'Give priority to Subgraph'}</label></div>
+					<div className={'w-full md:w-7/12'}>
+						<Switch
+							isEnabled={shouldGivePriorityToSubgraph}
+							onSwitch={(): void => switchShouldGivePriorityToSubgraph()} />
 					</div>
 				</div>
 			</Card>

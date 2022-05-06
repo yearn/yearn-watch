@@ -5,6 +5,8 @@ export type	TNetworkURI = {
 export type	TSettingsContext = {
 	shouldDisplayStratsInQueue: boolean,
 	switchShouldDisplayStratsInQueue: () => void,
+	shouldGivePriorityToSubgraph: boolean,
+	switchShouldGivePriorityToSubgraph: () => void,
 	shouldUseRemoteFetch: boolean,
 	switchShouldUseRemoteFetch: () => void,
 	subGraphURI: TNetworkURI,
