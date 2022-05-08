@@ -34,8 +34,8 @@ module.exports = ({
 		GRAPH_URL: {
 			1: 'https://api.thegraph.com/subgraphs/name/0xkofee/yearn-vaults-v2',
 			// 1: 'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet',
-			250: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-fantom',
-			// 250: 'https://api.thegraph.com/subgraphs/name/bsamuels453/yearn-fantom-validation-grafted',
+			// 250: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-fantom',
+			250: 'https://api.thegraph.com/subgraphs/name/bsamuels453/yearn-fantom-validation-grafted',
 			42161: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-arbitrum'
 		},
 		RPC_URL: {
