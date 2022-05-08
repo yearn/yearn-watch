@@ -5,6 +5,7 @@ import	{Contract}								from	'ethcall';
 import	{ethers, BigNumber}						from	'ethers';
 import	{createHash}							from	'crypto';
 import	VAULT_ABI								from	'utils/abi/vaults.abi';
+import	STRATEGY_ABI							from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI						from	'utils/abi/priceOracle.abi';
 import	{TVault, TStrategyReport, TGraphVault}	from	'contexts/useWatch.d';
 import	* as utils								from	'@yearn/web-lib/utils';
@@ -14,7 +15,7 @@ import	{getTvlImpact}							from	'utils';
 const	MINUTES = 60 * 1000;
 const	ETH_ORACLE_CONTRACT_ADDRESS = '0x83d95e0d5f402511db06817aff3f9ea88224b030';
 const	FTM_ORACLE_CONTRACT_ADDRESS = '0x57aa88a0810dfe3f9b71a9b179dd8bf5f956c46a';
-const	GRAPH_REQUEST= `{
+const	GRAPH_REQUEST = `{
   _meta {
 		hasIndexingErrors
 		block {
@@ -31,7 +32,7 @@ const	GRAPH_REQUEST= `{
 		depositLimit
 		balanceTokens
 		balanceTokensIdle
-        balanceTokensInvested
+		# balanceTokensInvested - Disabled as not working on FTM
 		managementFeeBps
 		performanceFeeBps
 		apiVersion
@@ -52,8 +53,8 @@ const	GRAPH_REQUEST= `{
 			name
 			apiVersion
 			emergencyExit
-			estimatedTotalAssets
-			isActive
+			# estimatedTotalAssets - Disabled as not working on FTM
+			# isActive - Disabled as not working on FTM
 			keeper
 			strategist
 			rewards
@@ -145,7 +146,7 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 		};
 		if (shouldDisplayWithNoDebt) {
 			_vaults.push(_vault as TVault);
-		} else if (Number(vault.balanceTokensIdle) > 0 || Number(vault.balanceTokensInvested) > 0) {
+		} else if (Number(vault.balanceTokensIdle) > 0 || Number(vault?.balanceTokensInvested || 0) > 0) {
 			_vaults.push(_vault as TVault);
 		}
 	}
@@ -291,6 +292,9 @@ export async function getVaults(
 			multiCalls.push(contractVault.debtOutstanding(strategy.address));
 			multiCalls.push(contractVault.strategies(strategy.address));
 			multiCalls.push(contractVault.expectedReturn(strategy.address));
+			const	contractStrat = new Contract(strategy.address, STRATEGY_ABI);
+			multiCalls.push(contractStrat.isActive());
+			multiCalls.push(contractStrat.estimatedTotalAssets());
 		}
 	}
 	const	callResult = await ethcallProvider.tryAll(multiCalls);
@@ -356,6 +360,8 @@ export async function getVaults(
 			strategy.totalGain = BigNumber.from(strategyData.totalGain || 0);
 			strategy.totalLoss = BigNumber.from(strategyData.totalLoss || 0);
 			strategy.expectedReturn = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
+			strategy.isActive = callResult[rIndex++] as boolean;
+			strategy.estimatedTotalAssets = BigNumber.from(callResult[rIndex++]) || BigNumber.from(0);
 			strategy.totalDebtUSDC = Number(ethers.utils.formatUnits(strategy.totalDebt, vault.decimals)) * (vault.tokenPriceUSDC || 0);
 			strategy.tvlImpact = getTvlImpact(strategy.totalDebtUSDC);
 
