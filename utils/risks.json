@@ -544,22 +544,6 @@
 		}
 	},
 	{
-		"id": "solidexjoint",
-		"network": 1,
-		"label": "Solidex Joint",
-		"codeReviewScore": 3,
-		"testingScore": 4,
-		"auditScore": 5,
-		"protocolSafetyScore": 5,
-		"complexityScore": 3,
-		"teamKnowledgeScore": 1,
-		"criteria": {
-			"nameLike": ["solidexjoint"],
-			"strategies": [],
-			"exclude": []
-		}
-	},
-	{
 		"id": "singlesidedbalancer",
 		"network": 1,
 		"label": "Single Sided Balancer v3",

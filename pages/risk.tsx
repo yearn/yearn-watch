@@ -86,7 +86,10 @@ function	Risk(): ReactElement {
 					}
 				}
 			}
-			_group.longevityScore = getLongevityScore(((Date.now().valueOf()) - (_group.oldestActivation * 1000)) / 1000 / 60 / 60 / 24);
+			if (_group.strategies.length === 0)
+				_group.longevityScore = 5;
+			else
+				_group.longevityScore = getLongevityScore(((Date.now().valueOf()) - (_group.oldestActivation * 1000)) / 1000 / 60 / 60 / 24);
 			_group.medianScore = median([
 				_group.auditScore,
 				_group.codeReviewScore,
@@ -107,6 +110,8 @@ function	Risk(): ReactElement {
 
 		set_groups(_groups);
 	}, [vaults, chainID]);
+
+	console.log(groups);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
