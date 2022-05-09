@@ -13,6 +13,7 @@ const	WatchContext = React.createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
 	lastUpdate: 0,
 	isUpdating: false,
+	dataChainID: 1,
 	network: {
 		status: {
 			rpc: 1,
@@ -47,6 +48,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {}) as TStorageNetworkSync;
 	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0) as TStorageLastUpdate;
 	const	[isUpdating, set_isUpdating] = React.useState<boolean>(false);
+	const	[dataChainID, set_dataChainID] = React.useState<number>(1);
 	const	getVaultIsRunning = React.useRef(false);
 	const	getVaultRunNonce = React.useRef(0);
 
@@ -101,6 +103,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					set_lastUpdate(Number(data.access));
 					set_networkSync(data.data.network);
 					set_isUpdating(false);
+					set_dataChainID(chainID || 1)
 				});
 			}
 		} else {
@@ -128,6 +131,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					set_lastUpdate(new Date().valueOf());
 					set_networkSync(data.network);
 					set_isUpdating(false);
+					set_dataChainID(chainID || 1);
 				});
 			}
 		}
@@ -145,6 +149,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 				vaults,
 				lastUpdate,
 				isUpdating,
+				dataChainID,
 				network: networkSync,
 				update: (): void => {
 					fetchVaults(chainID, true);

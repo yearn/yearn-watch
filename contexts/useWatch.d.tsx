@@ -224,6 +224,7 @@ export type	TWatchContext = {
 	vaults: TVault[],
 	lastUpdate: number,
 	isUpdating: boolean,
+	dataChainID: number,
 	network: TNetworkData,
 	update: () => void
 }
