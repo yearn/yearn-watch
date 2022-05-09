@@ -32,6 +32,9 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 					<div className={'ml-2 md:ml-6'}>
 						<b>{vault.display_name || vault.name}</b>
 						<p className={'text-xs text-typo-secondary'}>
+							{`v${vault.version}`}
+						</p>
+						<p className={'text-xs text-typo-secondary'}>
 							{(strategies).length > 1 ? `${(strategies).length} strats` : `${(strategies).length} strat`}
 						</p>
 					</div>
