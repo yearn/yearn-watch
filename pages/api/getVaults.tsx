@@ -347,8 +347,8 @@ export async function getVaults(
 
 		for (const strategy of vault.strategies) {
 			strategy.alerts = [];
-			strategy.creditAvailable = BigNumber.from(callResult[rIndex++]) || BigNumber.from(0);
-			strategy.debtOutstanding = BigNumber.from(callResult[rIndex++]) || BigNumber.from(0);
+			strategy.creditAvailable = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
+			strategy.debtOutstanding = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
 			const	strategyData = callResult[rIndex++] as {[key: string]: unknown};
 			strategy.performanceFee = BigNumber.from(strategyData.performanceFee || 0);
 			strategy.activation = BigNumber.from(strategyData.activation).toString();
@@ -361,7 +361,7 @@ export async function getVaults(
 			strategy.totalLoss = BigNumber.from(strategyData.totalLoss || 0);
 			strategy.expectedReturn = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
 			strategy.isActive = callResult[rIndex++] as boolean;
-			strategy.estimatedTotalAssets = BigNumber.from(callResult[rIndex++]) || BigNumber.from(0);
+			strategy.estimatedTotalAssets = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
 			strategy.totalDebtUSDC = Number(ethers.utils.formatUnits(strategy.totalDebt, vault.decimals)) * (vault.tokenPriceUSDC || 0);
 			strategy.tvlImpact = getTvlImpact(strategy.totalDebtUSDC);
 
@@ -418,14 +418,14 @@ export async function getVaults(
 							duration: report.results[0]?.duration as string,
 							apr: Number(report.results[0]?.apr),
 							durationPR: Number(report.results[0]?.durationPr),
-							debtLimit: BigNumber.from(report.debtLimit),
-							debtPaid: BigNumber.from(report.debtPaid),
-							debtAdded: BigNumber.from(report.debtAdded),
-							totalDebt: BigNumber.from(report.totalDebt),
-							totalLoss: BigNumber.from(report.totalLoss),
-							totalGain: BigNumber.from(report.totalGain),
-							loss: BigNumber.from(report.loss),
-							gain: BigNumber.from(report.gain)
+							debtLimit: BigNumber.from(report.debtLimit || 0),
+							debtPaid: BigNumber.from(report.debtPaid || 0),
+							debtAdded: BigNumber.from(report.debtAdded || 0),
+							totalDebt: BigNumber.from(report.totalDebt || 0),
+							totalLoss: BigNumber.from(report.totalLoss || 0),
+							totalGain: BigNumber.from(report.totalGain || 0),
+							loss: BigNumber.from(report.loss || 0),
+							gain: BigNumber.from(report.gain || 0)
 						};
 						strategy.reports.push(_report);
 					}
