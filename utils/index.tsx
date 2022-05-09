@@ -37,7 +37,6 @@ export function getLongevityScore(days: number): number {
 
 type TGenericListItem = {[x: string]: string[]};
 export function getExcludeIncludeUrlParams(item: TGenericListItem): string {
-	console.log(item);
 	const include = ([...item?.include || [], ...item?.nameLike || []]).join('&include='); //Not existing rn
 	const exclude = (item?.exclude || []).join('&exclude=');
 	if (exclude.length === 0 && include.length === 0)

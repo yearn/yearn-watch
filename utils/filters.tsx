@@ -61,7 +61,7 @@ export function	findStrategyBySearch(strategy: TStrategy, term: string): boolean
 	return (
 		(strategy?.name || '').toLowerCase().includes(term.toLowerCase()) ||
 		(strategy?.address || '').toLowerCase().includes(term.toLowerCase()) || 
-		(strategy?.description || '').toLowerCase().includes(term.toLowerCase()) || 
+		// (strategy?.description || '').toLowerCase().includes(term.toLowerCase()) || 
 		(strategy.vault?.name || '').toLowerCase().includes(term.toLowerCase()) ||
 		(strategy.vault?.address || '').toLowerCase().includes(term.toLowerCase())
 	);
