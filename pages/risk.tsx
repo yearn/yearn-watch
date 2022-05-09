@@ -111,8 +111,6 @@ function	Risk(): ReactElement {
 		set_groups(_groups);
 	}, [vaults, chainID]);
 
-	console.log(groups);
-
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
 	**************************************************************************/
