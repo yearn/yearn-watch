@@ -208,38 +208,6 @@
 		}
 	},
 	{
-		"id": "Levered-AAVE-wBTC",
-		"network": 1,
-		"label": "WBTC Badger Levered",
-		"codeReviewScore": 1,
-		"testingScore": 3,
-		"auditScore": 5,
-		"protocolSafetyScore": 1,
-		"complexityScore": 4,
-		"teamKnowledgeScore": 4,
-		"criteria": {
-			"nameLike": ["Levered-AAVE-wBTC"],
-			"strategies": [],
-			"exclude": []
-		}
-	},
-	{
-		"id": "universe",
-		"network": 1,
-		"label": "Universe",
-		"codeReviewScore": 1,
-		"testingScore": 3,
-		"auditScore": 5,
-		"protocolSafetyScore": 3,
-		"complexityScore": 2,
-		"teamKnowledgeScore": 5,
-		"criteria": {
-			"nameLike": ["universe"],
-			"strategies": [],
-			"exclude": []
-		}
-	},
-	{
 		"id": "kashi",
 		"network": 1,
 		"label": "Kashi",
@@ -412,38 +380,6 @@
 		"criteria": {
 			"nameLike": ["SingleSidedBoostedBalancer"],
 			"strategies": [""],
-			"exclude": []
-		}
-	},
-	{
-		"id": "strategybarndaostaking",
-		"network": 1,
-		"label": "Barn DAO Staking",
-		"codeReviewScore": 2,
-		"testingScore": 2,
-		"auditScore": 5,
-		"protocolSafetyScore": 3,
-		"complexityScore": 1,
-		"teamKnowledgeScore": 4,
-		"criteria": {
-			"nameLike": ["StrategyBarnDAOStaking"],
-			"strategies": [],
-			"exclude": []
-		}
-	},
-	{
-		"id": "strategyleaguedaostaking",
-		"network": 1,
-		"label": "League DAO Staking",
-		"codeReviewScore": 2,
-		"testingScore": 2,
-		"auditScore": 5,
-		"protocolSafetyScore": 3,
-		"complexityScore": 1,
-		"teamKnowledgeScore": 4,
-		"criteria": {
-			"nameLike": ["LeagueDAOStaking", "FiatDAOStakingYFI"],
-			"strategies": [],
 			"exclude": []
 		}
 	},
@@ -641,7 +577,6 @@
 				"singlesided",
 				"ssc",
 				"Levered-AAVE-wBTC",
-				"universe",
 				"kashi",
 				"pooltogether",
 				"aave",
@@ -658,12 +593,9 @@
 				"SingleSidedBalancer",
 				"SSBv3",
 				"0xc31763c0c3025b9DF3Fb7Cb7f4AC041866F64F2E",
-				"StrategyBarnDAOStaking",
-				"StrategyLeagueDAOStaking",
 				"ToHegicSushiJoint",
 				"0xB1bC173c2BCC98E8EEDE8Af0443AcE29b8fA2992",
 				"0x26244f5b4A933C6e595665F08F8c76108195b755",
-				"FiatDAOStakingYFI",
 				"StrategyLiquityStabilityPoolLUSD",
 				"inverse",
 				"StrategyNotionalLending",
