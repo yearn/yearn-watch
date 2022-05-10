@@ -1033,6 +1033,22 @@
 		}
 	},
 	{
+		"id": "curvestakerspell",
+		"network": 42161,
+		"label": "Curve Staker Spell",
+		"codeReviewScore": 3,
+		"testingScore": 4,
+		"auditScore": 5,
+		"protocolSafetyScore": 4,
+		"complexityScore": 2,
+		"teamKnowledgeScore": 3,
+		"criteria": {
+			"nameLike": ["curvestakerspell"],
+			"strategies": [],
+			"exclude": []
+		}
+	},
+	{
 		"id": "others",
 		"network": 42161,
 		"label": "Others",
@@ -1042,7 +1058,8 @@
 			"exclude": [
 				"curve",
 				"crv",
-				"stargate"
+				"stargate",
+				"curvestakerspell"
 			]
 		},
 		"codeReviewScore": 5,
