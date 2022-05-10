@@ -46,7 +46,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 ******************************************************************************/
 function	Risk(): ReactElement {
 	const	{chainID} = useWeb3();
-	const	{dataChainID, vaults} = useWatch();
+	const	{isUpdating, dataChainID, vaults} = useWatch();
 	const	[sortBy, set_sortBy] = React.useState('score');
 	const	[groups, set_groups] = React.useState<TRiskGroup[]>([]);
 
@@ -58,7 +58,8 @@ function	Risk(): ReactElement {
 	** filters.
 	**************************************************************************/
 	React.useEffect((): void => {
-		if (dataChainID !== chainID) {
+		console.log(dataChainID, chainID);
+		if (dataChainID !== chainID && !(dataChainID === 1 && chainID === 0)) {
 			set_groups([]);
 			return;
 		}
@@ -113,7 +114,7 @@ function	Risk(): ReactElement {
 		}
 
 		set_groups(_groups);
-	}, [vaults, dataChainID, chainID]);
+	}, [vaults, dataChainID, chainID, isUpdating]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
