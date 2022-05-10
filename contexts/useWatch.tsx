@@ -103,7 +103,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					set_lastUpdate(Number(data.access));
 					set_networkSync(data.data.network);
 					set_isUpdating(false);
-					set_dataChainID(chainID || 1)
+					set_dataChainID(chainID || 1);
 				});
 			}
 		} else {
