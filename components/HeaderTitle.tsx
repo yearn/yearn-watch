@@ -81,6 +81,15 @@ function	HeaderTitle(): ReactElement {
 				</div>
 			);
 		}
+		if (router.asPath.includes('/wavey')) {
+			return (
+				<div className={'flex-row-center'}>
+					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+						{'Wavey'}
+					</h1>
+				</div>
+			);
+		}
 		return (
 			<div className={'flex-row-center'}>
 				<h1 className={'mr-2 md:mr-4 text-typo-primary'}>

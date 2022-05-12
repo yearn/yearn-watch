@@ -10,6 +10,7 @@ import	HeaderTitle					from	'components/HeaderTitle';
 // import	IconRisk					from	'components/icons/IconRisk';
 import	IconHealthcheck				from	'components/icons/IconHealthcheck';
 import	IconQuery					from	'components/icons/IconQuery';
+import	IconWave					from	'components/icons/IconWave';
 import	LogoWatch					from	'components/logo/LogoWatch';
 import	{WithYearn}					from	'@yearn/web-lib';
 import	{Header, Navbar}			from	'@yearn/web-lib/layouts';
@@ -194,6 +195,24 @@ function	AppWrapper(props: AppProps): ReactElement {
 			values: ['/healthcheck'],
 			label: 'Healthcheck',
 			icon: <IconHealthcheck />
+		},
+		{
+			route: '/waveysimulate',
+			values: ['/waveysimulate'],
+			label: 'Wavey - Simulation',
+			icon: <IconWave />
+		},
+		{
+			route: '/waveypool',
+			values: ['/waveypool'],
+			label: 'Wavey - Pool',
+			icon: <IconWave />
+		},
+		{
+			route: '/waveyvault',
+			values: ['/waveyvault'],
+			label: 'Wavey - Vault',
+			icon: <IconWave />
 		},
 		{
 			route: '/settings',
