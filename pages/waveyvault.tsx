@@ -62,7 +62,7 @@ function	WaveHealth(): ReactElement {
 					<div className={'flex flex-row justify-between items-center'}>
 						<div className={'text-sm'}>{'Ratio'}</div>
 						<div className={'text-base font-bold tabular-nums'}>
-							{`${utils.format.amount(vault?.available_reserves / vault?.total_assets, 2, 2)} %`}
+							{`${utils.format.amount(vault?.available_reserves / vault?.total_assets * 100, 2, 2)} %`}
 						</div>
 					</div>
 				</div>
