@@ -51,19 +51,6 @@ function	WaveHealth(): ReactElement {
 				</div>
 				<StatisticCard.Wrapper>
 					<StatisticCard
-						label={'Max No Loss Ratio'}
-						value={`${utils.format.amount(strategy.max_no_loss_ratio / 100, 2, 2)}%`} />
-					<StatisticCard
-						label={'Current Ratio'}
-						value={(
-							<div>
-								{`${utils.format.amount(strategy.current_ratio / 100, 2, 2)}%`}
-								<p className={`text-sm tabular-nums font-normal ${strategy.max_ratio_reduction < 0 ? 'text-alert-critical-primary' : 'text-primary'}`}>
-									{`${strategy?.max_ratio_reduction > 0 ? '+' : ''}${utils.format.amount(strategy?.max_ratio_reduction / 100, 2, 2) || '-'}%`}
-								</p>
-							</div>
-						)} />
-					<StatisticCard
 						label={'Debt Payment'}
 						value={(
 							<div>
@@ -73,6 +60,19 @@ function	WaveHealth(): ReactElement {
 								</p>
 							</div>
 						)} />
+					<StatisticCard
+						label={'Max No Loss Ratio'}
+						value={(
+							<div>
+								{`${utils.format.amount(strategy.max_no_loss_ratio / 100, 2, 2)}%`}
+								<p className={`text-sm tabular-nums font-normal ${strategy.max_ratio_reduction <= 0 ? 'text-primary' : 'text-alert-critical-primary'}`}>
+									{`${strategy?.max_ratio_reduction > 0 ? '+' : ''}${utils.format.amount(strategy?.max_ratio_reduction / 100, 2, 2) || '-'}%`}
+								</p>
+							</div>
+						)} />
+					<StatisticCard
+						label={'Current Ratio'}
+						value={`${utils.format.amount(strategy.current_ratio / 100, 2, 2)}%`} />
 					<StatisticCard
 						label={'Profit - Loss'}
 						value={`${utils.format.amount((strategy?.profit || 0) - (strategy?.loss || 0), 0, 0)}`} />
