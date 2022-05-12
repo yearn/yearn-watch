@@ -52,14 +52,14 @@ function	WaveHealth(): ReactElement {
 				<StatisticCard.Wrapper>
 					<StatisticCard
 						label={'Max No Loss Ratio'}
-						value={strategy.max_no_loss_ratio} />
+						value={`${utils.format.amount(strategy.max_no_loss_ratio / 100, 2, 2)}%`} />
 					<StatisticCard
 						label={'Current Ratio'}
 						value={(
 							<div>
-								{strategy.current_ratio}
+								{`${utils.format.amount(strategy.current_ratio / 100, 2, 2)}%`}
 								<p className={`text-sm tabular-nums font-normal ${strategy.max_ratio_reduction < 0 ? 'text-alert-critical-primary' : 'text-primary'}`}>
-									{`${strategy?.max_ratio_reduction > 0 ? '+' : ''}${strategy?.max_ratio_reduction || '-'}`}
+									{`${strategy?.max_ratio_reduction > 0 ? '+' : ''}${utils.format.amount(strategy?.max_ratio_reduction / 100, 2, 2) || '-'}%`}
 								</p>
 							</div>
 						)} />
@@ -67,7 +67,7 @@ function	WaveHealth(): ReactElement {
 						label={'Debt Payment'}
 						value={(
 							<div>
-								{utils.format.amount(strategy.debt_payment, 6, 6)}
+								{utils.format.amount(strategy.debt_payment, 0, 0)}
 								<p className={'text-sm font-normal'}>
 									{`${utils.format.amount(strategy?.debt_payment_usd, 2, 2)} $`}
 								</p>
@@ -75,12 +75,12 @@ function	WaveHealth(): ReactElement {
 						)} />
 					<StatisticCard
 						label={'Profit - Loss'}
-						value={`${utils.format.amount((strategy?.profit || 0) - (strategy?.loss || 0), 6, 6)}`} />
+						value={`${utils.format.amount((strategy?.profit || 0) - (strategy?.loss || 0), 0, 0)}`} />
 					<StatisticCard
 						label={'Debt Before'}
 						value={(
 							<div>
-								{utils.format.amount(strategy.strategy_debt_before, 6, 6)}
+								{utils.format.amount(strategy.strategy_debt_before, 0, 0)}
 								<p className={'text-sm font-normal'}>
 									{`${utils.format.amount(strategy?.strategy_debt_before_usd, 2, 2)} $`}
 								</p>
@@ -90,7 +90,7 @@ function	WaveHealth(): ReactElement {
 						label={'Debt After'}
 						value={(
 							<div>
-								{utils.format.amount(strategy.strategy_debt_after, 6, 6)}
+								{utils.format.amount(strategy.strategy_debt_after, 0, 0)}
 								<p className={'text-sm font-normal'}>
 									{`${utils.format.amount(strategy?.strategy_debt_after_usd, 2, 2)} $`}
 								</p>

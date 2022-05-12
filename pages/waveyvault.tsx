@@ -50,13 +50,13 @@ function	WaveHealth(): ReactElement {
 					<div className={'flex flex-row justify-between items-center'}>
 						<div className={'text-sm'}>{'Total Assets'}</div>
 						<div className={'text-base font-bold tabular-nums text-light-primary'}>
-							{`${utils.format.amount(vault?.total_assets, 6, 6)} ${vault?.symbol}`}
+							{`${utils.format.amount(vault?.total_assets, 0, 0)} ${vault?.symbol}`}
 						</div>
 					</div>
 					<div className={'flex flex-row justify-between items-center'}>
 						<div className={'text-sm'}>{'Reserves'}</div>
 						<div className={'text-base font-bold tabular-nums text-light-primary'}>
-							{`${utils.format.amount(vault?.available_reserves, 6, 6)} ${vault?.symbol}`}
+							{`${utils.format.amount(vault?.available_reserves, 0, 0)} ${vault?.symbol}`}
 						</div>
 					</div>
 					<div className={'flex flex-row justify-between items-center'}>

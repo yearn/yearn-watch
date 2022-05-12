@@ -85,7 +85,7 @@ function	WaveHealth(): ReactElement {
 								<div>
 									{`${utils.format.amount(token?.balance / pool.total_assets * 100, 2, 2)} %`}
 									<div className={'text-base font-normal'}>
-										{`${utils.format.amount(token?.balance, 6, 6)} ${token.symbol}`}
+										{`${utils.format.amount(token?.balance, 0, 0)} ${token.symbol}`}
 									</div>
 								</div>
 							)} />
@@ -125,7 +125,7 @@ function	WaveHealth(): ReactElement {
 								<div>
 									{`${utils.format.amount(token?.balance / pool.total_assets * 100, 2, 2)} %`}
 									<div className={'text-base font-normal'}>
-										{`${utils.format.amount(token?.balance, 6, 6)} ${token.symbol}`}
+										{`${utils.format.amount(token?.balance, 0, 0)} ${token.symbol}`}
 									</div>
 								</div>
 							)} />
