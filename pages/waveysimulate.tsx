@@ -54,7 +54,7 @@ function	WaveHealth(): ReactElement {
 						label={'Debt Payment'}
 						value={(
 							<div>
-								{utils.format.amount(strategy.debt_payment, 0, 0)}
+								{utils.format.amount(strategy.debt_payment, 0, strategy?.vault_symbol.includes('BTC') ? 2 : 0)}
 								<p className={'text-sm font-normal'}>
 									{`${utils.format.amount(strategy?.debt_payment_usd, 2, 2)} $`}
 								</p>
@@ -75,12 +75,12 @@ function	WaveHealth(): ReactElement {
 						value={`${utils.format.amount(strategy.current_ratio / 100, 2, 2)}%`} />
 					<StatisticCard
 						label={'Profit - Loss'}
-						value={`${utils.format.amount((strategy?.profit || 0) - (strategy?.loss || 0), 0, 0)}`} />
+						value={`${utils.format.amount((strategy?.profit || 0) - (strategy?.loss || 0), 0, strategy?.vault_symbol.includes('BTC') ? 2 : 0)}`} />
 					<StatisticCard
 						label={'Debt Before'}
 						value={(
 							<div>
-								{utils.format.amount(strategy.strategy_debt_before, 0, 0)}
+								{utils.format.amount(strategy.strategy_debt_before, 0, strategy?.vault_symbol.includes('BTC') ? 2 : 0)}
 								<p className={'text-sm font-normal'}>
 									{`${utils.format.amount(strategy?.strategy_debt_before_usd, 2, 2)} $`}
 								</p>
@@ -90,7 +90,7 @@ function	WaveHealth(): ReactElement {
 						label={'Debt After'}
 						value={(
 							<div>
-								{utils.format.amount(strategy.strategy_debt_after, 0, 0)}
+								{utils.format.amount(strategy.strategy_debt_after, 0, strategy?.vault_symbol.includes('BTC') ? 2 : 0)}
 								<p className={'text-sm font-normal'}>
 									{`${utils.format.amount(strategy?.strategy_debt_after_usd, 2, 2)} $`}
 								</p>

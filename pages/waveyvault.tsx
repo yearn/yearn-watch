@@ -50,17 +50,17 @@ function	WaveHealth(): ReactElement {
 					<div className={'flex flex-row justify-between items-center'}>
 						<div className={'text-sm'}>{'Total Assets'}</div>
 						<div className={'text-base font-bold tabular-nums text-light-primary'}>
-							{`${utils.format.amount(vault?.total_assets, 0, 0)} ${vault?.symbol}`}
+							{`${utils.format.amount(vault?.total_assets, 0, vault?.symbol.includes('BTC') ? 2 : 0)} ${vault?.symbol}`}
 						</div>
 					</div>
 					<div className={'flex flex-row justify-between items-center'}>
-						<div className={'text-sm'}>{'Reserves'}</div>
+						<div className={'text-sm'}>{'Reserve'}</div>
 						<div className={'text-base font-bold tabular-nums text-light-primary'}>
-							{`${utils.format.amount(vault?.available_reserves, 0, 0)} ${vault?.symbol}`}
+							{`${utils.format.amount(vault?.available_reserves, 0, 0)} ${vault?.symbol.substring(2)}`}
 						</div>
 					</div>
 					<div className={'flex flex-row justify-between items-center'}>
-						<div className={'text-sm'}>{'Ratio'}</div>
+						<div className={'text-sm'}>{'Reserves Ratio'}</div>
 						<div className={'text-base font-bold tabular-nums'}>
 							{`${utils.format.amount(vault?.available_reserves / vault?.total_assets * 100, 2, 2)} %`}
 						</div>
