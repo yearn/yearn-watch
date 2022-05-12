@@ -77,7 +77,7 @@ function	WaveHealth(): ReactElement {
 		<div className={'space-y-4 flex-col-full'}>
 			<Card className={'flex flex-col space-y-4 w-full'}>
 				<div className={'flex justify-between items-center pb-6'}>
-					<h4>{'Pools data'}</h4>
+					<h4>{'Vaults data'}</h4>
 					<p className={'text-sm cursor-pointer'} onClick={fetchData}>
 						{`Last update: ${utils.format.duration((lastUpdate * 1000) - Number(new Date().valueOf()), true)}`}
 					</p>
