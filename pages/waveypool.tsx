@@ -42,7 +42,7 @@ function	WaveHealth(): ReactElement {
 					src={`https://rawcdn.githack.com/yearn/yearn-assets/f35402d5fd225ca9f434134105e828462474a368/icons/multichain-tokens/1/${utils.toAddress('0x2ba592f78db6436527729929aaf6c908497cb200')}/logo-128.png`}
 					quality={60} />
 			);
-		} else if (_addr === '0x06Df3b2bbB68adc8B0e302443692037ED9f91b42') {
+		} else if (_addr === '0x06Df3b2bbB68adc8B0e302443692037ED9f91b42' || _addr === '0xFeadd389a5c427952D8fdb8057D6C8ba1156cC56' || _addr === '0x32296969Ef14EB0c6d29669C550D4a0449130230') {
 			return (
 				<Image
 					decoding={'async'}
@@ -58,9 +58,9 @@ function	WaveHealth(): ReactElement {
 	function rowRendererCurve(index: number): ReactElement {
 		const pool = curveData[index];
 		return (
-			<Card key={pool.strategy_address} className={'grid grid-cols-1 gap-4 mb-6 w-[965px] md:w-full'} variant={'background'}>
-				<div className={'grid relative grid-cols-22 w-full'}>
-					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
+			<Card key={pool.strategy_address} className={'grid grid-cols-1 gap-4 mb-6 w-full'} variant={'background'}>
+				<div className={'grid relative grid-cols-12 w-full'}>
+					<div className={'flex flex-row col-span-12 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex-row-center'}>
 								{pool?.address ? poolToSymbol(pool?.address) : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
@@ -68,7 +68,7 @@ function	WaveHealth(): ReactElement {
 									<b className={'text-ellipsis line-clamp-1'}>{`${pool?.name}`}</b>
 									<AddressWithActions
 										address={pool?.address}
-										explorer={'https://etherscan/address/'}
+										explorer={'https://etherscan.io'}
 										wrapperClassName={'flex'}
 										className={'font-mono text-sm text-typo-secondary'} />
 								</div>
@@ -98,9 +98,9 @@ function	WaveHealth(): ReactElement {
 	function rowRendererBalance(index: number): ReactElement {
 		const pool = balancerData[index];
 		return (
-			<Card key={pool.strategy_address} className={'grid grid-cols-1 gap-4 mb-6 w-[965px] md:w-full'} variant={'background'}>
-				<div className={'grid relative grid-cols-22 w-full'}>
-					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
+			<Card key={pool.strategy_address} className={'grid grid-cols-1 gap-4 mb-6 w-full'} variant={'background'}>
+				<div className={'grid relative grid-cols-12 w-full'}>
+					<div className={'flex flex-row col-span-12 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex-row-center'}>
 								{pool?.address ? poolToSymbol(pool?.address) : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
@@ -108,7 +108,7 @@ function	WaveHealth(): ReactElement {
 									<b className={'text-ellipsis line-clamp-1'}>{`${pool?.name}`}</b>
 									<AddressWithActions
 										address={pool?.address}
-										explorer={'https://etherscan/address/'}
+										explorer={'https://etherscan.io'}
 										wrapperClassName={'flex'}
 										className={'font-mono text-sm text-typo-secondary'} />
 								</div>

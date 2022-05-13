@@ -39,7 +39,7 @@ function	WaveHealth(): ReactElement {
 								<b className={'text-ellipsis line-clamp-1'}>{`${vault?.symbol}`}</b>
 								<AddressWithActions
 									address={vault?.address}
-									explorer={'https://etherscan/address/'}
+									explorer={'https://etherscan.io'}
 									wrapperClassName={'flex'}
 									className={'font-mono text-sm text-typo-secondary'} />
 							</div>

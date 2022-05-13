@@ -24,10 +24,11 @@ function	WaveHealth(): ReactElement {
 
 	function rowRenderer(index: number): ReactElement {
 		const strategy = simulationData[index];
+		const	maxRatioReduc = (strategy?.max_ratio_reduction || 0) * -1;
 		return (
-			<Card key={strategy.strategy_address} className={'grid grid-cols-1 gap-4 mb-6 w-[965px] md:w-full'} variant={'background'}>
-				<div className={'grid relative grid-cols-22 w-full'}>
-					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
+			<Card key={strategy.strategy_address} className={'grid grid-cols-1 gap-4 mb-6 w-full'} variant={'background'}>
+				<div className={'grid relative grid-cols-12 w-full'}>
+					<div className={'flex flex-row col-span-12 items-center min-w-32'}>
 						<div className={'text-typo-secondary'}>
 							<div className={'flex-row-center'}>
 								{strategy?.vault_address ? <Image
@@ -41,7 +42,7 @@ function	WaveHealth(): ReactElement {
 									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.strategy_name} - (${strategy.vault_symbol})`}</b>
 									<AddressWithActions
 										address={strategy.strategy_address}
-										explorer={'https://etherscan/address/'}
+										explorer={'https://etherscan.io'}
 										wrapperClassName={'flex'}
 										className={'font-mono text-sm text-typo-secondary'} />
 								</div>
@@ -65,8 +66,8 @@ function	WaveHealth(): ReactElement {
 						value={(
 							<div>
 								{`${utils.format.amount(strategy.max_no_loss_ratio / 100, 2, 2)}%`}
-								<p className={`text-sm tabular-nums font-normal ${strategy.max_ratio_reduction <= 0 ? 'text-primary' : 'text-alert-critical-primary'}`}>
-									{`${strategy?.max_ratio_reduction > 0 ? '+' : ''}${utils.format.amount(strategy?.max_ratio_reduction / 100, 2, 2) || '-'}%`}
+								<p className={`text-sm tabular-nums font-normal ${maxRatioReduc <= 0 ? 'text-primary' : 'text-alert-critical-primary'}`}>
+									{`${maxRatioReduc > 0 ? '+' : ''}${utils.format.amount(maxRatioReduc / 100, 2, 2) || '-'}%`}
 								</p>
 							</div>
 						)} />
