@@ -123,12 +123,12 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 			management: utils.toAddress(vault.management),
 			governance: utils.toAddress(vault.governance),
 			rewards: utils.toAddress(vault.rewards),
-			balanceTokens: ethers.BigNumber.from(vault.balanceTokens),
-			managementFeeBps: ethers.BigNumber.from(vault.managementFeeBps),
-			performanceFeeBps: ethers.BigNumber.from(vault.performanceFeeBps),
+			balanceTokens: ethers.BigNumber.from(vault?.balanceTokens || 0),
+			managementFeeBps: ethers.BigNumber.from(vault?.managementFeeBps || 0),
+			performanceFeeBps: ethers.BigNumber.from(vault?.performanceFeeBps || 0),
 			totalSupply: ethers.BigNumber.from(0),
-			depositLimit: ethers.BigNumber.from(vault.depositLimit),
-			availableDepositLimit: ethers.BigNumber.from(vault.availableDepositLimit),
+			depositLimit: ethers.BigNumber.from(vault?.depositLimit || 0),
+			availableDepositLimit: ethers.BigNumber.from(vault?.availableDepositLimit || 0),
 			alerts: [],
 			token: {
 				name: vault.token.name,
@@ -326,7 +326,7 @@ export async function getVaults(
 		//Let's build our data for the vault
 		vault.alerts = [];
 		vault.explorer = utils.chains[(chainID || '1') as keyof typeof utils.chains].block_explorer;
-		vault.tokenPriceUSDC = Number(ethers.utils.formatUnits(BigNumber.from(callResult[rIndex++] || 0), 6));
+		vault.tokenPriceUSDC = Number(ethers.utils.formatUnits(BigNumber.from(callResult?.[rIndex++] || 0), 6));
 		if (utils.isZeroAddress(vault.guardian)) vault.alerts.push({level: 'warning', message: 'Guardian is not set'});
 		if (utils.isZeroAddress(vault.management)) vault.alerts.push({level: 'warning', message: 'Management is not set'});
 		if (utils.isZeroAddress(vault.governance)) vault.alerts.push({level: 'warning', message: 'Governance is not set'});
@@ -334,9 +334,9 @@ export async function getVaults(
 		if (Number(vault.availableDepositLimit) === 0) vault.alerts.push({level: 'warning', message: 'Available deposit limit is zero'});
 		if (Number(vault.depositLimit) === 0) vault.alerts.push({level: 'warning', message: 'Deposit limit is zero'});
 		if (vaultDetails) {
-			vault.balanceTokens = BigNumber.from(vaultDetails.balanceTokens);
-			vault.managementFeeBps = BigNumber.from(vaultDetails.managementFeeBps);
-			vault.performanceFeeBps = BigNumber.from(vaultDetails.performanceFeeBps);
+			vault.balanceTokens = BigNumber.from(vaultDetails?.balanceTokens || 0);
+			vault.managementFeeBps = BigNumber.from(vaultDetails?.managementFeeBps || 0);
+			vault.performanceFeeBps = BigNumber.from(vaultDetails?.performanceFeeBps || 0);
 			if (Number(vault.managementFeeBps) === 0) vault.alerts.push({level: 'warning', message: 'Management fee is zero'});
 			if (Number(vault.performanceFeeBps) === 0) vault.alerts.push({level: 'warning', message: 'Performance fee is zero'});
 			if (Number(vault.managementFeeBps) !== 200) vault.alerts.push({level: 'warning', message: 'Invalid value for management fee'});
@@ -347,21 +347,21 @@ export async function getVaults(
 
 		for (const strategy of vault.strategies) {
 			strategy.alerts = [];
-			strategy.creditAvailable = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
-			strategy.debtOutstanding = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
+			strategy.creditAvailable = BigNumber.from(callResult?.[rIndex++] || 0);
+			strategy.debtOutstanding = BigNumber.from(callResult?.[rIndex++] || 0);
 			const	strategyData = callResult[rIndex++] as {[key: string]: unknown};
-			strategy.performanceFee = BigNumber.from(strategyData.performanceFee || 0);
-			strategy.activation = BigNumber.from(strategyData.activation).toString();
-			strategy.debtRatio = BigNumber.from(strategyData.debtRatio || 0);
-			strategy.minDebtPerHarvest = BigNumber.from(strategyData.minDebtPerHarvest || 0);
-			strategy.maxDebtPerHarvest = BigNumber.from(strategyData.maxDebtPerHarvest || 0);
-			strategy.lastReport = BigNumber.from(strategyData.lastReport || 0);
-			strategy.totalDebt = BigNumber.from(strategyData.totalDebt || 0);
-			strategy.totalGain = BigNumber.from(strategyData.totalGain || 0);
-			strategy.totalLoss = BigNumber.from(strategyData.totalLoss || 0);
-			strategy.expectedReturn = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
+			strategy.performanceFee = BigNumber.from(strategyData?.performanceFee || 0);
+			strategy.activation = BigNumber.from(strategyData?.activation || 0).toString();
+			strategy.debtRatio = BigNumber.from(strategyData?.debtRatio || 0);
+			strategy.minDebtPerHarvest = BigNumber.from(strategyData?.minDebtPerHarvest || 0);
+			strategy.maxDebtPerHarvest = BigNumber.from(strategyData?.maxDebtPerHarvest || 0);
+			strategy.lastReport = BigNumber.from(strategyData?.lastReport || 0);
+			strategy.totalDebt = BigNumber.from(strategyData?.totalDebt || 0);
+			strategy.totalGain = BigNumber.from(strategyData?.totalGain || 0);
+			strategy.totalLoss = BigNumber.from(strategyData?.totalLoss || 0);
+			strategy.expectedReturn = BigNumber.from(callResult?.[rIndex++] || 0);
 			strategy.isActive = callResult[rIndex++] as boolean;
-			strategy.estimatedTotalAssets = BigNumber.from(callResult[rIndex++] || 0) || BigNumber.from(0);
+			strategy.estimatedTotalAssets = BigNumber.from(callResult?.[rIndex++] || 0);
 			strategy.totalDebtUSDC = Number(ethers.utils.formatUnits(strategy.totalDebt, vault.decimals)) * (vault.tokenPriceUSDC || 0);
 			strategy.tvlImpact = getTvlImpact(strategy.totalDebtUSDC);
 
@@ -418,14 +418,14 @@ export async function getVaults(
 							duration: report.results[0]?.duration as string,
 							apr: Number(report.results[0]?.apr),
 							durationPR: Number(report.results[0]?.durationPr),
-							debtLimit: BigNumber.from(report.debtLimit || 0),
-							debtPaid: BigNumber.from(report.debtPaid || 0),
-							debtAdded: BigNumber.from(report.debtAdded || 0),
-							totalDebt: BigNumber.from(report.totalDebt || 0),
-							totalLoss: BigNumber.from(report.totalLoss || 0),
-							totalGain: BigNumber.from(report.totalGain || 0),
-							loss: BigNumber.from(report.loss || 0),
-							gain: BigNumber.from(report.gain || 0)
+							debtLimit: BigNumber.from(report?.debtLimit || 0),
+							debtPaid: BigNumber.from(report?.debtPaid || 0),
+							debtAdded: BigNumber.from(report?.debtAdded || 0),
+							totalDebt: BigNumber.from(report?.totalDebt || 0),
+							totalLoss: BigNumber.from(report?.totalLoss || 0),
+							totalGain: BigNumber.from(report?.totalGain || 0),
+							loss: BigNumber.from(report?.loss || 0),
+							gain: BigNumber.from(report?.gain || 0)
 						};
 						strategy.reports.push(_report);
 					}
