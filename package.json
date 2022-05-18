@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.6.1",
-    "@yearn/web-lib": "^0.3.18",
+    "@yearn/web-lib": "^0.3.22",
     "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
     "ethcall": "^4.7.0",
