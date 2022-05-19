@@ -81,6 +81,30 @@ const	GRAPH_REQUEST = `{
 	}
 }`;
 
+// strategy params from legacy
+const STRAT_PARAMS_V030: string[] = [
+	'performanceFee',
+	'activation',
+	'debtRatio',
+	'rateLimit',
+	'lastReport',
+	'totalDebt',
+	'totalGain',
+	'totalLoss'
+];
+const STRAT_PARAMS_V032: string[] = [
+	'performanceFee',
+	'activation',
+	'debtRatio',
+	'minDebtPerHarvest',
+	'maxDebtPerHarvest',
+	'lastReport',
+	'totalDebt',
+	'totalGain',
+	'totalLoss'
+];
+
+
 /* 🔵 - Yearn Finance ******************************************************
 ** We could use the API as source of truth. The API is the easy path, with
 ** a lot of precompiled informations, but mostly on the current vaults.
@@ -349,16 +373,17 @@ export async function getVaults(
 			strategy.alerts = [];
 			strategy.creditAvailable = BigNumber.from(callResult?.[rIndex++] || 0);
 			strategy.debtOutstanding = BigNumber.from(callResult?.[rIndex++] || 0);
-			const	strategyData = callResult[rIndex++] as {[key: string]: unknown};
-			strategy.performanceFee = BigNumber.from(strategyData?.performanceFee || 0);
-			strategy.activation = BigNumber.from(strategyData?.activation || 0).toString();
-			strategy.debtRatio = BigNumber.from(strategyData?.debtRatio || 0);
-			strategy.minDebtPerHarvest = BigNumber.from(strategyData?.minDebtPerHarvest || 0);
-			strategy.maxDebtPerHarvest = BigNumber.from(strategyData?.maxDebtPerHarvest || 0);
-			strategy.lastReport = BigNumber.from(strategyData?.lastReport || 0);
-			strategy.totalDebt = BigNumber.from(strategyData?.totalDebt || 0);
-			strategy.totalGain = BigNumber.from(strategyData?.totalGain || 0);
-			strategy.totalLoss = BigNumber.from(strategyData?.totalLoss || 0);
+			const	strategyData = callResult[rIndex++] as unknown[];
+			const stratParamNames = isV2Vault? STRAT_PARAMS_V030 : STRAT_PARAMS_V032;
+			const stratParams: {[key: string]: unknown} = {};
+			strategyData.forEach((val, i): void => {
+				if (stratParamNames[i] === 'activation') {
+					stratParams[stratParamNames[i]] = BigNumber.from(val).toString();
+				} else {
+					stratParams[stratParamNames[i]] = BigNumber.from(val);
+				}
+			});
+			Object.assign(strategy, stratParams);
 			strategy.expectedReturn = BigNumber.from(callResult?.[rIndex++] || 0);
 			strategy.isActive = callResult[rIndex++] as boolean;
 			strategy.estimatedTotalAssets = BigNumber.from(callResult?.[rIndex++] || 0);
