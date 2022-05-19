@@ -10,6 +10,7 @@ import	PRICE_ORACLE_ABI						from	'utils/abi/priceOracle.abi';
 import	{TVault, TStrategyReport, TGraphVault}	from	'contexts/useWatch.d';
 import	* as utils								from	'@yearn/web-lib/utils';
 import	{getTvlImpact}							from	'utils';
+import { format } from 'path';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const	MINUTES = 60 * 1000;
@@ -80,6 +81,30 @@ const	GRAPH_REQUEST = `{
 		}
 	}
 }`;
+
+// strategy params from legacy
+const STRAT_PARAMS_V030: string[] = [
+	'performanceFee',
+	'activation',
+	'debtRatio',
+	'rateLimit',
+	'lastReport',
+	'totalDebt',
+	'totalGain',
+	'totalLoss'
+];
+const STRAT_PARAMS_V032: string[] = [
+	'performanceFee',
+	'activation',
+	'debtRatio',
+	'minDebtPerHarvest',
+	'maxDebtPerHarvest',
+	'lastReport',
+	'totalDebt',
+	'totalGain',
+	'totalLoss'
+];
+
 
 /* 🔵 - Yearn Finance ******************************************************
 ** We could use the API as source of truth. The API is the easy path, with
@@ -349,16 +374,17 @@ export async function getVaults(
 			strategy.alerts = [];
 			strategy.creditAvailable = utils.format.BN(callResult?.[rIndex++] as never);
 			strategy.debtOutstanding = utils.format.BN(callResult?.[rIndex++] as never);
-			const	strategyData = callResult[rIndex++] as {[key: string]: unknown};
-			strategy.performanceFee = utils.format.BN(strategyData?.performanceFee as never);
-			strategy.activation = utils.format.BN(strategyData?.activation as never).toString();
-			strategy.debtRatio = utils.format.BN(strategyData?.debtRatio as never);
-			strategy.minDebtPerHarvest = utils.format.BN(strategyData?.minDebtPerHarvest as never);
-			strategy.maxDebtPerHarvest = utils.format.BN(strategyData?.maxDebtPerHarvest as never);
-			strategy.lastReport = utils.format.BN(strategyData?.lastReport as never);
-			strategy.totalDebt = utils.format.BN(strategyData?.totalDebt as never);
-			strategy.totalGain = utils.format.BN(strategyData?.totalGain as never);
-			strategy.totalLoss = utils.format.BN(strategyData?.totalLoss as never);
+			const	strategyData = callResult[rIndex++] as unknown[];
+			const stratParamNames = isV2Vault? STRAT_PARAMS_V030 : STRAT_PARAMS_V032;
+			const stratParams: {[key: string]: unknown} = {};
+			strategyData.forEach((val, i): void => {
+				if (stratParamNames[i] === 'activation') {
+					stratParams[stratParamNames[i]] = utils.format.BN(val as never).toString();
+				} else {
+					stratParams[stratParamNames[i]] = utils.format.BN(val as never);
+				}
+			});
+			Object.assign(strategy, stratParams);
 			strategy.expectedReturn = utils.format.BN(callResult?.[rIndex++] as never);
 			strategy.isActive = callResult[rIndex++] as boolean;
 			strategy.estimatedTotalAssets = utils.format.BN(callResult?.[rIndex++] as never);
