@@ -378,9 +378,9 @@ export async function getVaults(
 			const stratParams: {[key: string]: unknown} = {};
 			strategyData.forEach((val, i): void => {
 				if (stratParamNames[i] === 'activation') {
-					stratParams[stratParamNames[i]] = BigNumber.from(val).toString();
+					stratParams[stratParamNames[i]] = BigNumber.from(val || 0).toString();
 				} else {
-					stratParams[stratParamNames[i]] = BigNumber.from(val);
+					stratParams[stratParamNames[i]] = BigNumber.from(val || 0);
 				}
 			});
 			Object.assign(strategy, stratParams);
