@@ -147,9 +147,9 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 										{
 											allocations.empty.map((strategy: TStrategy): ReactElement => (
 												<div className={'flex flex-col'} key={strategy.address}>
-													<span className={'flex flex-row justify-between items-center mb-2'}>
-														<p className={'text-left text-typo-secondary'}>{`${strategy.name}`}</p>
-														<b className={'text-left text-primary'}>{'0%'}</b>
+													<span className={'flex flex-row justify-between items-center mb-4 md:mb-2'}>
+														<p className={'text-left break-all text-typo-secondary'}>{`${strategy.name}`}</p>
+														<b className={'ml-4 text-left md:ml-0 text-primary'}>{'0%'}</b>
 													</span>
 												</div>
 											))

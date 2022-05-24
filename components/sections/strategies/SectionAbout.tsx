@@ -17,7 +17,7 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStra
 						address={currentVault.address}
 						explorer={currentVault.explorer}
 						truncate={0}
-						className={'font-mono text-sm text-typo-secondary'} />
+						className={'font-mono text-sm break-all text-typo-secondary'} />
 				</div>
 
 				<div className={'mb-8'}>

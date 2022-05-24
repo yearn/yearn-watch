@@ -27,11 +27,17 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 		<section
 			aria-label={'reports-of-strategy'}
 			className={'flex flex-col w-full'}>
-			<span className={'mb-6 space-x-8 w-full flex-row-center'}>
-				<b className={'text-lg'}>{'Last 10 reports'}</b>
-				<b className={'text-lg'}>{`Average APR: ${format.amount(computeAverageAPR(currentStrategy?.reports || []))}%`}</b>
-				<b className={'text-lg'}>{`Median APR: ${format.amount(computeMedianAPR(currentStrategy?.reports || []))}%`}</b>
-			</span>
+			<div className={'grid grid-cols-2 gap-4 mb-6 w-full md:grid-cols-3 md:gap-8'}>
+				<div className={'col-span-1 text-left md:text-center'}>
+					<b className={'text-base md:text-lg'}>{'Last 10 reports'}</b>
+				</div>
+				<div className={'col-span-1 text-left md:text-center'}>
+					<b className={'text-base md:text-lg'}>{`Average APR: ${format.amount(computeAverageAPR(currentStrategy?.reports || []))}%`}</b>
+				</div>
+				<div className={'col-span-1 text-left md:text-center'}>
+					<b className={'text-base md:text-lg'}>{`Median APR: ${format.amount(computeMedianAPR(currentStrategy?.reports || []))}%`}</b>
+				</div>
+			</div>
 			<div className={'flex flex-col space-y-4'}>
 				{
 					(currentStrategy?.reports || [])

@@ -2,6 +2,7 @@ import	React, {ReactElement}					from	'react';
 import	{TVault, TStrategy}						from	'contexts/useWatch.d';
 import	{DescriptionList, AddressWithActions}	from	'@yearn/web-lib/components';
 import	{format} 								from	'@yearn/web-lib/utils';
+import {ethers} from 'ethers';
 
 type	TSectionStats = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionStats = React.memo(function SectionStats({currentVault, currentStrategy}: TSectionStats): ReactElement {
@@ -18,7 +19,7 @@ const	SectionStats = React.memo(function SectionStats({currentVault, currentStra
 				address={currentStrategy.address}
 				explorer={currentVault.explorer}
 				truncate={0}
-				className={'font-mono text-sm text-typo-secondary'} />
+				className={'font-mono text-sm break-all text-typo-secondary'} />
 			<DescriptionList
 				className={'mt-8'}
 				options={[
@@ -38,10 +39,10 @@ const	SectionStats = React.memo(function SectionStats({currentVault, currentStra
 					{title: 'Performance Fee ', details: format.bigNumberAsAmount(currentStrategy.performanceFee, 2, 2, '%')},
 					{title: 'Min Debt Per Harvest ', details: format.bigNumberAsAmount(currentStrategy.minDebtPerHarvest, currentVault.decimals, 4)},
 					{title: 'Max Debt Per Harvest ', details: format.bigNumberAsAmount(currentStrategy.maxDebtPerHarvest, currentVault.decimals, 4)},
-					{title: 'Keeper', details: <AddressWithActions address={currentStrategy?.addrKeeper || ''} explorer={currentVault.explorer} />}, 
-					{title: 'Rewards', details: <AddressWithActions address={currentStrategy?.addrRewards || ''} explorer={currentVault.explorer} />}, 
-					{title: 'Strategist', details: <AddressWithActions address={currentStrategy?.addrStrategist || ''} explorer={currentVault.explorer} />}, 
-					{title: 'Vault', details: <AddressWithActions address={currentVault?.address || ''} explorer={currentVault.explorer} />}
+					{title: 'Keeper', details: <AddressWithActions address={currentStrategy?.addrKeeper || ethers.constants.AddressZero} explorer={currentVault.explorer} />}, 
+					{title: 'Rewards', details: <AddressWithActions address={currentStrategy?.addrRewards || ethers.constants.AddressZero} explorer={currentVault.explorer} />}, 
+					{title: 'Strategist', details: <AddressWithActions address={currentStrategy?.addrStrategist || ethers.constants.AddressZero} explorer={currentVault.explorer} />}, 
+					{title: 'Vault', details: <AddressWithActions address={currentVault?.address || ethers.constants.AddressZero} explorer={currentVault.explorer} />}
 				]} />
 		</section>
 	);
