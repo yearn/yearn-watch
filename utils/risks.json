@@ -544,6 +544,22 @@
 		}
 	},
 	{
+		"id": "StrategyNotionalLP",
+		"network": 1,
+		"label": "Notional LP",
+		"codeReviewScore": 3,
+		"testingScore": 2,
+		"auditScore": 5,
+		"protocolSafetyScore": 2,
+		"complexityScore": 3,
+		"teamKnowledgeScore": 2,
+		"criteria": {
+			"nameLike": ["StrategyNotionalLP"],
+			"strategies": [],
+			"exclude": []
+		}
+	},
+	{
 		"id": "others",
 		"network": 1,
 		"label": "Others",
@@ -604,7 +620,8 @@
 				"SingleSidedBoostedBalancer",
 				"stargate",
 				"0x2b982BE433093A80e1801A0Dd894994a170a5025",
-				"strategyangle"
+				"strategyangle",
+				"StrategyNotionalLP"
 			]
 		}
 	},
