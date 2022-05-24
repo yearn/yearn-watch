@@ -1,5 +1,5 @@
 import	React, {ReactElement}					from	'react';
-import	{BigNumber}								from	'ethers';
+import	{ethers, BigNumber}						from	'ethers';
 import	{TVault, TStrategy}						from	'contexts/useWatch.d';
 import	{DescriptionList, AddressWithActions}	from	'@yearn/web-lib/components';
 import	{format} 								from	'@yearn/web-lib/utils';
@@ -25,7 +25,8 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	function	computeTotalDebt(): number {
 		return (
 			Number(format.units(
-				(currentVault?.strategies?.reduce((acc: BigNumber, strategy: TStrategy): BigNumber => acc.add(strategy.totalDebt), BigNumber.from(0)) || 0),
+				(currentVault?.strategies?.
+					reduce((acc: BigNumber, strategy: TStrategy): BigNumber => acc.add(strategy.totalDebt), ethers.constants.Zero) || 0),
 				currentVault?.decimals || 18
 			))
 		);
@@ -53,7 +54,8 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	function	computeTotalDebtRatio(): number {
 		return (
 			Number(format.units(
-				(currentVault?.strategies?.reduce((acc: BigNumber, strategy: TStrategy): BigNumber => acc.add(strategy.debtRatio), BigNumber.from(0)) || 0),
+				(currentVault?.strategies?.
+					reduce((acc: BigNumber, strategy: TStrategy): BigNumber => acc.add(strategy.debtRatio), ethers.constants.Zero) || 0),
 				2
 			))
 		);

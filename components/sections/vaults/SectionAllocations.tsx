@@ -19,8 +19,8 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 		empty: [],
 		notEmpty: [],
 		protocolsAllocation: {},
-		totalProtocolsAllocation: ethers.BigNumber.from(0),
-		notAllocated: ethers.BigNumber.from(0)
+		totalProtocolsAllocation: ethers.constants.Zero,
+		notAllocated: ethers.constants.Zero
 	});
 
 	/* 🔵 - Yearn Finance ******************************************************
@@ -35,12 +35,12 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 		const	_notEmpty = _strategies.filter((_strategy): boolean => Number(_strategy.debtRatio) !== 0);
 
 		const	_protocolsAllocation: {[key: string]: ethers.BigNumber} = {};
-		let		totalProtocolsAllocation = ethers.BigNumber.from(0);
+		let		totalProtocolsAllocation = ethers.constants.Zero;
 		for (const _strategy of _notEmpty) {
 			if (_strategy?.protocols) {
 				for (const _protocol of _strategy.protocols) {
-					_protocolsAllocation[_protocol] = (_protocolsAllocation[_protocol] || ethers.BigNumber.from(0)).add(ethers.BigNumber.from(_strategy.debtRatio));
-					totalProtocolsAllocation = totalProtocolsAllocation.add(ethers.BigNumber.from(_strategy.debtRatio));
+					_protocolsAllocation[_protocol] = format.BN(_protocolsAllocation?.[_protocol]).add(format.BN(_strategy.debtRatio));
+					totalProtocolsAllocation = totalProtocolsAllocation.add(format.BN(_strategy.debtRatio));
 				}
 			}
 		}
@@ -50,15 +50,15 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 			notEmpty: _notEmpty,
 			protocolsAllocation: _protocolsAllocation,
 			totalProtocolsAllocation,
-			notAllocated: _notEmpty.reduce((acc, _strategy): ethers.BigNumber => acc.add(_strategy.debtRatio), ethers.BigNumber.from(0))
+			notAllocated: _notEmpty.reduce((acc, _strategy): ethers.BigNumber => acc.add(_strategy.debtRatio), ethers.constants.Zero)
 		});
 		return (): void => {
 			set_allocations({
 				empty: [],
 				notEmpty: [],
 				protocolsAllocation: {},
-				totalProtocolsAllocation: ethers.BigNumber.from(0),
-				notAllocated: ethers.BigNumber.from(0)
+				totalProtocolsAllocation: ethers.constants.Zero,
+				notAllocated: ethers.constants.Zero
 			});
 		};
 	}, [currentVault]);
