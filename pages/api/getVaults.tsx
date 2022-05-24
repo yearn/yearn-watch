@@ -82,28 +82,29 @@ const	GRAPH_REQUEST = `{
 }`;
 
 // strategy params from legacy
-const STRAT_PARAMS_V030: string[] = [
-	'performanceFee',
-	'activation',
-	'debtRatio',
-	'rateLimit',
-	'lastReport',
-	'totalDebt',
-	'totalGain',
-	'totalLoss'
-];
-const STRAT_PARAMS_V032: string[] = [
-	'performanceFee',
-	'activation',
-	'debtRatio',
-	'minDebtPerHarvest',
-	'maxDebtPerHarvest',
-	'lastReport',
-	'totalDebt',
-	'totalGain',
-	'totalLoss'
-];
-
+const STRAT_PARAMS = {
+	'0.3.0': [
+		'performanceFee',
+		'activation',
+		'debtRatio',
+		'rateLimit',
+		'lastReport',
+		'totalDebt',
+		'totalGain',
+		'totalLoss'
+	],
+	'0.3.2': [
+		'performanceFee',
+		'activation',
+		'debtRatio',
+		'minDebtPerHarvest',
+		'maxDebtPerHarvest',
+		'lastReport',
+		'totalDebt',
+		'totalGain',
+		'totalLoss'
+	]
+};
 
 /* 🔵 - Yearn Finance ******************************************************
 ** We could use the API as source of truth. The API is the easy path, with
@@ -374,7 +375,12 @@ export async function getVaults(
 			strategy.creditAvailable = utils.format.BN(callResult?.[rIndex++] as never);
 			strategy.debtOutstanding = utils.format.BN(callResult?.[rIndex++] as never);
 			const	strategyData = callResult[rIndex++] as unknown[];
-			const stratParamNames = isV2Vault? STRAT_PARAMS_V030 : STRAT_PARAMS_V032;
+			let stratParamNames = STRAT_PARAMS['0.3.2'];
+			for (const [version, paramNames] of Object.entries(STRAT_PARAMS)) {
+				if (Number(vault.version.replace('.', '')) >= Number(version.replace('.', ''))) {
+					stratParamNames = paramNames;
+				}
+			}
 			const stratParams: {[key: string]: BigNumber | string} = {};
 			strategyData.forEach((val, i): void => {
 				if (stratParamNames[i] === 'activation') {
