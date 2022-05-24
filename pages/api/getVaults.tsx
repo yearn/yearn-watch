@@ -2,7 +2,7 @@ import	{NextApiRequest, NextApiResponse}		from	'next';
 import	axios									from	'axios';
 import	{request}								from	'graphql-request';
 import	{Contract}								from	'ethcall';
-import	{ethers}								from	'ethers';
+import	{ethers, BigNumber}				from	'ethers';
 import	{createHash}							from	'crypto';
 import	VAULT_ABI								from	'utils/abi/vaults.abi';
 import	STRATEGY_ABI							from	'utils/abi/strategies.abi';
@@ -80,6 +80,31 @@ const	GRAPH_REQUEST = `{
 		}
 	}
 }`;
+
+// strategy params from legacy
+const STRAT_PARAMS = {
+	'0.3.0': [
+		'performanceFee',
+		'activation',
+		'debtRatio',
+		'rateLimit',
+		'lastReport',
+		'totalDebt',
+		'totalGain',
+		'totalLoss'
+	],
+	'0.3.2': [
+		'performanceFee',
+		'activation',
+		'debtRatio',
+		'minDebtPerHarvest',
+		'maxDebtPerHarvest',
+		'lastReport',
+		'totalDebt',
+		'totalGain',
+		'totalLoss'
+	]
+};
 
 /* 🔵 - Yearn Finance ******************************************************
 ** We could use the API as source of truth. The API is the easy path, with
@@ -349,16 +374,22 @@ export async function getVaults(
 			strategy.alerts = [];
 			strategy.creditAvailable = utils.format.BN(callResult?.[rIndex++] as never);
 			strategy.debtOutstanding = utils.format.BN(callResult?.[rIndex++] as never);
-			const	strategyData = callResult[rIndex++] as {[key: string]: unknown};
-			strategy.performanceFee = utils.format.BN(strategyData?.performanceFee as never);
-			strategy.activation = utils.format.BN(strategyData?.activation as never).toString();
-			strategy.debtRatio = utils.format.BN(strategyData?.debtRatio as never);
-			strategy.minDebtPerHarvest = utils.format.BN(strategyData?.minDebtPerHarvest as never);
-			strategy.maxDebtPerHarvest = utils.format.BN(strategyData?.maxDebtPerHarvest as never);
-			strategy.lastReport = utils.format.BN(strategyData?.lastReport as never);
-			strategy.totalDebt = utils.format.BN(strategyData?.totalDebt as never);
-			strategy.totalGain = utils.format.BN(strategyData?.totalGain as never);
-			strategy.totalLoss = utils.format.BN(strategyData?.totalLoss as never);
+			const	strategyData = callResult[rIndex++] as unknown[];
+			let stratParamNames = STRAT_PARAMS['0.3.2'];
+			for (const [version, paramNames] of Object.entries(STRAT_PARAMS)) {
+				if (Number(vault.version.replace('.', '')) >= Number(version.replace('.', ''))) {
+					stratParamNames = paramNames;
+				}
+			}
+			const stratParams: {[key: string]: BigNumber | string} = {};
+			strategyData.forEach((val, i): void => {
+				if (stratParamNames[i] === 'activation') {
+					stratParams[stratParamNames[i]] = utils.format.BN(val as never).toString();
+				} else {
+					stratParams[stratParamNames[i]] = utils.format.BN(val as never);
+				}
+			});
+			Object.assign(strategy, stratParams);
 			strategy.expectedReturn = utils.format.BN(callResult?.[rIndex++] as never);
 			strategy.isActive = callResult[rIndex++] as boolean;
 			strategy.estimatedTotalAssets = utils.format.BN(callResult?.[rIndex++] as never);
