@@ -375,7 +375,7 @@ export async function getVaults(
 			strategy.debtOutstanding = BigNumber.from(callResult?.[rIndex++] || 0);
 			const	strategyData = callResult[rIndex++] as unknown[];
 			const stratParamNames = isV2Vault? STRAT_PARAMS_V030 : STRAT_PARAMS_V032;
-			const stratParams: {[key: string]: unknown} = {};
+			const stratParams: {[key: string]: BigNumber | string} = {};
 			strategyData.forEach((val, i): void => {
 				if (stratParamNames[i] === 'activation') {
 					stratParams[stratParamNames[i]] = BigNumber.from(val || 0).toString();
