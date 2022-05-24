@@ -2,7 +2,7 @@ import	{NextApiRequest, NextApiResponse}		from	'next';
 import	axios									from	'axios';
 import	{request}								from	'graphql-request';
 import	{Contract}								from	'ethcall';
-import	{ethers}								from	'ethers';
+import	{ethers, BigNumber}				from	'ethers';
 import	{createHash}							from	'crypto';
 import	VAULT_ABI								from	'utils/abi/vaults.abi';
 import	STRATEGY_ABI							from	'utils/abi/strategies.abi';
@@ -10,7 +10,6 @@ import	PRICE_ORACLE_ABI						from	'utils/abi/priceOracle.abi';
 import	{TVault, TStrategyReport, TGraphVault}	from	'contexts/useWatch.d';
 import	* as utils								from	'@yearn/web-lib/utils';
 import	{getTvlImpact}							from	'utils';
-import { format } from 'path';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const	MINUTES = 60 * 1000;
@@ -376,7 +375,7 @@ export async function getVaults(
 			strategy.debtOutstanding = utils.format.BN(callResult?.[rIndex++] as never);
 			const	strategyData = callResult[rIndex++] as unknown[];
 			const stratParamNames = isV2Vault? STRAT_PARAMS_V030 : STRAT_PARAMS_V032;
-			const stratParams: {[key: string]: unknown} = {};
+			const stratParams: {[key: string]: BigNumber | string} = {};
 			strategyData.forEach((val, i): void => {
 				if (stratParamNames[i] === 'activation') {
 					stratParams[stratParamNames[i]] = utils.format.BN(val as never).toString();
