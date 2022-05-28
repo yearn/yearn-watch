@@ -218,7 +218,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 				<Card.Detail
 					key={stratOrVault.address}
 					isSticky={false}
-					summary={(p: unknown): ReactElement => (
+					summary={(p: unknown[]): ReactElement => (
 						<Card.Detail.Summary
 							startChildren={renderSummaryStart(stratOrVault)}
 							endChildren={renderSummaryEnd(stratOrVault)}
