@@ -74,7 +74,7 @@ function	SectionFormRpcURI(): ReactElement {
 				</div>
 				<div className={'flex flex-row w-full'}>
 					<Button
-						variant={'outline'}
+						variant={'outlined'}
 						type={'submit'}
 						className={'ml-0 min-w-[132px] md:ml-auto'}>
 						{'Save'}

@@ -199,7 +199,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 				<div className={'text-sm font-medium text-right whitespace-nowrap sm:pr-6'}>
 					<div>
 						<Button
-							variant={'outline'}
+							variant={'outlined'}
 							shouldStopPropagation
 							onClick={(): void => onDismissOrTrack(stratOrVault.alertHash)}
 							className={'ml-0 min-w-[132px] md:ml-6'}>
