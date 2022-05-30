@@ -108,7 +108,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 
 	return (
 		<Card.Detail
-			summary={(p: unknown): ReactElement => (
+			summary={(p: unknown[]): ReactElement => (
 				<Card.Detail.Summary
 					startChildren={renderSummaryStart()}
 					endChildren={renderSummaryEnd()}

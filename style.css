@@ -19,8 +19,3 @@
 .component--switchCard-wrapper {
 	@apply flex flex-row justify-between p-2 space-x-2 w-full cursor-pointer md:p-0 md:space-x-6 md:w-max
 }
-
-.flex-row-center {@apply flex flex-row items-center;}
-.flex-row-start {@apply flex flex-row items-start;}
-.flex-col-start {@apply flex flex-col items-start;}
-.flex-col-full {@apply flex flex-col w-full h-full;}
