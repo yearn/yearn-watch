@@ -11,21 +11,31 @@ import {TVault, TStrategy}	from	'contexts/useWatch.d';
 export function	deepFindVaultBySearch(vault: TVault, term: string): boolean {
 	if (term.length === 0)
 		return true;
+	let	shouldSearchWithStrategies = false;
+	let	shouldSearchWithTokens = false;
+	term = term.toLowerCase().trim();
+	if (term.startsWith('strategies:') || term.startsWith('strats:') || term.startsWith('strat:') || term.startsWith('strategy:')) {
+		shouldSearchWithStrategies = true;
+		term = term.substring(term.indexOf(':') + 1);
+	} else if (term.startsWith('token:') || term.startsWith('tokebs:')) {
+		shouldSearchWithTokens = true;
+		term = term.substring(term.indexOf(':') + 1);
+	}
+	term = term.trim();
+
+	const	shouldSearchWithVaults = !shouldSearchWithStrategies && !shouldSearchWithTokens;
 	return (
-		(vault?.display_name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.address || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.symbol || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.token?.name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.token?.address || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.token?.display_name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.strategies || []).some((strategy): boolean => {
+		(shouldSearchWithVaults && (vault?.display_name || vault?.name || '').toLowerCase().includes(term)) ||
+		(shouldSearchWithVaults && (vault?.address || '').toLowerCase().includes(term)) ||
+		(shouldSearchWithVaults && (vault?.symbol || '').toLowerCase().includes(term)) ||
+		(shouldSearchWithTokens && (vault?.token?.display_name || vault?.token?.name || '').toLowerCase().includes(term)) ||
+		(shouldSearchWithTokens && ((vault?.token?.address || '')).toLowerCase().includes(term)) ||
+		(shouldSearchWithStrategies && (vault?.strategies || []).some((strategy): boolean => {
 			return (
-				(strategy?.name || '').toLowerCase().includes(term.toLowerCase())
-				|| (strategy?.address || '').toLowerCase().includes(term.toLowerCase())
-				// || (strategy?.description || '').toLowerCase().includes(term.toLowerCase())
+				(strategy?.display_name || strategy?.name || '').toLowerCase().includes(term)
+				|| (strategy?.address || '').toLowerCase().includes(term)
 			);
-		})
+		}))
 	);
 }
 
@@ -39,13 +49,11 @@ export function	findVaultBySearch(vault: TVault, term: string): boolean {
 	if (term.length === 0)
 		return true;
 	return (
-		(vault?.display_name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.name || '').toLowerCase().includes(term.toLowerCase()) ||
+		(vault?.display_name || vault?.name || '').toLowerCase().includes(term.toLowerCase()) ||
 		(vault?.address || '').toLowerCase().includes(term.toLowerCase()) ||
 		(vault?.symbol || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.token?.name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.token?.address || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.token?.display_name || '').toLowerCase().includes(term.toLowerCase())
+		(vault?.token?.display_name || vault?.token?.name || '').toLowerCase().includes(term.toLowerCase()) ||
+		(vault?.token?.address || '').toLowerCase().includes(term.toLowerCase())
 	);
 }
 
@@ -59,10 +67,10 @@ export function	findStrategyBySearch(strategy: TStrategy, term: string): boolean
 	if (term.length === 0)
 		return true;
 	return (
-		(strategy?.name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(strategy?.address || '').toLowerCase().includes(term.toLowerCase()) || 
-		// (strategy?.description || '').toLowerCase().includes(term.toLowerCase()) || 
-		(strategy.vault?.name || '').toLowerCase().includes(term.toLowerCase()) ||
-		(strategy.vault?.address || '').toLowerCase().includes(term.toLowerCase())
+		(strategy?.display_name || '').toLowerCase().includes(term.toLowerCase())
+		|| (strategy?.name || '').toLowerCase().includes(term.toLowerCase())
+		|| (strategy?.address || '').toLowerCase().includes(term.toLowerCase())
+		|| (strategy.vault?.name || '').toLowerCase().includes(term.toLowerCase())
+		|| (strategy.vault?.address || '').toLowerCase().includes(term.toLowerCase())
 	);
 }

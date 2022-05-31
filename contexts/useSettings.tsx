@@ -5,6 +5,12 @@ import	* as useSettingsTypes	from	'contexts/useSettings.d';
 const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 	shouldDisplayStratsInQueue: true,
 	switchShouldDisplayStratsInQueue: (): void => undefined,
+	shouldOnlyDisplayEndorsedVaults: false,
+	switchShouldOnlyDisplayEndorsedVaults: (): void => undefined,
+	shouldDisplayVaultsWithMigration: false,
+	switchShouldDisplayVaultsWithMigration: (): void => undefined,
+	shouldDisplayVaultNoStrats: false,
+	switchShouldDisplayVaultNoStrats: (): void => undefined,
 	shouldDisplayWithNoDebt: true,
 	switchShouldDisplayWithNoDebt: (): void => undefined,
 	shouldGivePriorityToSubgraph: true,
@@ -36,6 +42,9 @@ type TStorageBoolean = [boolean, (s: boolean) => boolean];
 type TStorageNetworkURI = [useSettingsTypes.TNetworkURI, (s: useSettingsTypes.TNetworkURI) => useSettingsTypes.TNetworkURI];
 
 export const SettingsContextApp = ({children}: {children: ReactElement}): ReactElement => {
+	const	[shouldDisplayVaultNoStrats, set_shouldDisplayVaultNoStrats] = useLocalStorage('shouldDisplayVaultNoStrats', false) as TStorageBoolean;
+	const	[shouldOnlyDisplayEndorsedVaults, set_shouldOnlyDisplayEndorsedVaults] = useLocalStorage('shouldOnlyDisplayEndorsedVaults', false) as TStorageBoolean;
+	const	[shouldDisplayVaultsWithMigration, set_shouldDisplayVaultsWithMigration] = useLocalStorage('shouldDisplayVaultsWithMigration', false) as TStorageBoolean;
 	const	[shouldDisplayStratsInQueue, set_shouldDisplayStratsInQueue] = useLocalStorage('shouldDisplayStratsInQueue', true) as TStorageBoolean;
 	const	[shouldGivePriorityToSubgraph, set_shouldGivePriorityToSubgraph] = useLocalStorage('shouldGivePriorityToSubgraph', true) as TStorageBoolean;
 	const	[shouldDisplayWithNoDebt, set_shouldDisplayWithNoDebt] = useLocalStorage('shouldDisplayWithNoDebt', true) as TStorageBoolean;
@@ -46,6 +55,18 @@ export const SettingsContextApp = ({children}: {children: ReactElement}): ReactE
 	return (
 		<SettingsContext.Provider
 			value={{
+				shouldDisplayVaultNoStrats,
+				switchShouldDisplayVaultNoStrats: (): void => {
+					set_shouldDisplayVaultNoStrats(!shouldDisplayVaultNoStrats);
+				},
+				shouldOnlyDisplayEndorsedVaults,
+				switchShouldOnlyDisplayEndorsedVaults: (): void => {
+					set_shouldOnlyDisplayEndorsedVaults(!shouldOnlyDisplayEndorsedVaults);
+				},
+				shouldDisplayVaultsWithMigration,
+				switchShouldDisplayVaultsWithMigration: (): void => {
+					set_shouldDisplayVaultsWithMigration(!shouldDisplayVaultsWithMigration);
+				},
 				shouldDisplayStratsInQueue,
 				switchShouldDisplayStratsInQueue: (): void => {
 					set_shouldDisplayStratsInQueue(!shouldDisplayStratsInQueue);
