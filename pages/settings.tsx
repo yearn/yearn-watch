@@ -10,6 +10,9 @@ import	SectionFormRpcURI			from	'components/sections/settings/SectionFormRpcURI'
 function	Settings(): ReactElement {
 	const {
 		shouldDisplayStratsInQueue, switchShouldDisplayStratsInQueue,
+		shouldOnlyDisplayEndorsedVaults, switchShouldOnlyDisplayEndorsedVaults,
+		shouldDisplayVaultsWithMigration, switchShouldDisplayVaultsWithMigration,
+		shouldDisplayVaultNoStrats, switchShouldDisplayVaultNoStrats,
 		shouldDisplayWithNoDebt, switchShouldDisplayWithNoDebt,
 		shouldGivePriorityToSubgraph, switchShouldGivePriorityToSubgraph,
 		shouldUseRemoteFetch, switchShouldUseRemoteFetch
@@ -21,7 +24,37 @@ function	Settings(): ReactElement {
 		<div className={'space-y-4 flex-col-full'}>
 			<Card className={'flex flex-col space-y-4 w-full'}>
 				<div className={'pb-6'}>
-					<h4>{'Strategies'}</h4>
+					<h4>{'Vaults & Strategies'}</h4>
+				</div>
+				<div className={'flex flex-row w-full'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>
+						{'Only display endorsed Vaults'}
+					</label></div>
+					<div className={'w-full md:w-7/12'}>
+						<Switch
+							isEnabled={shouldOnlyDisplayEndorsedVaults}
+							onSwitch={(): void => switchShouldOnlyDisplayEndorsedVaults()} />
+					</div>
+				</div>
+				<div className={'flex flex-row w-full'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>
+						{'Display vaults with migration'}
+					</label></div>
+					<div className={'w-full md:w-7/12'}>
+						<Switch
+							isEnabled={shouldDisplayVaultsWithMigration}
+							onSwitch={(): void => switchShouldDisplayVaultsWithMigration()} />
+					</div>
+				</div>
+				<div className={'flex flex-row w-full'}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>
+						{'Hide vaults with no strategies'}
+					</label></div>
+					<div className={'w-full md:w-7/12'}>
+						<Switch
+							isEnabled={shouldDisplayVaultNoStrats}
+							onSwitch={(): void => switchShouldDisplayVaultNoStrats()} />
+					</div>
 				</div>
 				<div className={'flex flex-row w-full'}>
 					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>{'Hide strategies not in withdraw queue'}</label></div>

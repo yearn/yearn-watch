@@ -125,6 +125,8 @@ export type TVault = {
 	decimals: number, //From Yearn API
 	emergency_shutdown: boolean, //From Yearn API
 	isHidden: boolean,
+	isEndorsed: boolean,
+	hasMigration: boolean,
 	address: utils.TAddress, //From Yearn API
 	guardian: utils.TAddress, //From multicall
 	management: utils.TAddress, //From multicall

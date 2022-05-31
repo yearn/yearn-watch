@@ -1,11 +1,12 @@
-import	React, {ReactElement} 					from	'react';
-import	useWatch								from	'contexts/useWatch';
-import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
-import	{Card, Banner, Switch, SearchBox}		from	'@yearn/web-lib/components';
-import	* as utils								from	'@yearn/web-lib/utils';
-import	{deepFindVaultBySearch}					from	'utils/filters';
-import	SectionHealthcheckList					from	'components/sections/healthcheck/SectionHealthcheckList';
-import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
+import	React, {ReactElement} 							from	'react';
+import	{Card, Banner, Switch, SearchBox}				from	'@yearn/web-lib/components';
+import	* as utils										from	'@yearn/web-lib/utils';
+import	useWatch										from	'contexts/useWatch';
+import	{TStrategy, TRowHead}							from	'contexts/useWatch.d';
+import	useSettings										from	'contexts/useSettings';
+import	{deepFindVaultBySearch, findStrategyBySearch}	from	'utils/filters';
+import	SectionHealthcheckList							from	'components/sections/healthcheck/SectionHealthcheckList';
+import	{TableHead, TableHeadCell}						from	'components/TableHeadCell';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -39,6 +40,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 ******************************************************************************/
 function	Healthcheck(): ReactElement {
 	const	{vaults} = useWatch();
+	const	settings = useSettings(); // eslint-disable-line @typescript-eslint/naming-convention
 	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as TStrategy[]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[isOnlyWithTvl, set_isOnlyWithTvl] = React.useState(true);
@@ -59,9 +61,30 @@ function	Healthcheck(): ReactElement {
 		let		_filteredVaults = [..._vaults];
 		const	_filteredStrategies = [];
 
-		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
+		//If the shouldOnlyDisplayEndorsedVaults is checked, we only display the endorsed vaults (by the API)
+		if (settings.shouldOnlyDisplayEndorsedVaults) {
+			_filteredVaults = _filteredVaults.filter((vault): boolean => vault.isEndorsed);
+		}
 
+		//If the shouldDisplayVaultsWithMigration is checked, we also display the vaults with a migration
+		if (!settings.shouldDisplayVaultsWithMigration) {
+			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault.hasMigration);
+		}
+
+		//If the shouldDisplayVaultNoStrats is checked, we to hide all vaults with 0 strategies or none in withdrawal queue
+		if (!settings.shouldDisplayVaultNoStrats) {
+			_filteredVaults = _filteredVaults.filter((vault): boolean => (
+				vault.strategies.length > 0
+				&& !vault.strategies.every((strat): boolean => strat.index === 21)
+			));
+		}
+
+		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
+		_filteredVaults = _filteredVaults.sort((a, b): number => Number(b.version.replace('.', '')) - Number(a.version.replace('.', '')));
 		for (const vault of _filteredVaults) {
+			let	_strategies = vault.strategies.filter((strat): boolean => strat.shouldDoHealthCheck);
+			_strategies = _strategies.filter((strat): boolean => findStrategyBySearch(strat, searchTerm));
+
 			for (const strategy of vault.strategies) {
 				const	shouldDoHealtcheck = strategy.shouldDoHealthCheck;
 				const	hasValidHealtcheckAddr = !utils.isZeroAddress(strategy.addrHealthCheck);
@@ -72,7 +95,7 @@ function	Healthcheck(): ReactElement {
 			}
 		}
 		set_filteredStrategies(_filteredStrategies);
-	}, [vaults, searchTerm, isOnlyWithTvl]);
+	}, [vaults, searchTerm, isOnlyWithTvl, settings.shouldOnlyDisplayEndorsedVaults, settings.shouldDisplayVaultsWithMigration, settings.shouldDisplayVaultNoStrats]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.

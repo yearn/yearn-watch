@@ -143,6 +143,8 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 			inception: Number(vault.activation),
 			emergency_shutdown: vaultFromAPI?.emergency_shutdown || false,
 			isHidden: false,
+			isEndorsed: vaultFromAPI?.endorsed || false,
+			hasMigration: vaultFromAPI?.migration?.available === true,
 			address: utils.toAddress(vault.id),
 			guardian: utils.toAddress(vault.guardian),
 			management: utils.toAddress(vault.management),
@@ -228,7 +230,7 @@ export async function getVaults(
 	**************************************************************************/
 	const	[_vaultsInitialsRaw, _strategiesRaw, _graphRaw, _blockNumberRaw] = await Promise.allSettled([
 		axios.get(`https://api.yearn.finance/v1/chains/${chainID || 1}/vaults/all`),
-		axios.get(`https://meta.yearn.network/strategies/${chainID || 1}/all`, {timeout: 5000}),
+		axios.get(`https://meta.yearn.finance/api/strategies/${chainID || 1}/all`, {timeout: 5000}),
 		request(graphProvider, GRAPH_REQUEST),
 		rpcProvider.getBlockNumber()
 	]);
