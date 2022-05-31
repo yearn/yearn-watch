@@ -13,7 +13,7 @@ import	{deepFindVaultBySearch}			from	'utils/filters';
 ******************************************************************************/
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();
-	const	{shouldDisplayStratsInQueue, switchShouldDisplayStratsInQueue} = useSettings();
+	const	settings = useSettings(); // eslint-disable-line @typescript-eslint/naming-convention
 	const	[filteredVaults, set_filteredVaults] = React.useState<TVault[]>([]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[isOnlyWarning, set_isOnlyWarning] = React.useState(false);
@@ -28,10 +28,31 @@ function	Index(): ReactElement {
 		const	_vaults = vaults;
 		let		_filteredVaults = [..._vaults];
 
+		//If the isOnlyWarning is checked, we only display the vaults with a warning
 		if (isOnlyWarning) {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (vault.alerts?.length || 0) > 0);
 		}
+
+		//If the shouldOnlyDisplayEndorsedVaults is checked, we only display the endorsed vaults (by the API)
+		if (settings.shouldOnlyDisplayEndorsedVaults) {
+			_filteredVaults = _filteredVaults.filter((vault): boolean => vault.isEndorsed);
+		}
+
+		//If the shouldDisplayVaultsWithMigration is checked, we also display the vaults with a migration
+		if (!settings.shouldDisplayVaultsWithMigration) {
+			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault.hasMigration);
+		}
+
+		//If the shouldDisplayVaultNoStrats is checked, we to hide all vaults with 0 strategies or none in withdrawal queue
+		if (!settings.shouldDisplayVaultNoStrats) {
+			_filteredVaults = _filteredVaults.filter((vault): boolean => (
+				vault.strategies.length > 0
+				&& !vault.strategies.every((strat): boolean => strat.index === 21)
+			));
+		}
+
 		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
+		_filteredVaults = _filteredVaults.sort((a, b): number => Number(b.version.replace('.', '')) - Number(a.version.replace('.', '')));
 		utils.performBatchedUpdates((): void => {
 			let	notAllocated = 0;
 			for (const vault of _filteredVaults) {
@@ -46,11 +67,11 @@ function	Index(): ReactElement {
 			set_filteredVaults(_filteredVaults);
 			set_searchResult({
 				vaults: _filteredVaults.length,
-				strategies: _filteredVaults.reduce((acc, vault): number => acc + ((vault.strategies.filter((strat): boolean => shouldDisplayStratsInQueue ? strat.index !== 21 : true))?.length || 0), 0),
+				strategies: _filteredVaults.reduce((acc, vault): number => acc + ((vault.strategies.filter((strat): boolean => settings.shouldDisplayStratsInQueue ? strat.index !== 21 : true))?.length || 0), 0),
 				notAllocated: notAllocated
 			});
 		});
-	}, [vaults, searchTerm, isOnlyWarning, shouldDisplayStratsInQueue]);
+	}, [vaults, searchTerm, isOnlyWarning, settings.shouldDisplayStratsInQueue, settings.shouldDisplayVaultNoStrats, settings.shouldOnlyDisplayEndorsedVaults, settings.shouldDisplayVaultsWithMigration]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
@@ -80,7 +101,7 @@ function	Index(): ReactElement {
 					<Card padding={'narrow'}>
 						<label className={'component--switchCard-wrapper'}>
 							<p>{'Only in queue'}</p>
-							<Switch isEnabled={shouldDisplayStratsInQueue} onSwitch={switchShouldDisplayStratsInQueue} />
+							<Switch isEnabled={settings.shouldDisplayStratsInQueue} onSwitch={settings.switchShouldDisplayStratsInQueue} />
 						</label>
 					</Card>
 				</div>
@@ -89,7 +110,7 @@ function	Index(): ReactElement {
 				<List className={'flex flex-col space-y-2 w-full'}>
 					{filteredVaults.map((vault): ReactElement => (
 						<div key={vault.address}>
-							<VaultBox vault={vault} isOnlyInQueue={shouldDisplayStratsInQueue} />
+							<VaultBox vault={vault} isOnlyInQueue={settings.shouldDisplayStratsInQueue} />
 						</div>
 					))}
 				</List>

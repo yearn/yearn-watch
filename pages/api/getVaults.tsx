@@ -143,6 +143,8 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 			inception: Number(vault.activation),
 			emergency_shutdown: vaultFromAPI?.emergency_shutdown || false,
 			isHidden: false,
+			isEndorsed: vaultFromAPI?.endorsed || false,
+			hasMigration: vaultFromAPI?.migration?.available === true,
 			address: utils.toAddress(vault.id),
 			guardian: utils.toAddress(vault.guardian),
 			management: utils.toAddress(vault.management),

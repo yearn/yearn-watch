@@ -1,27 +1,33 @@
-import	React, {ReactElement}		from	'react';
-import	Head						from	'next/head';
-import	Link						from	'next/link';
-import	{AppProps}					from	'next/app';
-import	{DefaultSeo}				from	'next-seo';
-import	useWatch, {WatchContextApp}	from	'contexts/useWatch';
-import	{SettingsContextApp}		from	'contexts/useSettings';
-import	Footer						from	'components/StandardFooter';
-import	HeaderTitle					from	'components/HeaderTitle';
-// import	IconRisk					from	'components/icons/IconRisk';
-import	IconHealthcheck				from	'components/icons/IconHealthcheck';
-import	IconQuery					from	'components/icons/IconQuery';
-import	LogoWatch					from	'components/logo/LogoWatch';
-import	{WithYearn}					from	'@yearn/web-lib';
-import	{Header, Navbar}			from	'@yearn/web-lib/layouts';
-import	{useInterval}				from	'@yearn/web-lib/hooks';
-import	* as utils					from	'@yearn/web-lib/utils';
+import	React, {ReactElement}			from	'react';
+import	Head							from	'next/head';
+import	Link							from	'next/link';
+import	Image							from	'next/image';
+import	{useRouter}						from	'next/router';
+import	{AppProps}						from	'next/app';
+import	{DefaultSeo}					from	'next-seo';
+import	{KBarProvider, Action,
+	createAction, useRegisterActions}	from	'kbar';
+import	useWatch, {WatchContextApp}		from	'contexts/useWatch';
+import	{SettingsContextApp}			from	'contexts/useSettings';
+import	KBar							from	'components/Kbar';
+import	Footer							from	'components/StandardFooter';
+import	HeaderTitle						from	'components/HeaderTitle';
+// import	IconRisk						from	'components/icons/IconRisk';
+import	IconHealthcheck					from	'components/icons/IconHealthcheck';
+import	IconQuery						from	'components/icons/IconQuery';
+import	LogoWatch						from	'components/logo/LogoWatch';
+import	{WithYearn}						from	'@yearn/web-lib';
+import	{Header, Navbar}				from	'@yearn/web-lib/layouts';
+import	{useInterval}					from	'@yearn/web-lib/hooks';
+import	* as utils						from	'@yearn/web-lib/utils';
 import	{
 	Vault as IconVault,
 	Settings as IconSettings,
 	AlertWarning as IconAlert
-}									from	'@yearn/web-lib/icons';
+}										from	'@yearn/web-lib/icons';
 
 import	'../style.css';
+import KBarButton from 'components/KBarButton';
 
 function	AppHead(): ReactElement {
 	return (
@@ -162,6 +168,62 @@ function	AppSync(): ReactElement {
 	);
 }
 
+function	KBarWrapper(): React.ReactElement {
+	const	[actions, set_actions] = React.useState<Action[]>([]);
+	const	{vaults} = useWatch();
+	const	router = useRouter();
+
+	React.useEffect((): void => {
+		const	_actions = [];
+		for (const vault of vaults) {
+			const	vaultAction = createAction({
+				name: `${vault.display_name || vault.name} v${vault.version}`,
+				keywords: `${vault.display_name || vault.name} ${vault.symbol} ${vault.address}`,
+				section: 'Vaults',
+				perform: async (): Promise<boolean> => router.push(`/vault/${vault.address}`),
+				icon: (vault.icon ? 
+					<Image
+						src={vault.icon}
+						alt={vault.display_name || vault.name}
+						decoding={'async'}
+						quality={70}
+						width={36}
+						height={36}
+						className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-background'} />
+				),
+				subtitle: `${vault.address}`
+			});
+
+			_actions.push(vaultAction);
+			for (const strategy of vault.strategies) {
+				const	strategyAction = createAction({
+					parent: vaultAction.id,
+					section: 'Strategies',
+					name: strategy.name,
+					keywords: `${strategy.name} ${strategy.address}`,
+					perform: async (): Promise<boolean> => router.push(`/vault/${vault.address}/${strategy.address}`),
+					icon: (vault.icon ? 
+						<Image
+							src={vault.icon}
+							alt={vault.display_name || vault.name}
+							decoding={'async'}
+							quality={70}
+							width={36}
+							height={36}
+							className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-background'} />
+					),
+					subtitle: `${strategy.address}`
+				});
+				_actions.push(strategyAction);
+			}
+		}
+		set_actions(_actions);
+	}, [vaults]); // eslint-disable-line react-hooks/exhaustive-deps
+	useRegisterActions(actions, [actions]);
+
+	return <span />;
+}
+
 function	AppWrapper(props: AppProps): ReactElement {
 	const	{Component, pageProps, router} = props;
 	const	navbarMenuOptions = [
@@ -210,32 +272,39 @@ function	AppWrapper(props: AppProps): ReactElement {
 	return (
 		<>
 			<AppHead />
-			<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-6xl md:flex-row'}>
-				<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2'}>
-					<div className={'flex flex-col justify-between h-full'}>
-						<Navbar
-							selected={router.pathname}
-							set_selected={onChangeRoute}
-							logo={<LogoWatch className={'w-full h-12 text-primary'} />}
-							options={navbarMenuOptions}
-							wrapper={<Link passHref href={''} />}>
-							<div className={'flex flex-col mt-auto space-y-2'}>
-								<AppSync />
-							</div>
-						</Navbar>
+			<KBarProvider>
+				<div className={'z-[9999]'}>
+					<KBar />
+					<KBarWrapper />
+				</div>
+				<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-[1200px] md:flex-row'}>
+					<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2'}>
+						<div className={'flex flex-col justify-between h-full'}>
+							<Navbar
+								selected={router.pathname}
+								set_selected={onChangeRoute}
+								logo={<LogoWatch className={'w-full h-12 text-primary'} />}
+								options={navbarMenuOptions}
+								wrapper={<Link passHref href={''} />}>
+								<div className={'flex flex-col mt-auto mb-6 space-y-2'}>
+									<AppSync />
+								</div>
+								<KBarButton />
+							</Navbar>
+						</div>
+					</div>
+					<div className={'flex flex-col col-span-12 w-full max-w-6xl min-h-[100vh] md:col-span-10'}>
+						<Header shouldUseNetworks={(process?.env?.USE_NETWORKS || true) as boolean}>
+							<HeaderTitle />
+						</Header>
+						<Component
+							key={router.route}
+							router={props.router}
+							{...pageProps} />
+						<Footer />
 					</div>
 				</div>
-				<div className={'flex flex-col col-span-12 px-4 w-full min-h-[100vh] md:col-span-10'}>
-					<Header shouldUseNetworks={(process?.env?.USE_NETWORKS || true) as boolean}>
-						<HeaderTitle />
-					</Header>
-					<Component
-						key={router.route}
-						router={props.router}
-						{...pageProps} />
-					<Footer />
-				</div>
-			</div>
+			</KBarProvider>
 		</>
 	);
 }
