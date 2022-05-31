@@ -100,7 +100,7 @@ function	HeaderTitle(): ReactElement {
 				src={currentVault.icon}
 				quality={90} /> : <div className={'w-8 h-8 rounded-full bg-background'} />}
 			<div className={'ml-2 md:ml-6'}>
-				<b>{currentVault.display_name}</b>
+				<b>{currentVault.display_name || currentVault.name}</b>
 				<p className={'text-xs text-typo-secondary'}>
 					{(currentVault.strategies).length > 1 ? `${(currentVault.strategies).length} strats` : `${(currentVault.strategies).length} strat`}
 				</p>
