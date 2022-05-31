@@ -310,7 +310,11 @@ export async function getVaults(
 	for (const vault of _vaults) {
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3.1;
 		const	contractVault = new Contract(vault.address, isV2Vault ? VAULT_ABI['v0.2.x'] : VAULT_ABI['v0.4.x']);
-		[...Array(20).keys()].map((i): number => multiCalls.push(contractVault.withdrawalQueue(i)));
+		const	maybeWithdrawalQueue = Array(20).keys();
+		for (const iterator of maybeWithdrawalQueue) {
+			multiCalls.push(contractVault.withdrawalQueue(iterator));
+		}
+
 		multiCalls.push(priceOracleContract.getPriceUsdcRecommended(vault.token.address));
 		for (const strategy of vault.strategies) {
 			multiCalls.push(contractVault.creditAvailable(strategy.address));
@@ -320,6 +324,7 @@ export async function getVaults(
 			const	contractStrat = new Contract(strategy.address, STRATEGY_ABI);
 			multiCalls.push(contractStrat.isActive());
 			multiCalls.push(contractStrat.estimatedTotalAssets());
+			multiCalls.push(contractStrat.keepCRV());
 		}
 	}
 	const	callResult = await ethcallProvider.tryAll(multiCalls);
@@ -393,6 +398,7 @@ export async function getVaults(
 			strategy.expectedReturn = utils.format.BN(callResult?.[rIndex++] as never);
 			strategy.isActive = callResult[rIndex++] as boolean;
 			strategy.estimatedTotalAssets = utils.format.BN(callResult?.[rIndex++] as never);
+			strategy.shouldKeepCRV = callResult?.[rIndex++] as boolean;
 			strategy.totalDebtUSDC = Number(ethers.utils.formatUnits(strategy.totalDebt, vault.decimals)) * (vault.tokenPriceUSDC || 0);
 			strategy.tvlImpact = getTvlImpact(strategy.totalDebtUSDC);
 

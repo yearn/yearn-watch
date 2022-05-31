@@ -70,6 +70,7 @@ export type TStrategy = {
 	isActive: boolean,
 	isHidden: boolean,
 	shouldDoHealthCheck: boolean,
+	shouldKeepCRV: boolean,
 	address: utils.TAddress,
 	addrHealthCheck: utils.TAddress,
 	addrKeeper: utils.TAddress,
