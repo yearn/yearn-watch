@@ -18,7 +18,7 @@ module.exports = {
 		join(__dirname, 'node_modules', '@yearn', 'web-lib', 'dist', 'icons', '**', '*.js'),
 		join(__dirname, 'node_modules', '@yearn', 'web-lib', 'dist', 'utils', '**', '*.js')
 	],
-	themes: {
+	theme: {
 		extend: {
 			height: {
 				'inherit': 'inherit'
