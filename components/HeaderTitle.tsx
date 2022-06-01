@@ -85,7 +85,7 @@ function	HeaderTitle(): ReactElement {
 			return (
 				<div className={'flex-row-center'}>
 					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
-						{'Track'}
+						{'Track - KeepCRV'}
 					</h1>
 				</div>
 			);
