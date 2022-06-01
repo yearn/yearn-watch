@@ -1,8 +1,7 @@
 import	React, {ReactElement} 					from	'react';
 import	useWatch								from	'contexts/useWatch';
 import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
-import	{Card, Banner, Switch, SearchBox}		from	'@yearn/web-lib/components';
-import	* as utils								from	'@yearn/web-lib/utils';
+import	{Card, Switch, SearchBox}		from	'@yearn/web-lib/components';
 import	{deepFindVaultBySearch}					from	'utils/filters';
 import	SectionHealthcheckList					from	'components/sections/healthcheck/SectionHealthcheckList';
 import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
@@ -35,7 +34,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 }
 
 /* 🔵 - Yearn Finance **********************************************************
-** Main render of the Healthcheck page
+** Main render of the Track page
 ******************************************************************************/
 function	Track(): ReactElement {
 	const	{vaults} = useWatch();
@@ -50,8 +49,7 @@ function	Track(): ReactElement {
 	** takes into account the strategies too.
 	** Displayed strategies will be the one matching one of the following
 	** conditions:
-	** - ShouldDoHealthCheck is false
-	** - Healtchecker address is invalid
+	** - Track is false
 	** - TVL is not 0 (can be forced with the isOnlyWithTVL variable)
 	**************************************************************************/
 	React.useEffect((): void => {
@@ -64,7 +62,7 @@ function	Track(): ReactElement {
 		for (const vault of _filteredVaults) {
 			for (const strategy of vault.strategies) {
 				const	keepCRV = strategy.keepCRV;
-				console.log("keepcrv", keepCRV, !keepCRV);
+
 				if (!keepCRV)
 					continue;
 				_filteredStrategies.push(strategy);
