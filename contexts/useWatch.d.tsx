@@ -89,6 +89,7 @@ export type TStrategy = {
 	expectedReturn: BigNumber,
 	reports: TStrategyReport[],
 	alerts: TAlert[],
+	keepCRV: BigNumber,
 	vault: {
 		address: utils.TAddress,
 		name: string,
