@@ -39,6 +39,7 @@ const	SectionStats = React.memo(function SectionStats({currentVault, currentStra
 					{title: 'Performance Fee ', details: format.bigNumberAsAmount(currentStrategy.performanceFee, 2, 2, '%')},
 					{title: 'Min Debt Per Harvest ', details: format.bigNumberAsAmount(currentStrategy.minDebtPerHarvest, currentVault.decimals, 4)},
 					{title: 'Max Debt Per Harvest ', details: format.bigNumberAsAmount(currentStrategy.maxDebtPerHarvest, currentVault.decimals, 4)},
+					{title: 'KeepCRV ', details: format.bigNumberAsAmount(currentStrategy.keepCRV, 0)},
 					{title: 'Keeper', details: <AddressWithActions address={currentStrategy?.addrKeeper || ethers.constants.AddressZero} explorer={currentVault.explorer} />}, 
 					{title: 'Rewards', details: <AddressWithActions address={currentStrategy?.addrRewards || ethers.constants.AddressZero} explorer={currentVault.explorer} />}, 
 					{title: 'Strategist', details: <AddressWithActions address={currentStrategy?.addrStrategist || ethers.constants.AddressZero} explorer={currentVault.explorer} />}, 
