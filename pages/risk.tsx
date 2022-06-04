@@ -70,7 +70,7 @@ function	Risk(): ReactElement {
 		let		_totalDebt = 0;
 
 		async function fetchRiskGroups(): Promise<void> {
-			const endpoint = 'http://yearn-data-dev.us-west-2.elasticbeanstalk.com/api/riskgroups';
+			const endpoint = 'http://yearn-data-analytics.us-west-2.elasticbeanstalk.com/api/riskgroups';
 			const response = await axios.get(endpoint);
 			if (response.status === 200) {
 				const riskGroups = response.data as TRiskGroup[];
