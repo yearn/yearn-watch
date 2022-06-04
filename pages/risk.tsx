@@ -51,6 +51,21 @@ function	Risk(): ReactElement {
 	const	[groups, set_groups] = React.useState<TRiskGroup[]>([]);
 	const [risk, set_risk] = React.useState<TRiskGroup[]>([]);
 
+	// load the risk framework scores from API
+	React.useEffect((): void => {
+		const	_chainID = chainID || 1;
+		async function fetchRiskGroups(): Promise<void> {
+			const endpoint = 'https://d3971bp2359cnv.cloudfront.net/api/riskgroups';
+			const response = await axios.get(endpoint);
+			if (response.status === 200) {
+				const riskGroups = response.data as TRiskGroup[];
+				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
+				set_risk(riskForNetworks);
+			}
+		}
+		fetchRiskGroups();
+	}, [chainID, isUpdating]);
+
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
 	** changed. It filters the vault list based on the search term. This action
@@ -64,21 +79,9 @@ function	Risk(): ReactElement {
 			set_groups([]);
 			return;
 		}
-		const	_chainID = chainID || 1;
 		const	_vaults = vaults;
 		const	_groups = [];
 		let		_totalDebt = 0;
-
-		async function fetchRiskGroups(): Promise<void> {
-			const endpoint = 'http://yearn-data-analytics.us-west-2.elasticbeanstalk.com/api/riskgroups';
-			const response = await axios.get(endpoint);
-			if (response.status === 200) {
-				const riskGroups = response.data as TRiskGroup[];
-				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
-				set_risk(riskForNetworks);
-			}
-		}
-		fetchRiskGroups();
 
 		for (const group of risk) {
 			const	_group = {...group} as unknown as TRiskGroup;
