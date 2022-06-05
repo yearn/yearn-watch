@@ -52,19 +52,20 @@ function	Risk(): ReactElement {
 	const [risk, set_risk] = React.useState<TRiskGroup[]>([]);
 
 	// load the risk framework scores from API
-	React.useEffect((): void => {
+	const fetchRiskGroups = React.useCallback(async (): Promise<void> => {
 		const	_chainID = chainID || 1;
-		async function fetchRiskGroups(): Promise<void> {
-			const endpoint = 'https://d3971bp2359cnv.cloudfront.net/api/riskgroups';
-			const response = await axios.get(endpoint);
-			if (response.status === 200) {
-				const riskGroups = response.data as TRiskGroup[];
-				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
-				set_risk(riskForNetworks);
-			}
+		const endpoint = process.env.RISK_API_URL as string + '/riskgroups/';
+		const response = await axios.get(endpoint);
+		if (response.status === 200) {
+			const riskGroups = response.data as TRiskGroup[];
+			const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
+			set_risk(riskForNetworks);
 		}
+	}, [chainID]);
+
+	React.useEffect((): void => {
 		fetchRiskGroups();
-	}, [chainID, isUpdating]);
+	}, [fetchRiskGroups]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
