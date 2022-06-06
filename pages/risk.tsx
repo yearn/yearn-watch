@@ -1,11 +1,11 @@
 import	React, {ReactElement} 		from	'react';
+import	axios											from	'axios';
 import	{useWeb3}					from	'@yearn/web-lib/contexts';
 import	SectionRiskList				from	'components/sections/risk/SectionRiskList';
 import	SectionMatrix				from	'components/sections/risk/SectionMatrix';
 import	{TableHead, TableHeadCell}	from	'components/TableHeadCell';
 import	useWatch					from	'contexts/useWatch';
 import	{TRowHead, TRiskGroup}		from	'contexts/useWatch.d';
-import	RISK						from	'utils/risks.json';
 import	{findStrategyBySearch}		from	'utils/filters';
 import	{getImpactScore, getTvlImpact, getLongevityScore, getExcludeIncludeUrlParams, median}		from	'utils';
 
@@ -49,6 +49,23 @@ function	Risk(): ReactElement {
 	const	{isUpdating, dataChainID, vaults} = useWatch();
 	const	[sortBy, set_sortBy] = React.useState('score');
 	const	[groups, set_groups] = React.useState<TRiskGroup[]>([]);
+	const [risk, set_risk] = React.useState<TRiskGroup[]>([]);
+
+	// load the risk framework scores from API
+	const fetchRiskGroups = React.useCallback(async (): Promise<void> => {
+		const	_chainID = chainID || 1;
+		const endpoint = process.env.RISK_API_URL as string + '/riskgroups/';
+		const response = await axios.get(endpoint);
+		if (response.status === 200) {
+			const riskGroups = response.data as TRiskGroup[];
+			const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
+			set_risk(riskForNetworks);
+		}
+	}, [chainID]);
+
+	React.useEffect((): void => {
+		fetchRiskGroups();
+	}, [fetchRiskGroups]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -58,18 +75,15 @@ function	Risk(): ReactElement {
 	** filters.
 	**************************************************************************/
 	React.useEffect((): void => {
-		console.log(dataChainID, chainID);
 		if (dataChainID !== chainID && !(dataChainID === 1 && chainID === 0)) {
 			set_groups([]);
 			return;
 		}
-		const	_chainID = chainID || 1;
 		const	_vaults = vaults;
 		const	_groups = [];
-		const	riskForNetworks = RISK.filter((r): boolean => r.network === _chainID);
 		let		_totalDebt = 0;
 
-		for (const group of riskForNetworks) {
+		for (const group of risk) {
 			const	_group = {...group} as unknown as TRiskGroup;
 			_group.oldestActivation = 0;
 			_group.tvl = 0;
@@ -114,7 +128,7 @@ function	Risk(): ReactElement {
 		}
 
 		set_groups(_groups);
-	}, [vaults, dataChainID, chainID, isUpdating]);
+	}, [vaults, dataChainID, chainID, isUpdating, risk]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
