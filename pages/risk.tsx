@@ -75,7 +75,6 @@ function	Risk(): ReactElement {
 	** filters.
 	**************************************************************************/
 	React.useEffect((): void => {
-		console.log(dataChainID, chainID);
 		if (dataChainID !== chainID && !(dataChainID === 1 && chainID === 0)) {
 			set_groups([]);
 			return;
