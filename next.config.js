@@ -43,6 +43,7 @@ module.exports = ({
 			250: process.env.RPC_URL_FANTOM || 'https://rpc.ftm.tools',
 			42161: process.env.RPC_URL_ARBITRUM || 'https://arbitrum.public-rpc.com'
 		},
+		RISK_GH_URL: 'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
 		RISK_API_URL: 'https://d3971bp2359cnv.cloudfront.net/api'
 	}
 });
