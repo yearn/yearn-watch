@@ -1,5 +1,5 @@
 import	React, {ReactElement}						from	'react';
-import	{AlertWarning, AlertError, AlertCritical}	from	'@yearn/web-lib/icons';
+import	{AlertWarning, AlertError, AlertCritical}	from	'@yearn-finance/web-lib/icons';
 import	{TAlertLevels}								from	'contexts/useWatch.d';
 
 type		TAlertSelector = {

@@ -2,9 +2,9 @@ import	React, {ReactElement}			from	'react';
 import	axios							from	'axios';
 import	NProgress						from	'nprogress';
 import	* as useWatchTypes				from	'contexts/useWatch.d';
-import	{useWeb3}						from	'@yearn/web-lib/contexts';
-import	{useLocalStorage}				from	'@yearn/web-lib/hooks';
-import	{format, performBatchedUpdates}	from	'@yearn/web-lib/utils';
+import	{useWeb3}						from	'@yearn-finance/web-lib/contexts';
+import	{useLocalStorage}				from	'@yearn-finance/web-lib/hooks';
+import	{format, performBatchedUpdates}	from	'@yearn-finance/web-lib/utils';
 import	useSettings						from	'contexts/useSettings';
 import	{getVaults}						from	'pages/api/getVaults';
 

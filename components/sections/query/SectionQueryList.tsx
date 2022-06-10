@@ -1,9 +1,9 @@
 import	React, {ReactElement}				from	'react';
 import	Image								from	'next/image';
 import	Link								from	'next/link';
-import	{List}								from	'@yearn/web-lib/layouts';
-import	{AddressWithActions, Button, Card}	from	'@yearn/web-lib/components';
-import	* as utils							from	'@yearn/web-lib/utils';
+import	{List}								from	'@yearn-finance/web-lib/layouts';
+import	{AddressWithActions, Button, Card}	from	'@yearn-finance/web-lib/components';
+import	* as utils							from	'@yearn-finance/web-lib/utils';
 import	{TStrategy}							from	'contexts/useWatch.d';
 import	{PageController}					from	'components/PageController';
 import	{HumanizeRisk}						from	'components/HumanizedRisk';

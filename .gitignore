@@ -27,3 +27,4 @@ pnpm-debug.log*
 .vercel
 
 lib
+tsconfig.tsbuildinfo

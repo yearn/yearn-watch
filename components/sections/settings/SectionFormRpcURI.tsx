@@ -1,6 +1,6 @@
 import	React, {ReactElement}		from	'react';
-import	{Card, Button}				from	'@yearn/web-lib/components';
-import	{useUI}						from	'@yearn/web-lib/contexts';
+import	{Card, Button}				from	'@yearn-finance/web-lib/components';
+import	{useUI}						from	'@yearn-finance/web-lib/contexts';
 import	useSettings					from	'contexts/useSettings';
 
 function	SectionFormRpcURI(): ReactElement {

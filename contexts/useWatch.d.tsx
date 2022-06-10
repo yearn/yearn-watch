@@ -1,5 +1,5 @@
 import {BigNumber} from 'ethers';
-import {utils} from '@yearn/web-lib';
+import {utils} from '@yearn-finance/web-lib';
 
 export type TRowHead = {
 	sortBy: string,

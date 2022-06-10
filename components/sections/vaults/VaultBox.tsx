@@ -1,8 +1,8 @@
 import	React, {MouseEvent, ReactElement}	from	'react';
 import	Link								from	'next/link';
 import	Image								from	'next/image';
-import	{Card, AddressWithActions, Button}	from	'@yearn/web-lib/components';
-import	{AlertWarning, Chevron}				from	'@yearn/web-lib/icons';
+import	{Card, AddressWithActions, Button}	from	'@yearn-finance/web-lib/components';
+import	{AlertWarning, Chevron}				from	'@yearn-finance/web-lib/icons';
 import	{TStrategy, TVault}					from	'contexts/useWatch.d';
 import	StrategyBox							from	'components/sections/vaults/StrategyBox';
 import	ModalWarning						from	'components/ModalWarning';

@@ -1,7 +1,7 @@
 import	React, {ReactElement}					from	'react';
 import	{TVault, TStrategy}						from	'contexts/useWatch.d';
-import	{DescriptionList, AddressWithActions}	from	'@yearn/web-lib/components';
-import	{format} 								from	'@yearn/web-lib/utils';
+import	{DescriptionList, AddressWithActions}	from	'@yearn-finance/web-lib/components';
+import	{format} 								from	'@yearn-finance/web-lib/utils';
 import {ethers} from 'ethers';
 
 type	TSectionStats = {currentVault: TVault, currentStrategy: TStrategy | undefined};

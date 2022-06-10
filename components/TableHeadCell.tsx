@@ -1,5 +1,5 @@
 import	React, {ReactElement} 					from	'react';
-import	{ArrowDown}								from	'@yearn/web-lib/icons';
+import	{ArrowDown}								from	'@yearn-finance/web-lib/icons';
 
 type		TTableHeadCell = {
 	label: string,

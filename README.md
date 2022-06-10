@@ -1,14 +1,16 @@
-# yearn-watch
+# Yearn Watch
+![](./.github/og.jpeg)
 
-In order to install Yearn Watch on your device, please create a .npmrc file with the following content
-```
-registry=https://registry.npmjs.org/
-@yearn:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=YOUR_ACCESS_TOKEN
-```
-You will need to generate a [Github Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+Yearn Watch is a dashboard used to track information about Yearn's Vaults and strategies.  
+It is used to hightlight some potential issues (warning, error, critical) and be able to fix theme.  
+The data sources used are:  
+- The data from the Yearn API: https://api.yearn.finance/v1/chains/1/vaults/all
+- The data from the Yearn Meta: https://meta.yearn.finance/api/1/vaults/all
+- The data from the Yearn Graph: https://api.thegraph.com/subgraphs/name/0xkofee/yearn-vaults-v2
+- The data from the Risk Framework: https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json
 
-Then, you can run it with
-```
-yarn && yarn dev
-```
+## How to run the project  
+1. Clone the repository  
+2. Run `yarn`  
+3. Run `yarn run dev`  
+4. Access `http://localhost:3000`  
