@@ -51,15 +51,21 @@ function	Risk(): ReactElement {
 	const	[groups, set_groups] = React.useState<TRiskGroup[]>([]);
 	const [risk, set_risk] = React.useState<TRiskGroup[]>([]);
 
-	// load the risk framework scores from API
+	// load the risk framework scores from external data sources
 	const fetchRiskGroups = React.useCallback(async (): Promise<void> => {
 		const	_chainID = chainID || 1;
-		const endpoint = process.env.RISK_API_URL as string + '/riskgroups/';
-		const response = await axios.get(endpoint);
-		if (response.status === 200) {
-			const riskGroups = response.data as TRiskGroup[];
-			const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
-			set_risk(riskForNetworks);
+		const endpoints = [
+			process.env.RISK_GH_URL as string,	// Github
+			process.env.RISK_API_URL as string + '/riskgroups/'	// Risk API
+		];
+		for (const endpoint of endpoints) {
+			const response = await axios.get(endpoint);
+			if (response.status === 200) {
+				const riskGroups = response.data as TRiskGroup[];
+				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
+				set_risk(riskForNetworks);
+				return;
+			}
 		}
 	}, [chainID]);
 
