@@ -1,6 +1,6 @@
 import	React, {ReactElement}					from	'react';
 import	{TVault, TStrategy}						from	'contexts/useWatch.d';
-import	{DescriptionList, AddressWithActions} 	from	'@yearn/web-lib/components';
+import	{DescriptionList, AddressWithActions} 	from	'@yearn-finance/web-lib/components';
 
 type	TSectionHealthCheck = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionHealthCheck = React.memo(function SectionHealthCheck({currentVault, currentStrategy}: TSectionHealthCheck): ReactElement {

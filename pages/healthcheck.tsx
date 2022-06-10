@@ -1,6 +1,6 @@
 import	React, {ReactElement} 							from	'react';
-import	{Card, Banner, Switch, SearchBox}				from	'@yearn/web-lib/components';
-import	* as utils										from	'@yearn/web-lib/utils';
+import	{Card, Banner, Switch, SearchBox}				from	'@yearn-finance/web-lib/components';
+import	* as utils										from	'@yearn-finance/web-lib/utils';
 import	useWatch										from	'contexts/useWatch';
 import	{TStrategy, TRowHead}							from	'contexts/useWatch.d';
 import	useSettings										from	'contexts/useSettings';

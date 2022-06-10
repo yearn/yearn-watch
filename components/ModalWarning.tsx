@@ -1,7 +1,7 @@
 import	React, {ReactElement}	from	'react';
 import	{TAlert}				from	'contexts/useWatch.d';
-import	{Modal}					from	'@yearn/web-lib/components';
-import	{Cross, AlertWarning}	from	'@yearn/web-lib/icons';
+import	{Modal}					from	'@yearn-finance/web-lib/components';
+import	{Cross, AlertWarning}	from	'@yearn-finance/web-lib/icons';
 
 type	TModalWarning = {
 	alerts: TAlert[],

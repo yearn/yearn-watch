@@ -1,9 +1,9 @@
 import	React, {MouseEvent, ReactElement}	from	'react';
 import	Link								from	'next/link';
-import	{List}								from	'@yearn/web-lib/layouts';
-import	{Card, Button, StatisticCard}		from	'@yearn/web-lib/components';
-import	* as utils							from	'@yearn/web-lib/utils';
-import	{Chevron}							from	'@yearn/web-lib/icons';
+import	{List}								from	'@yearn-finance/web-lib/layouts';
+import	{Card, Button, StatisticCard}		from	'@yearn-finance/web-lib/components';
+import	* as utils							from	'@yearn-finance/web-lib/utils';
+import	{Chevron}							from	'@yearn-finance/web-lib/icons';
 import	{TRiskGroup}						from	'contexts/useWatch.d';
 import	StrategyBox							from	'components/sections/vaults/StrategyBox';
 import	{getImpactScoreColor}				from	'utils';

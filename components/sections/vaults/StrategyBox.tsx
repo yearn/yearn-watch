@@ -1,8 +1,8 @@
 import	React, {MouseEvent, ReactElement}					from	'react';
 import	Link												from	'next/link';
 import	{TStrategy}											from	'contexts/useWatch.d';
-import	{StatisticCard, Card, Button, AddressWithActions}	from	'@yearn/web-lib/components';
-import	* as utils											from	'@yearn/web-lib/utils';
+import	{StatisticCard, Card, Button, AddressWithActions}	from	'@yearn-finance/web-lib/components';
+import	* as utils											from	'@yearn-finance/web-lib/utils';
 
 type 		TStrategyBox = {strategy: TStrategy, symbol: string, decimals: number, vaultAddress: string, vaultExplorer: string}
 function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: TStrategyBox): ReactElement {

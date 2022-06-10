@@ -12,22 +12,21 @@ import	{SettingsContextApp}			from	'contexts/useSettings';
 import	KBar							from	'components/Kbar';
 import	Footer							from	'components/StandardFooter';
 import	HeaderTitle						from	'components/HeaderTitle';
-// import	IconRisk						from	'components/icons/IconRisk';
 import	IconHealthcheck					from	'components/icons/IconHealthcheck';
 import	IconQuery						from	'components/icons/IconQuery';
 import	LogoWatch						from	'components/logo/LogoWatch';
-import	{WithYearn}						from	'@yearn/web-lib';
-import	{Header, Navbar}				from	'@yearn/web-lib/layouts';
-import	{useInterval}					from	'@yearn/web-lib/hooks';
-import	* as utils						from	'@yearn/web-lib/utils';
+import	KBarButton						from	'components/KBarButton';
+import	{WithYearn}						from	'@yearn-finance/web-lib/contexts';
+import	{Header, Navbar}				from	'@yearn-finance/web-lib/layouts';
+import	{useInterval}					from	'@yearn-finance/web-lib/hooks';
+import	* as utils						from	'@yearn-finance/web-lib/utils';
 import	{
 	Vault as IconVault,
 	Settings as IconSettings,
 	AlertWarning as IconAlert
-}										from	'@yearn/web-lib/icons';
+}										from	'@yearn-finance/web-lib/icons';
 
 import	'../style.css';
-import KBarButton from 'components/KBarButton';
 
 function	AppHead(): ReactElement {
 	return (

@@ -1,10 +1,10 @@
 import	React, {ReactElement}									from	'react';
 import	Image													from	'next/image';
-import	{List}													from	'@yearn/web-lib/layouts';
-import	{Card, AddressWithActions, AlertBox, Button}			from	'@yearn/web-lib/components';
-import	{useLocalStorage}										from	'@yearn/web-lib/hooks';
-import	{performBatchedUpdates}									from	'@yearn/web-lib/utils';
-import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@yearn/web-lib/icons';
+import	{List}													from	'@yearn-finance/web-lib/layouts';
+import	{Card, AddressWithActions, AlertBox, Button}			from	'@yearn-finance/web-lib/components';
+import	{useLocalStorage}										from	'@yearn-finance/web-lib/hooks';
+import	{performBatchedUpdates}									from	'@yearn-finance/web-lib/utils';
+import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@yearn-finance/web-lib/icons';
 import	{TVault, TStrategy}										from	'contexts/useWatch.d';
 import	{PageController}										from	'components/PageController';
 

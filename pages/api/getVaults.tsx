@@ -2,13 +2,13 @@ import	{NextApiRequest, NextApiResponse}		from	'next';
 import	axios									from	'axios';
 import	{request}								from	'graphql-request';
 import	{Contract}								from	'ethcall';
-import	{ethers, BigNumber}				from	'ethers';
+import	{ethers, BigNumber}						from	'ethers';
 import	{createHash}							from	'crypto';
 import	VAULT_ABI								from	'utils/abi/vaults.abi';
 import	STRATEGY_ABI							from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI						from	'utils/abi/priceOracle.abi';
 import	{TVault, TStrategyReport, TGraphVault}	from	'contexts/useWatch.d';
-import	* as utils								from	'@yearn/web-lib/utils';
+import	* as utils								from	'@yearn-finance/web-lib/utils';
 import	{getTvlImpact}							from	'utils';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

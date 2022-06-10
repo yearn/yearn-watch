@@ -1,5 +1,5 @@
 import	React, {ReactElement}	from 'react';
-import	{Search}				from '@yearn/web-lib/icons';
+import	{Search}				from '@yearn-finance/web-lib/icons';
 import	{useKBar}				from 'kbar';
 
 function	KBarButton(): ReactElement {

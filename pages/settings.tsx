@@ -1,5 +1,5 @@
 import	React, {ReactElement}		from	'react';
-import	{Card, Switch}				from	'@yearn/web-lib/components';
+import	{Card, Switch}				from	'@yearn-finance/web-lib/components';
 import	useSettings					from	'contexts/useSettings';
 import	SectionFormGraphURI			from	'components/sections/settings/SectionFormGraphURI';
 import	SectionFormRpcURI			from	'components/sections/settings/SectionFormRpcURI';
