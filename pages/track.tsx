@@ -63,7 +63,7 @@ function	Track(): ReactElement {
 			for (const strategy of vault.strategies) {
 				const	keepCRV = strategy.keepCRV;
 
-				if (!keepCRV)
+				if (keepCRV === 'N/A' || (strategy?.totalDebt.isZero() && isOnlyWithTvl))
 					continue;
 				_filteredStrategies.push(strategy);
 			}
