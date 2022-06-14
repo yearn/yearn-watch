@@ -3,7 +3,7 @@ import	useWatch								from	'contexts/useWatch';
 import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
 import	{Card, Switch, SearchBox}  from '@yearn-finance/web-lib/components';
 import	{deepFindVaultBySearch}					from	'utils/filters';
-import	SectionHealthcheckList					from	'components/sections/healthcheck/SectionHealthcheckList';
+import	SectionTrackList					from	'components/sections/track/SectionTrackList';
 import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
 
 /* 🔵 - Yearn Finance **********************************************************
@@ -27,8 +27,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 				label={'Debt Outstanding'} />
 			<TableHeadCell
 				className={'col-span-3 cell-end min-w-36'}
-				label={'Risk'}
-				sortId={'risk'} />
+				label={'KeepCRV'} />
 		</TableHead>
 	);
 }
@@ -106,7 +105,7 @@ function	Track(): ReactElement {
 			<div className={'flex overflow-x-scroll pb-0 h-full'}>
 				<div className={'flex flex-col w-[965px] h-full md:w-full'}>
 					<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
-					<SectionHealthcheckList sortBy={sortBy} strategies={filteredStrategies} />
+					<SectionTrackList sortBy={sortBy} strategies={filteredStrategies} />
 				</div>
 			</div>
 		</div>
