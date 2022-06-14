@@ -1,7 +1,7 @@
 import	React, {ReactElement} 					from	'react';
 import	useWatch								from	'contexts/useWatch';
 import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
-import	{Card, Switch, SearchBox}		from	'@yearn/web-lib/components';
+import	{Card, Switch, SearchBox}  from '@yearn-finance/web-lib/components';
 import	{deepFindVaultBySearch}					from	'utils/filters';
 import	SectionHealthcheckList					from	'components/sections/healthcheck/SectionHealthcheckList';
 import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
