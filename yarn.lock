@@ -1247,10 +1247,10 @@
     "@web3-react/types" "^8.0.10-beta.0"
     eventemitter3 "^4.0.7"
 
-"@yearn-finance/web-lib@^0.7.4":
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/@yearn-finance/web-lib/-/web-lib-0.7.4.tgz#ac1d2451fb248615d3feba373e3f8ea3cfb2e3b7"
-  integrity sha512-KfZ6pCr8t2ib0SNk5N+nsGVf0nwDaCqjXN5rGewDrc3djbRiV0ITfMIs11hJA0Htp6X59kUnMZqMdYRPVqyF+A==
+"@yearn-finance/web-lib@^0.8.7":
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/@yearn-finance/web-lib/-/web-lib-0.8.7.tgz#b18972910e370dc0b85a4eeae835909d2000614e"
+  integrity sha512-rdygQBSce7e8net0s7BtpHMGe+1Ibx3uErBR9zkk8TTcCBHxhQD2LvaK/i8uJV9c0p3RVWNrX6xF/nFoTrYvkA==
   dependencies:
     "@coinbase/wallet-sdk" "^3.1.0"
     "@ethersproject/experimental" "^5.6.2"
@@ -1277,7 +1277,7 @@
     react-flip-move "^3.0.4"
     react-hot-toast "^2.2.0"
     react-virtualized "^9.22.3"
-    tailwindcss "^3.0.24"
+    tailwindcss "^3.1.0"
 
 abi-coder@^4.0.0:
   version "4.0.0"
@@ -4339,7 +4339,7 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-tailwindcss@^3.0.24, tailwindcss@^3.0.7:
+tailwindcss@^3.0.24, tailwindcss@^3.0.7, tailwindcss@^3.1.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.1.2.tgz#b5607d17adb6cbb11a13738cc5fdf3e5527dcd7a"
   integrity sha512-yJ6L5s1U5AeS5g7HHy212zdQfjwD426FBfm59pet/JsyneuZuD4C2W7PpJEg4ppisiB21uLqtNagv8KXury3+Q==
