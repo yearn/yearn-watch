@@ -100,7 +100,7 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 									<StatisticCard
 										className={'col-span-12 md:col-span-3'}
 										label={'Duration PR'}
-										value={`${format.amount(Number(report?.durationPR?.toFixed(4)), 2)}%`} />
+										value={`${format.amount(Number((report?.durationPR || 0).toFixed(4)), 2)}%`} />
 									<StatisticCard
 										className={'col-span-12 md:col-span-3'}
 										label={'APR'}
