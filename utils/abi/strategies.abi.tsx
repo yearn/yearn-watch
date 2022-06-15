@@ -12,7 +12,10 @@ const	STRATEGY_ABI = [
 	//guardian - management - governance
 	{'constant':true, 'inputs':[], 'name':'keeper', 'outputs':[{'name':'_keeper', 'type':'address'}], 'payable':false, 'stateMutability':'view', 'type':'function'},
 	{'constant':true, 'inputs':[], 'name':'strategist', 'outputs':[{'name':'_strategist', 'type':'address'}], 'payable':false, 'stateMutability':'view', 'type':'function'},
-	{'constant':true, 'inputs':[], 'name':'rewards', 'outputs':[{'name':'_rewards', 'type':'address'}], 'payable':false, 'stateMutability':'view', 'type':'function'}
+	{'constant':true, 'inputs':[], 'name':'rewards', 'outputs':[{'name':'_rewards', 'type':'address'}], 'payable':false, 'stateMutability':'view', 'type':'function'},
+	
+	//keepCRV
+	{constant: true, inputs: [], name: 'keepCRV', outputs: [{internalType: 'uint256', name: '', type: 'uint256'}], stateMutability: 'view', type: 'function'}
 ];
 
 export default STRATEGY_ABI;

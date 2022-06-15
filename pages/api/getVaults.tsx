@@ -322,6 +322,7 @@ export async function getVaults(
 			const	contractStrat = new Contract(strategy.address, STRATEGY_ABI);
 			multiCalls.push(contractStrat.isActive());
 			multiCalls.push(contractStrat.estimatedTotalAssets());
+			multiCalls.push(contractStrat.keepCRV());
 		}
 	}
 	const	callResult = await ethcallProvider.tryAll(multiCalls);
@@ -395,6 +396,8 @@ export async function getVaults(
 			strategy.expectedReturn = utils.format.BN(callResult?.[rIndex++] as never);
 			strategy.isActive = callResult[rIndex++] as boolean;
 			strategy.estimatedTotalAssets = utils.format.BN(callResult?.[rIndex++] as never);
+			strategy.keepCRV = callResult?.[rIndex] ? utils.format.BN(callResult?.[rIndex] as never).toString() : 'N/A';
+			rIndex ++;
 			strategy.totalDebtUSDC = Number(ethers.utils.formatUnits(strategy.totalDebt, vault.decimals)) * (vault.tokenPriceUSDC || 0);
 			strategy.tvlImpact = getTvlImpact(strategy.totalDebtUSDC);
 

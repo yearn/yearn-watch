@@ -13,6 +13,7 @@ import	KBar							from	'components/Kbar';
 import	Footer							from	'components/StandardFooter';
 import	HeaderTitle						from	'components/HeaderTitle';
 import	IconHealthcheck					from	'components/icons/IconHealthcheck';
+import	IconTrack				from	'components/icons/IconTrack';
 import	IconQuery						from	'components/icons/IconQuery';
 import	LogoWatch						from	'components/logo/LogoWatch';
 import	KBarButton						from	'components/KBarButton';
@@ -255,6 +256,12 @@ function	AppWrapper(props: AppProps): ReactElement {
 			values: ['/healthcheck'],
 			label: 'Healthcheck',
 			icon: <IconHealthcheck />
+		},
+		{
+			route: '/track',
+			values: ['/track'],
+			label: 'Track',
+			icon: <IconTrack />
 		},
 		{
 			route: '/settings',
