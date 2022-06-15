@@ -84,9 +84,9 @@ function	Index(): ReactElement {
 						searchTerm={searchTerm}
 						onChange={set_searchTerm} />
 					<div className={'flex-row-center'}>
-						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Vaults Found: ${searchResult.vaults}`}</p>
-						<p className={'mr-4 text-xs md:mr-10 text-typo-secondary'}>{`Strategies Found: ${searchResult.strategies}`}</p>
-						{/* <p className={'text-xs text-typo-secondary'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p> */}
+						<p className={'mr-4 text-xs md:mr-10 text-neutral-500'}>{`Vaults Found: ${searchResult.vaults}`}</p>
+						<p className={'mr-4 text-xs md:mr-10 text-neutral-500'}>{`Strategies Found: ${searchResult.strategies}`}</p>
+						{/* <p className={'text-xs text-neutral-500'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p> */}
 					</div>
 				</div>
 				<div>

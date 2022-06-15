@@ -11,13 +11,13 @@ import	{getImpactScoreColor}				from	'utils';
 const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): ReactElement {
 	function	renderSummary(p: {open: boolean}): ReactElement {
 		return (
-			<div className={`grid relative py-4 px-6 w-[965px] h-20 rounded-lg md:w-full grid-cols-22 bg-surface transition-colors ${p.open ? '' : 'hover:bg-surface-variant'}`}>
+			<div className={`grid relative py-4 px-6 w-[965px] h-20 rounded-default md:w-full grid-cols-22 bg-neutral-0 transition-colors ${p.open ? '' : 'hover:bg-neutral-100'}`}>
 				<div className={'flex flex-row col-span-6 items-center min-w-32'}>
-					<div className={'text-typo-secondary'}>
+					<div className={'text-neutral-500'}>
 						<div className={'flex-row-center'}>
 							<div>
 								<b>{group.label}</b>
-								<p className={'text-xs text-typo-secondary'}>
+								<p className={'text-xs text-neutral-500'}>
 									{group.strategiesCount > 1 ? `${group.strategiesCount} strats` : `${group.strategiesCount} strat`}
 								</p>
 							</div>
@@ -58,7 +58,7 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): Rea
 					</Link>
 					<div className={'ml-2'}>
 						<Chevron
-							className={`w-6 h-6 text-primary transition-transform ${p.open ? '-rotate-90' : '-rotate-180'}`} />
+							className={`w-6 h-6 text-accent-500 transition-transform ${p.open ? '-rotate-90' : '-rotate-180'}`} />
 					</div>
 				</div>
 			</div>

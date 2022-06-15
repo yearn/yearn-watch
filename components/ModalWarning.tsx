@@ -17,10 +17,10 @@ function	ModalWarning({alerts, isOpen, set_isOpen}: TModalWarning): ReactElement
 				<div className={'flex flex-row justify-between items-center mb-4'}>
 					<b>{'Warnings'}</b>
 					<div onClick={(): void => set_isOpen(false)}>
-						<Cross className={'w-6 h-6 transition-colors cursor-pointer text-primary hover:text-typo-primary-variant'} />
+						<Cross className={'w-6 h-6 transition-colors cursor-pointer text-accent-500 hover:text-accent-600'} />
 					</div>
 				</div>
-				<div className={'p-2 rounded-lg flex-row-start text-alert-warning-primary bg-alert-warning-secondary'}>
+				<div className={'p-2 rounded-default flex-row-start text-yellow-900 bg-yellow-300'}>
 					<AlertWarning className={'w-5 h-5'} />
 					<div className={'pl-2'}>
 						{alerts.map((alert): ReactElement => (

@@ -40,15 +40,15 @@ function	SectionMatrix({groups}: {groups: TRiskGroup[]}): ReactElement {
 			aria-label={'Matix chart'}
 			className={'flex flex-row pl-0'}>
 			<div className={'grid grid-cols-10 gap-0.5 w-full'}>
-				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-typo-secondary'}>{'Rare'}</div>
-				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-typo-secondary'}>{'Unlikely'}</div>
-				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-typo-secondary'}>{'Even chance'}</div>
-				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-typo-secondary'}>{'Likely'}</div>
-				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-typo-secondary'}>{'Almost certain'}</div>
+				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-neutral-500'}>{'Rare'}</div>
+				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-neutral-500'}>{'Unlikely'}</div>
+				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-neutral-500'}>{'Even chance'}</div>
+				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-neutral-500'}>{'Likely'}</div>
+				<div className={'col-span-2 p-2 space-y-1 h-full text-sm opacity-50 text-neutral-500'}>{'Almost certain'}</div>
 				
 				<div className={'relative col-span-2 p-2 space-y-1 min-h-[62px] text-sm bg-[#f5f514] rounded-tl-lg'}>
 					<div className={'flex justify-center items-center h-full text-sm text-center'}>
-						<p className={'absolute -left-6 opacity-50 -rotate-180 text-typo-secondary'} style={{writingMode: 'vertical-rl'}}>{'Critical'}</p>
+						<p className={'absolute -left-6 opacity-50 -rotate-180 text-neutral-500'} style={{writingMode: 'vertical-rl'}}>{'Critical'}</p>
 					</div>
 					{labelPerPosition[0][0].map((e): ReactElement => <p key={e} className={'text-[#000000]'}>{e}</p>)}
 				</div>
@@ -67,7 +67,7 @@ function	SectionMatrix({groups}: {groups: TRiskGroup[]}): ReactElement {
 				
 				<div className={'relative col-span-2 p-2 space-y-1 min-h-[62px] text-sm bg-[#19c519]'}>
 					<div className={'flex justify-center items-center h-full text-sm text-center'}>
-						<p className={'absolute -left-6 opacity-50 -rotate-180 text-typo-secondary'} style={{writingMode: 'vertical-rl'}}>{'High'}</p>
+						<p className={'absolute -left-6 opacity-50 -rotate-180 text-neutral-500'} style={{writingMode: 'vertical-rl'}}>{'High'}</p>
 						<p className={'invisible -rotate-180'} style={{writingMode: 'vertical-rl'}}>{'High'}</p>
 					</div>
 					{labelPerPosition[1][0].map((e): ReactElement => <p key={e} className={'text-[#000000]'}>{e}</p>)}
@@ -87,7 +87,7 @@ function	SectionMatrix({groups}: {groups: TRiskGroup[]}): ReactElement {
 				
 				<div className={'relative col-span-2 p-2 space-y-1 min-h-[62px] text-sm bg-[#19c519]'}>
 					<div className={'flex justify-center items-center h-full text-sm text-center'}>
-						<p className={'absolute -left-6 opacity-50 -rotate-180 text-typo-secondary'} style={{writingMode: 'vertical-rl'}}>{'Severe'}</p>
+						<p className={'absolute -left-6 opacity-50 -rotate-180 text-neutral-500'} style={{writingMode: 'vertical-rl'}}>{'Severe'}</p>
 						<p className={'invisible -rotate-180'} style={{writingMode: 'vertical-rl'}}>{'Severe'}</p>
 					</div>
 					{labelPerPosition[2][0].map((e): ReactElement => <p key={e} className={'text-[#000000]'}>{e}</p>)}
@@ -107,7 +107,7 @@ function	SectionMatrix({groups}: {groups: TRiskGroup[]}): ReactElement {
 
 				<div className={'relative col-span-2 p-2 space-y-1 min-h-[62px] text-sm bg-[#19c519]'}>
 					<div className={'flex justify-center items-center h-full text-sm text-center'}>
-						<p className={'absolute -left-6 opacity-50 -rotate-180 text-typo-secondary'} style={{writingMode: 'vertical-rl'}}>{'Medium'}</p>
+						<p className={'absolute -left-6 opacity-50 -rotate-180 text-neutral-500'} style={{writingMode: 'vertical-rl'}}>{'Medium'}</p>
 						<p className={'invisible -rotate-180'} style={{writingMode: 'vertical-rl'}}>{'Medium'}</p>
 					</div>
 					{labelPerPosition[3][0].map((e): ReactElement => <p key={e} className={'text-[#000000]'}>{e}</p>)}
@@ -127,7 +127,7 @@ function	SectionMatrix({groups}: {groups: TRiskGroup[]}): ReactElement {
 
 				<div className={'relative col-span-2 p-2 space-y-1 min-h-[62px] text-sm bg-[#19c519] rounded-bl-lg'}>
 					<div className={'flex justify-center items-center h-full text-sm text-center'}>
-						<p className={'absolute -left-6 opacity-50 -rotate-180 text-typo-secondary'} style={{writingMode: 'vertical-rl'}}>{'Low'}</p>
+						<p className={'absolute -left-6 opacity-50 -rotate-180 text-neutral-500'} style={{writingMode: 'vertical-rl'}}>{'Low'}</p>
 						<p className={'invisible -rotate-180'} style={{writingMode: 'vertical-rl'}}>{'Low'}</p>
 					</div>
 					{labelPerPosition[4][0].map((e): ReactElement => <p key={e} className={'text-[#000000]'}>{e}</p>)}

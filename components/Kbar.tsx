@@ -17,15 +17,15 @@ const searchStyle = {
 	boxSizing: 'border-box' as React.CSSProperties['boxSizing'],
 	outline: 'none',
 	border: 'none',
-	background: 'rgb(var(--color-surface))',
+	background: 'hsl(var(--color-neutral-0))',
 	color: 'var(--foreground)'
 };
   
 const animatorStyle = {
 	maxWidth: '600px',
 	width: '100%',
-	border: '1px solid rgb(var(--color-background-variant))',
-	background: 'rgb(var(--color-surface))',
+	border: '1px solid hsl(var(--color-neutral-300))',
+	background: 'hsl(var(--color-neutral-0))',
 	color: 'var(--foreground)',
 	borderRadius: '8px',
 	overflow: 'hidden',
@@ -54,7 +54,7 @@ const ResultItem = React.forwardRef((
 	return (
 		<div
 			ref={ref}
-			className={`py-3 px-4 ${active ? 'bg-surface-variant border-background-variant' : 'bg-transparent border-transparent'} transition-colors hover:bg-surface-variant border-l-2 flex items-center justify-between cursor-pointer`}>
+			className={`py-3 px-4 ${active ? 'bg-neutral-100 border-neutral-300' : 'bg-transparent border-transparent'} transition-colors hover:bg-neutral-100 border-l-2 flex items-center justify-between cursor-pointer`}>
 			<div className={'flex gap-4 items-center text-sm'}>
 				{action.icon && action.icon}
 				<div style={{display: 'flex', flexDirection: 'column'}}>
@@ -69,10 +69,10 @@ const ResultItem = React.forwardRef((
 								</span>
 							</React.Fragment>
 						))}
-						<span className={'text-base text-typo-primary'}>{action.name}</span>
+						<span className={'text-base text-neutral-700'}>{action.name}</span>
 					</div>
 					{action.subtitle && (
-						<span className={'text-xs text-typo-secondary'}>
+						<span className={'text-xs text-neutral-500'}>
 							{action.subtitle}
 						</span>
 					)}
@@ -86,7 +86,7 @@ const ResultItem = React.forwardRef((
 					{action.shortcut.map((sc: any): ReactElement => (
 						<kbd
 							key={sc}
-							className={'flex justify-center items-center p-1 w-6 h-6 text-sm text-center rounded-[4px] bg-dark/20'}>
+							className={'flex justify-center items-center p-1 w-6 h-6 text-sm text-center rounded-[4px] bg-neutral-800/20'}>
 							{sc}
 						</kbd>
 					))}

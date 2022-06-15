@@ -28,13 +28,13 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 						height={40}
 						src={vault.icon}
 						quality={70}
-						className={'w-10 h-10'} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
+						className={'w-10 h-10'} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-neutral-200'} />}
 					<div className={'ml-2 md:ml-6'}>
 						<b>{vault.display_name || vault.name}</b>
-						<p className={'text-xs text-typo-secondary'}>
+						<p className={'text-xs text-neutral-500'}>
 							{`v${vault.version}`}
 						</p>
-						<p className={'text-xs text-typo-secondary'}>
+						<p className={'text-xs text-neutral-500'}>
 							{(strategies).length > 1 ? `${(strategies).length} strats` : `${(strategies).length} strat`}
 						</p>
 					</div>
@@ -44,7 +44,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 					explorer={vault.explorer}
 					truncate={3}
 					wrapperClassName={'flex md:hidden'}
-					className={'font-mono text-sm leading-6 text-typo-secondary'} />
+					className={'font-mono text-sm leading-6 text-neutral-500'} />
 			</div>
 		);
 	}
@@ -58,7 +58,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 								e.stopPropagation();
 								set_isOpen(true);
 							}}
-							className={'p-1 mr-2 w-32 h-8 rounded-lg border transition-colors cursor-pointer md:mr-5 flex-row-center text-alert-warning-primary bg-alert-warning-secondary hover:bg-alert-warning-secondary-variant border-alert-warning-primary'}>
+							className={'p-1 mr-2 w-32 h-8 border transition-colors cursor-pointer md:mr-5 rounded-default flex-row-center text-yellow-900 bg-yellow-300 hover:bg-yellow-200 border-yellow-900'}>
 							<AlertWarning className={'w-4 h-4 md:w-5 md:h-5'} />
 							<p className={'pl-1 md:pl-2'}>{`${vault.alerts.length} warning${vault.alerts.length === 1 ? ' ' : 's'}`}</p>
 						</div>
@@ -72,7 +72,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 					address={vault.address}
 					explorer={vault.explorer}
 					wrapperClassName={'hidden md:flex'}
-					className={'font-mono text-sm text-typo-secondary'} />
+					className={'font-mono text-sm text-neutral-500'} />
 				<div className={'contents'} onClick={(e: MouseEvent): void => e.stopPropagation()}>
 					<Link passHref href={`/vault/${vault.address}`}>
 						<Button
@@ -90,15 +90,15 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 
 	if (strategies.length === 0) {
 		return (
-			<Card padding={'none'} className={'justify-between w-full h-full text-justify rounded-lg transition-colors bg-surface'}>
-				<div className={'flex flex-col justify-between items-start p-6 w-full rounded-lg cursor-default md:flex-row md:items-center'}>
+			<Card padding={'none'} className={'justify-between w-full h-full text-justify transition-colors rounded-default bg-neutral-0'}>
+				<div className={'flex flex-col justify-between items-start p-6 w-full cursor-default md:flex-row md:items-center rounded-default'}>
 					<div className={'w-inherit'}>
 						{renderSummaryStart()}
 					</div>
 					<div className={'flex flex-row items-center mt-4 w-full md:mt-0'}>
 						{renderSummaryEnd()}
 						<div className={'ml-auto'}>
-							<Chevron className={'w-6 h-6 text-primary/0'} />
+							<Chevron className={'w-6 h-6 text-accent-500/0'} />
 						</div>
 					</div>
 				</div>

@@ -73,16 +73,16 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 		return (
 			<div className={'flex flex-row justify-between items-center px-6 pb-2 w-max'}>
 				<div className={'w-[300px] flex-row-start'}>
-					<p className={'text-typo-secondary'}>{'Vault'}</p>
+					<p className={'text-neutral-500'}>{'Vault'}</p>
 				</div>
 				<div className={'w-[300px] flex-row-start'}>
-					<p className={'text-typo-secondary'}>{'Strategy'}</p>
+					<p className={'text-neutral-500'}>{'Strategy'}</p>
 				</div>
 				<div className={'w-[125px] whitespace-nowrap flex-row-center'}>
-					<p className={'text-typo-secondary'}>{'Level'}</p>
+					<p className={'text-neutral-500'}>{'Level'}</p>
 					<ArrowDown
 						onClick={(): void => set_sortBy(sortBy === 'level' ? '-level' : sortBy === '-level' ? '' : 'level')}
-						className={`ml-1 w-4 h-4 hover:text-icons-variant transition-all cursor-pointer ${sortBy.includes('level') ? 'text-icon-variant' : 'text-icons-primary'} ${sortBy === '-level' ? 'rotate-180' : 'rotate-0'}`} />
+						className={`ml-1 w-4 h-4 hover:text-neutral-500 transition-all cursor-pointer ${sortBy.includes('level') ? 'text-icon-variant' : 'text-neutral-400'} ${sortBy === '-level' ? 'rotate-180' : 'rotate-0'}`} />
 				</div>
 			</div>
 		);
@@ -96,23 +96,23 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 		if (stratOrVault.alerts.some((alert): boolean => alert.level === 'critical')) {
 			return (
 				<div className={'flex absolute top-0 right-0 flex-row items-center md:relative'}>
-					<AlertCritical className={'mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5 text-alert-critical-primary'} />
-					<p className={'text-alert-error-primary'}>{'Error'}</p>
+					<AlertCritical className={'mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5 text-red-900'} />
+					<p className={'text-pink-900'}>{'Error'}</p>
 				</div>
 			);
 		}
 		if (stratOrVault.alerts.some((alert): boolean => alert.level === 'error')) {
 			return (
 				<div className={'flex absolute top-0 right-0 flex-row items-center md:relative'}>
-					<AlertError className={'mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5 text-alert-error-primary'} />
-					<p className={'text-alert-error-primary'}>{'Error'}</p>
+					<AlertError className={'mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5 text-pink-900'} />
+					<p className={'text-pink-900'}>{'Error'}</p>
 				</div>
 			);
 		}
 		return (
 			<div className={'flex absolute top-0 right-0 flex-row items-center md:relative'}>
-				<AlertWarning className={'mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5 text-alert-warning-primary'} />
-				<p className={'text-alert-warning-primary'}>{'Warning'}</p>
+				<AlertWarning className={'mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5 text-yellow-900'} />
+				<p className={'text-yellow-900'}>{'Warning'}</p>
 			</div>
 		);
 	}
@@ -133,14 +133,14 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 							width={40}
 							height={40}
 							src={stratOrVault.vault?.icon}
-							quality={70} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
+							quality={70} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-neutral-200'} />}
 						<div className={'ml-2 md:ml-6'}>
 							<b>{stratOrVault.vault?.name}</b>
 							<AddressWithActions
 								address={stratOrVault.vault.address}
 								explorer={stratOrVault.vault.explorer}
 								wrapperClassName={'flex'}
-								className={'font-mono text-xs text-typo-secondary'} />
+								className={'font-mono text-xs text-neutral-500'} />
 						</div>
 					</div>
 					<div className={'my-4 w-full md:my-0 md:w-[300px] flex-row-start'}>
@@ -151,7 +151,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 								address={stratOrVault.address}
 								explorer={stratOrVault.vault.explorer}
 								wrapperClassName={'flex'}
-								className={'font-mono text-xs text-typo-secondary'} />
+								className={'font-mono text-xs text-neutral-500'} />
 						</div>
 					</div>
 					{renderAlertLevel(stratOrVault)}
@@ -168,14 +168,14 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 							width={40}
 							height={40}
 							src={stratOrVault.icon}
-							quality={70} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
+							quality={70} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-neutral-200'} />}
 						<div className={'ml-2 md:ml-6'}>
 							<b>{stratOrVault.name}</b>
 							<AddressWithActions
 								address={stratOrVault.address}
 								explorer={stratOrVault.explorer}
 								wrapperClassName={'flex'}
-								className={'font-mono text-xs text-typo-secondary'} />
+								className={'font-mono text-xs text-neutral-500'} />
 						</div>
 					</div>
 					<div className={'hidden flex-row items-start w-full md:flex md:w-[300px]'}>
