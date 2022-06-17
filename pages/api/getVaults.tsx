@@ -165,10 +165,13 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 				display_name: '',
 				icon: ''
 			},
-			strategies: (vaultFromAPI?.strategies || [])?.map((s: any): any => ({
+			strategies: (vault?.strategies || [])?.map((s: any): any => ({
 				name: s.name,
 				address: utils.toAddress(s.address),
-				apiVersion: s.apiVersion
+				apiVersion: s.apiVersion,
+				addrKeeper: utils.toAddress(s.keeper),
+				addrStrategist: utils.toAddress(s.strategist),
+				addrRewards: utils.toAddress(s.rewards)
 			}))
 		};
 		if (shouldDisplayWithNoDebt) {
