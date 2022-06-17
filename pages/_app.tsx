@@ -39,7 +39,6 @@ function	AppHead(): ReactElement {
 				<meta name={'description'} content={process.env.WEBSITE_NAME} />
 				<meta name={'msapplication-TileColor'} content={'#62688F'} />
 				<meta name={'theme-color'} content={'#ffffff'} />
-				<meta charSet={'utf-8'} />
 
 				<link rel={'shortcut icon'} type={'image/x-icon'} href={'/favicons/favicon.ico'} />
 				<link rel={'apple-touch-icon'} sizes={'180x180'} href={'/favicons/apple-touch-icon.png'} />
@@ -125,42 +124,42 @@ function	AppSync(): ReactElement {
 	return (
 		<>
 			<div className={'space-x-2 cursor-pointer flex-row-center'} onClick={update}>
-				<div className={`aspect-square w-2 h-2 rounded-full ${isUpdating ? 'bg-background border-2 border-transparent border-t-primary border-l-primary animate-spin' : lastUpdateDiff < -300_000 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
-				<p className={'text-xs text-typo-secondary'}>{isUpdating ? 'Fetching data ...' : `Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
+				<div className={`aspect-square w-2 h-2 rounded-full ${isUpdating ? 'bg-neutral-200 border-2 border-transparent border-t-accent-500 border-l-accent-500 animate-spin' : lastUpdateDiff < -300_000 ? 'bg-yellow-900' : 'bg-accent-500'}`} />
+				<p className={'text-xs text-neutral-500'}>{isUpdating ? 'Fetching data ...' : `Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
 			</div>
 			<div className={'space-x-2 flex-row-center'}>
-				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-alert-error-primary' : blockDiff > 100 ? 'bg-alert-warning-primary' : 'bg-primary'}`} />
-				<p className={'text-xs text-typo-secondary'}>{renderBlockDiff()}</p>
+				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-pink-900' : blockDiff > 100 ? 'bg-yellow-900' : 'bg-accent-500'}`} />
+				<p className={'text-xs text-neutral-500'}>{renderBlockDiff()}</p>
 			</div>
 			{
 				network?.status?.rpc === 0 ? (
 					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
-						<p className={'text-xs text-typo-secondary'}>{'RPC is down'}</p>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
+						<p className={'text-xs text-neutral-500'}>{'RPC is down'}</p>
 					</div>
 				) : null
 			}
 			{
 				network?.status?.graph === 0 ? (
 					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
-						<p className={'text-xs text-typo-secondary'}>{'SubGraph is down'}</p>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
+						<p className={'text-xs text-neutral-500'}>{'SubGraph is down'}</p>
 					</div>
 				) : null
 			}
 			{
 				network?.status?.yearnApi === 0 ? (
 					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
-						<p className={'text-xs text-typo-secondary'}>{'Yearn API is down'}</p>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
+						<p className={'text-xs text-neutral-500'}>{'Yearn API is down'}</p>
 					</div>
 				) : null
 			}
 			{
 				network?.status?.yearnMeta === 0 ? (
 					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-alert-error-primary'} />
-						<p className={'text-xs text-typo-secondary'}>{'Yearn Meta is down'}</p>
+						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
+						<p className={'text-xs text-neutral-500'}>{'Yearn Meta is down'}</p>
 					</div>
 				) : null
 			}
@@ -189,7 +188,7 @@ function	KBarWrapper(): React.ReactElement {
 						quality={70}
 						width={36}
 						height={36}
-						className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-background'} />
+						className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-neutral-200'} />
 				),
 				subtitle: `${vault.address}`
 			});
@@ -210,7 +209,7 @@ function	KBarWrapper(): React.ReactElement {
 							quality={70}
 							width={36}
 							height={36}
-							className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-background'} />
+							className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-neutral-200'} />
 					),
 					subtitle: `${strategy.address}`
 				});
@@ -289,7 +288,7 @@ function	AppWrapper(props: AppProps): ReactElement {
 							<Navbar
 								selected={router.pathname}
 								set_selected={onChangeRoute}
-								logo={<LogoWatch className={'w-full h-12 text-primary'} />}
+								logo={<LogoWatch className={'w-full h-12 text-accent-500'} />}
 								options={navbarMenuOptions}
 								wrapper={<Link passHref href={''} />}>
 								<div className={'flex flex-col mt-auto mb-6 space-y-2'}>

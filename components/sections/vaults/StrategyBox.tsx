@@ -11,7 +11,7 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 			<div className={'justify-between md:items-center flex-row-start'}>
 				<div>
 					<b className={'mb-2'}>{strategy.name}</b>
-					<p className={'text-xs text-typo-secondary'}>
+					<p className={'text-xs text-neutral-500'}>
 						{`Last report: ${strategy?.lastReport ? utils.format.since(Number(strategy.lastReport) * 1000) : 'never'}`}
 					</p>
 					<AddressWithActions
@@ -19,14 +19,14 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: 
 						explorer={vaultExplorer}
 						truncate={3}
 						wrapperClassName={'flex md:hidden mt-2'}
-						className={'font-mono text-sm text-typo-secondary'} />
+						className={'font-mono text-sm text-neutral-500'} />
 				</div>
 				<div className={'flex-row-center'}>
 					<AddressWithActions
 						address={strategy.address}
 						explorer={vaultExplorer}
 						wrapperClassName={'hidden md:flex'}
-						className={'font-mono text-sm text-typo-secondary'} />
+						className={'font-mono text-sm text-neutral-500'} />
 					<div onClick={(e: MouseEvent): void => e.stopPropagation()}>
 						<Link passHref href={`/vault/${vaultAddress}/${strategy.address}`}>
 							<Button

@@ -67,14 +67,14 @@ function	Alerts(): ReactElement {
 							searchTerm={searchTerm}
 							onChange={set_searchTerm} />
 						<div className={'flex-row-center'}>
-							<p className={'text-xs text-typo-secondary'}>{`Search result: ${filteredStrategies.length}`}</p>
+							<p className={'text-xs text-neutral-500'}>{`Search result: ${filteredStrategies.length}`}</p>
 						</div>
 					</div>
 					<div className={'flex flex-row justify-between items-center space-x-2 md:justify-start md:space-x-4'}>
 						<div>
 							<Card padding={'narrow'}>
 								<label className={'component--switchCard-wrapper'}>
-									<p className={'text-sm md:text-base text-typo-secondary'}>{'Dismissed'}</p>
+									<p className={'text-sm md:text-base text-neutral-500'}>{'Dismissed'}</p>
 									<Switch isEnabled={shouldDisplayDismissed} onSwitch={set_shouldDisplayDismissed} />
 								</label>
 							</Card>

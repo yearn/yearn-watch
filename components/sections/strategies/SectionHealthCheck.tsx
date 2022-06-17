@@ -6,9 +6,9 @@ type	TSectionHealthCheck = {currentVault: TVault, currentStrategy: TStrategy | u
 const	SectionHealthCheck = React.memo(function SectionHealthCheck({currentVault, currentStrategy}: TSectionHealthCheck): ReactElement {
 	function	renderShouldDoHealthcheck(): ReactElement {
 		if (currentStrategy?.shouldDoHealthCheck) {
-			return (<b className={'uppercase text-primary'}>{'ENABLED'}</b>);
+			return (<b className={'uppercase text-accent-500'}>{'ENABLED'}</b>);
 		}
-		return (<b className={'uppercase text-alert-critical-primary'}>{'DISABLED'}</b>);
+		return (<b className={'uppercase text-red-900'}>{'DISABLED'}</b>);
 	}
 
 	return (

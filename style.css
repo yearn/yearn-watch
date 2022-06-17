@@ -8,10 +8,10 @@
 	@apply flex flex-row items-center space-x-1 md:space-x-2;
 }
 .component--alertSelector-base {
-	@apply flex justify-center items-center cursor-pointer py-4 px-4 rounded-lg border transition-colors;
+	@apply flex justify-center items-center cursor-pointer py-4 px-4 rounded-default border transition-colors;
 }
 .component--input-wrapper {
-	@apply flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-lg border-2 transition-colors border-surface focus-within:border-primary bg-background;
+	@apply flex overflow-hidden flex-row items-center p-2 w-full h-10 rounded-default border-2 transition-colors border-neutral-0 focus-within:border-accent-500 bg-neutral-200;
 }
 .component--input-base {
 	@apply p-0 w-full h-10 bg-transparent border-none focus:border-none outline-none focus:outline-none focus:ring-0;

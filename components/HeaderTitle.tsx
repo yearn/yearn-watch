@@ -31,7 +31,7 @@ function	HeaderTitle(): ReactElement {
 		return (
 			<div className={'items-start'}>
 				<b>{currentStrategy.name}</b>
-				<p className={'text-xs text-typo-secondary'}>{currentVault.display_name}</p>
+				<p className={'text-xs text-neutral-500'}>{currentVault.display_name}</p>
 			</div>
 		);	
 	}
@@ -39,7 +39,7 @@ function	HeaderTitle(): ReactElement {
 		if (router.asPath.includes('/healthcheck')) {
 			return (
 				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
 						{'Healthcheck'}
 					</h1>
 				</div>
@@ -48,7 +48,7 @@ function	HeaderTitle(): ReactElement {
 		if (router.asPath.includes('/query')) {
 			return (
 				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
 						{'Query'}
 					</h1>
 				</div>
@@ -57,7 +57,7 @@ function	HeaderTitle(): ReactElement {
 		if (router.asPath.includes('/alerts')) {
 			return (
 				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
 						{'Alerts'}
 					</h1>
 				</div>
@@ -66,7 +66,7 @@ function	HeaderTitle(): ReactElement {
 		if (router.asPath.includes('/risk')) {
 			return (
 				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
 						{'Risk'}
 					</h1>
 				</div>
@@ -75,7 +75,7 @@ function	HeaderTitle(): ReactElement {
 		if (router.asPath.includes('/settings')) {
 			return (
 				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
 						{'Settings'}
 					</h1>
 				</div>
@@ -84,7 +84,7 @@ function	HeaderTitle(): ReactElement {
 		if (router.asPath.includes('/track')) {
 			return (
 				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
 						{'Track - KeepCRV'}
 					</h1>
 				</div>
@@ -92,7 +92,7 @@ function	HeaderTitle(): ReactElement {
 		}
 		return (
 			<div className={'flex-row-center'}>
-				<h1 className={'mr-2 md:mr-4 text-typo-primary'}>
+				<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
 					{'Vaults'}
 				</h1>
 			</div>
@@ -107,10 +107,10 @@ function	HeaderTitle(): ReactElement {
 				width={32}
 				height={32}
 				src={currentVault.icon}
-				quality={90} /> : <div className={'w-8 h-8 rounded-full bg-background'} />}
+				quality={90} /> : <div className={'w-8 h-8 rounded-full bg-neutral-200'} />}
 			<div className={'ml-2 md:ml-6'}>
 				<b>{currentVault.display_name || currentVault.name}</b>
-				<p className={'text-xs text-typo-secondary'}>
+				<p className={'text-xs text-neutral-500'}>
 					{(currentVault.strategies).length > 1 ? `${(currentVault.strategies).length} strats` : `${(currentVault.strategies).length} strat`}
 				</p>
 			</div>

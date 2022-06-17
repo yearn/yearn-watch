@@ -89,7 +89,7 @@ function	Track(): ReactElement {
 						searchTerm={searchTerm}
 						onChange={set_searchTerm} />
 					<div className={'flex-row-center'}>
-						<p className={'text-xs text-typo-secondary'}>{`Strategies Found: ${filteredStrategies.length}`}</p>
+						<p className={'text-xs text-neutral-500'}>{`Strategies Found: ${filteredStrategies.length}`}</p>
 					</div>
 				</div>
 				<div>

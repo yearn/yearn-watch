@@ -99,7 +99,7 @@ function	Query(): ReactElement {
 							searchTerm={searchTerm}
 							onChange={set_searchTerm} />
 						<div className={'flex-row-center'}>
-							<p className={'text-xs text-typo-secondary'}>{`Elements Found: ${filteredStrategies.length}`}</p>
+							<p className={'text-xs text-neutral-500'}>{`Elements Found: ${filteredStrategies.length}`}</p>
 						</div>
 					</div>
 				</div>

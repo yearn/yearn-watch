@@ -74,7 +74,7 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 			<Card key={strategy.address} className={'mb-2 w-[965px] md:w-full'}>
 				<div className={'grid relative grid-cols-22 w-full'}>
 					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
-						<div className={'text-typo-secondary'}>
+						<div className={'text-neutral-500'}>
 							<div className={'flex-row-center'}>
 								{strategy.vault?.icon ? <Image
 									alt={`token ${strategy?.vault.name}`}
@@ -82,14 +82,14 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 									width={40}
 									height={40}
 									src={strategy.vault.icon}
-									quality={60} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-background'} />}
+									quality={60} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-neutral-200'} />}
 								<div className={'ml-2 md:ml-6'}>
 									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.display_name || strategy.name}`}</b>
 									<AddressWithActions
 										address={strategy.address}
 										explorer={strategy.vault.explorer}
 										wrapperClassName={'flex'}
-										className={'font-mono text-sm text-typo-secondary'} />
+										className={'font-mono text-sm text-neutral-500'} />
 								</div>
 							</div>
 						</div>
