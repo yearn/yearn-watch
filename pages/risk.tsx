@@ -63,7 +63,6 @@ function	Risk(): ReactElement {
 			if (response.status === 200) {
 				const riskGroups = response.data as TRiskGroup[];
 				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
-				console.log(riskForNetworks);
 				set_risk(riskForNetworks);
 				return;
 			}
