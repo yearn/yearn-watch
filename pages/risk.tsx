@@ -63,6 +63,7 @@ function	Risk(): ReactElement {
 			if (response.status === 200) {
 				const riskGroups = response.data as TRiskGroup[];
 				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
+				console.log(riskForNetworks);
 				set_risk(riskForNetworks);
 				return;
 			}
@@ -100,7 +101,8 @@ function	Risk(): ReactElement {
 					if (group.criteria.exclude.some((exclude): boolean => findStrategyBySearch(strategy, exclude))) {
 						continue;
 					}
-					if (group.criteria.nameLike.some((include): boolean => findStrategyBySearch(strategy, include))) {
+					if (group.criteria.nameLike.some((include): boolean => findStrategyBySearch(strategy, include)) ||
+							group.criteria.strategies.some((include): boolean => findStrategyBySearch(strategy, include))) {
 						_totalDebt += strategy.totalDebtUSDC;
 						_group.tvl += strategy.totalDebtUSDC;
 						_group.strategiesCount += 1;
