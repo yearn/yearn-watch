@@ -2,7 +2,7 @@
 ![](./.github/og.jpeg)
 
 Yearn Watch is a dashboard used to track information about Yearn's Vaults and strategies.  
-It is used to hightlight some potential issues (warning, error, critical) and be able to fix them.
+It is used to highlight some potential issues (warning, error, critical) and be able to fix them.
 
 The data sources used are:  
 - The data from the Yearn API: https://api.yearn.finance/v1/chains/1/vaults/all
