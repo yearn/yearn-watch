@@ -230,7 +230,7 @@ export async function getVaults(
 	**************************************************************************/
 	const	[_vaultsInitialsRaw, _strategiesRaw, _graphRaw, _blockNumberRaw] = await Promise.allSettled([
 		axios.get(`https://api.yearn.finance/v1/chains/${chainID || 1}/vaults/all`),
-		axios.get(`https://meta.yearn.finance/api/strategies/${chainID || 1}/all`, {timeout: 5000}),
+		axios.get(`https://meta.yearn.finance/api/${chainID || 1}/strategies/all`, {timeout: 5000}),
 		request(graphProvider, GRAPH_REQUEST),
 		rpcProvider.getBlockNumber()
 	]);
