@@ -101,7 +101,7 @@ function	Risk(): ReactElement {
 						continue;
 					}
 					if (group.criteria.nameLike.some((include): boolean => findStrategyBySearch(strategy, include)) ||
-							group.criteria.strategies.some((include): boolean => findStrategyBySearch(strategy, include))) {
+							group.criteria.strategies.some((include): boolean => include !== '' && findStrategyBySearch(strategy, include))) {
 						_totalDebt += strategy.totalDebtUSDC;
 						_group.tvl += strategy.totalDebtUSDC;
 						_group.strategiesCount += 1;
