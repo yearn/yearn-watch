@@ -73,7 +73,7 @@ module.exports = ({
 		RISK_GH_URL: 'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
 		RISK_API_URL: 'https://d3971bp2359cnv.cloudfront.net/api',
 		GRAPH_URL: {
-			1: 'https://api.thegraph.com/subgraphs/name/0xkofee/yearn-vaults-v2',
+			1: 'https://api.thegraph.com/subgraphs/name/rareweasel/yearn-vaults-v2-subgraph-mainnet',
 			250: 'https://api.thegraph.com/subgraphs/name/bsamuels453/yearn-fantom-validation-grafted',
 			42161: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-arbitrum'
 		}
