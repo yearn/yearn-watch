@@ -24,6 +24,9 @@ export type	TSettingsContext = {
 	shouldUseRemoteFetch: boolean,
 	switchShouldUseRemoteFetch: () => void,
 
+	shouldFetchStratsFromVault: boolean,
+	switchShouldFetchStratsFromVault: () => void,
+
 	subGraphURI: TNetworkURI,
 	updateSubGraphURI: (updated: TNetworkURI) => void,
 

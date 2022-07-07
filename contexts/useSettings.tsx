@@ -17,6 +17,8 @@ const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 	switchShouldGivePriorityToSubgraph: (): void => undefined,
 	shouldUseRemoteFetch: true,
 	switchShouldUseRemoteFetch: (): void => undefined,
+	shouldFetchStratsFromVault: false,
+	switchShouldFetchStratsFromVault: (): void => undefined,
 	subGraphURI: {1: '', 250: '', 42161: ''},
 	updateSubGraphURI: (): void => undefined,
 	rpcURI: {1: '', 250: '', 42161: ''},
@@ -49,6 +51,7 @@ export const SettingsContextApp = ({children}: {children: ReactElement}): ReactE
 	const	[shouldGivePriorityToSubgraph, set_shouldGivePriorityToSubgraph] = useLocalStorage('shouldGivePriorityToSubgraph', true) as TStorageBoolean;
 	const	[shouldDisplayWithNoDebt, set_shouldDisplayWithNoDebt] = useLocalStorage('shouldDisplayWithNoDebt', true) as TStorageBoolean;
 	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true) as TStorageBoolean;
+	const	[shouldFetchStratsFromVault, set_shouldFetchStratsFromVault] = useLocalStorage('shouldFetchStratsFromVault', false) as TStorageBoolean;
 	const	[subGraphURI, set_subGraphURI] = useLocalStorage('subGraphURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
 	const	[rpcURI, set_rpcURI] = useLocalStorage('rpcURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
 
@@ -82,6 +85,10 @@ export const SettingsContextApp = ({children}: {children: ReactElement}): ReactE
 				shouldUseRemoteFetch,
 				switchShouldUseRemoteFetch: (): void => {
 					set_shouldUseRemoteFetch(!shouldUseRemoteFetch);
+				},
+				shouldFetchStratsFromVault,
+				switchShouldFetchStratsFromVault: (): void => {
+					set_shouldFetchStratsFromVault(!shouldFetchStratsFromVault);
 				},
 				subGraphURI,
 				updateSubGraphURI: (updated): void => {

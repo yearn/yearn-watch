@@ -7,7 +7,8 @@ import	{createHash}							from	'crypto';
 import	VAULT_ABI								from	'utils/abi/vaults.abi';
 import	STRATEGY_ABI							from	'utils/abi/strategies.abi';
 import	PRICE_ORACLE_ABI						from	'utils/abi/priceOracle.abi';
-import	{TVault, TStrategyReport, TGraphVault}	from	'contexts/useWatch.d';
+import	{TVault, TStrategyReport, TGraphVault,
+	TGraphStrategies}							from	'contexts/useWatch.d';
 import	* as utils								from	'@yearn-finance/web-lib/utils';
 import	{getTvlImpact}							from	'utils';
 
@@ -51,6 +52,7 @@ const	GRAPH_REQUEST = `{
 		strategies {
 			address
 			name
+			inQueue
 			apiVersion
 			emergencyExit
 			# estimatedTotalAssets - Disabled as not working on FTM
@@ -126,7 +128,7 @@ function	givePriorityToAPI(_vaultsInitials: any[]): TVault[] {
 ** more data than the API, but some may be irrelevant now (strategy and 
 ** vaults no longer in production for example).
 **************************************************************************/
-function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chainID: number, shouldDisplayWithNoDebt = true): TVault[] {
+function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chainID: number, shouldDisplayWithNoDebt = true, shouldFetchStratsFromVault = false): TVault[] {
 	let _vaults: TVault[] = [];
 	for (const vault of vaults) {
 		const	vaultFromAPI = _vaultsInitials.find((v: TVault): boolean => utils.toAddress(v.address) === utils.toAddress(vault.id));
@@ -165,11 +167,21 @@ function	givePriorityToGraph(vaults: TGraphVault[], _vaultsInitials: any[], chai
 				display_name: '',
 				icon: ''
 			},
-			strategies: (vaultFromAPI?.strategies || [])?.map((s: any): any => ({
-				name: s.name,
-				address: utils.toAddress(s.address),
-				apiVersion: s.apiVersion
-			}))
+			strategies: vault.strategies.filter((s: any): boolean => !shouldFetchStratsFromVault ? s.inQueue === true : true).map((s: TGraphStrategies): any => {
+				return ({
+					name: s.name,
+					address: utils.toAddress(s.address),
+					apiVersion: s.apiVersion,
+					addrKeeper: utils.toAddress(s.keeper),
+					addrStrategist: utils.toAddress(s.strategist),
+					addrRewards: utils.toAddress(s.rewards)
+				});
+			})
+			// strategies: (vaultFromAPI?.strategies || [])?.map((s: any): any => ({
+			// 	name: s.name,
+			// 	address: utils.toAddress(s.address),
+			// 	apiVersion: s.apiVersion
+			// }))
 		};
 		if (shouldDisplayWithNoDebt) {
 			_vaults.push(_vault as TVault);
@@ -200,6 +212,7 @@ export async function getVaults(
 	isLocal = false,
 	shouldGivePriorityToSubgraph = true,
 	shouldDisplayWithNoDebt = true,
+	shouldFetchStratsFromVault = false,
 	providedProvider?: string,
 	providedGraph?: string
 ): Promise<TGetVaults> {
@@ -289,7 +302,7 @@ export async function getVaults(
 	**************************************************************************/
 	let	_vaults: TVault[];
 	if (shouldGivePriorityToSubgraph) {
-		_vaults = givePriorityToGraph(_graph.vaults as TGraphVault[], _vaultsInitials, chainID, shouldDisplayWithNoDebt);
+		_vaults = givePriorityToGraph(_graph.vaults as TGraphVault[], _vaultsInitials, chainID, shouldDisplayWithNoDebt, shouldFetchStratsFromVault);
 	} else {
 		_vaults = givePriorityToAPI(_vaultsInitials);
 	}
@@ -312,7 +325,7 @@ export async function getVaults(
 	for (const vault of _vaults) {
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3.1;
 		const	contractVault = new Contract(vault.address, isV2Vault ? VAULT_ABI['v0.2.x'] : VAULT_ABI['v0.4.x']);
-		[...Array(20).keys()].map((i): number => multiCalls.push(contractVault.withdrawalQueue(i)));
+		// [...Array(20).keys()].map((i): number => multiCalls.push(contractVault.withdrawalQueue(i)));
 		multiCalls.push(priceOracleContract.getPriceUsdcRecommended(vault.token.address));
 		for (const strategy of vault.strategies) {
 			multiCalls.push(contractVault.creditAvailable(strategy.address));
@@ -344,12 +357,13 @@ export async function getVaults(
 	for (const vault of _vaults) {
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3;
 		const	vaultDetails = vaultsDetails.find((detail: {id: string}): boolean => utils.toAddress(detail.id) === utils.toAddress(vault.address));
-		const	withdrawalQueue: string[] = [];
-		for (let i = 0; i < 20; i++) {
-			const	addr = utils.toAddress(callResult[rIndex++] as string);
-			if (!utils.isZeroAddress(addr))
-				withdrawalQueue.push(addr as string);
-		}
+		const	withdrawalQueue: string[] = vault.strategies.map((strategy: {address: string}): string => utils.toAddress(strategy.address));
+		// const	withdrawalQueue: string[] = [];
+		// for (let i = 0; i < 20; i++) {
+		// 	const	addr = utils.toAddress(callResult[rIndex++] as string);
+		// 	if (!utils.isZeroAddress(addr))
+		// 		withdrawalQueue.push(addr as string);
+		// }
 
 		//Let's build our data for the vault
 		vault.alerts = [];

@@ -15,7 +15,8 @@ function	Settings(): ReactElement {
 		shouldDisplayVaultNoStrats, switchShouldDisplayVaultNoStrats,
 		shouldDisplayWithNoDebt, switchShouldDisplayWithNoDebt,
 		shouldGivePriorityToSubgraph, switchShouldGivePriorityToSubgraph,
-		shouldUseRemoteFetch, switchShouldUseRemoteFetch
+		shouldUseRemoteFetch, switchShouldUseRemoteFetch,
+		shouldFetchStratsFromVault, switchShouldFetchStratsFromVault
 	} = useSettings();
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
@@ -96,6 +97,18 @@ function	Settings(): ReactElement {
 						<Switch
 							isEnabled={shouldDisplayWithNoDebt}
 							onSwitch={(): void => switchShouldDisplayWithNoDebt()} />
+					</div>
+				</div>
+				<div className={`flex flex-row w-full ${shouldFetchStratsFromVault ? 'opacity-60 cursor-not-allowed' : ''}`}>
+					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}>
+						<label className={'test-sm'}>
+							{'Fetch withdrawal queue from contract directly (slower)'}
+						</label>
+					</div>
+					<div className={'w-full md:w-7/12'}>
+						<Switch
+							isEnabled={shouldFetchStratsFromVault}
+							onSwitch={(): void => switchShouldFetchStratsFromVault()} />
 					</div>
 				</div>
 			</Card>

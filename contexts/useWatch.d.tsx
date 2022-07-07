@@ -151,6 +151,37 @@ export type TVault = {
 	strategies: TStrategy[] //From API & subgraph & multicall
 }
 
+export type TGraphStrategies = {
+	address: string,
+	name: string,
+	apiVersion: string,
+	emergencyExit: string,
+	estimatedTotalAssets: string,
+	isActive: string,
+	keeper: string,
+	strategist: string,
+	rewards: string,
+	doHealthCheck: boolean,
+	healthCheck: string,
+	reports: [{
+		id: string;
+		timestamp: string,
+		totalDebt: string,
+		totalLoss: string,
+		totalGain: string,
+		debtLimit: string,
+		debtPaid: string,
+		debtAdded: string,
+		loss: string,
+		gain: string,
+		results: {
+			apr: string,
+			duration: string,
+			durationPr: string,				
+		}
+	}]
+}
+
 export type TGraphVault = {
 	id: string,
 	guardian: string,
@@ -178,36 +209,7 @@ export type TGraphVault = {
 		name: string,
 		symbol: string
 	},
-	strategies: {
-		address: string,
-		name: string,
-		apiVersion: string,
-		emergencyExit: string,
-		estimatedTotalAssets: string,
-		isActive: string,
-		keeper: string,
-		strategist: string,
-		rewards: string,
-		doHealthCheck: boolean,
-		healthCheck: string,
-		reports: [{
-			id: string;
-			timestamp: string,
-			totalDebt: string,
-			totalLoss: string,
-			totalGain: string,
-			debtLimit: string,
-			debtPaid: string,
-			debtAdded: string,
-			loss: string,
-			gain: string,
-			results: {
-				apr: string,
-				duration: string,
-				durationPr: string,				
-			}
-		}]
-	}[]
+	strategies: TGraphStrategies[]
 }
 
 
