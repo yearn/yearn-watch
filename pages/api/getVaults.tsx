@@ -325,7 +325,8 @@ export async function getVaults(
 	for (const vault of _vaults) {
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3.1;
 		const	contractVault = new Contract(vault.address, isV2Vault ? VAULT_ABI['v0.2.x'] : VAULT_ABI['v0.4.x']);
-		// [...Array(20).keys()].map((i): number => multiCalls.push(contractVault.withdrawalQueue(i)));
+		if (shouldFetchStratsFromVault)
+			[...Array(20).keys()].map((i): number => multiCalls.push(contractVault.withdrawalQueue(i)));
 		multiCalls.push(priceOracleContract.getPriceUsdcRecommended(vault.token.address));
 		for (const strategy of vault.strategies) {
 			multiCalls.push(contractVault.creditAvailable(strategy.address));
@@ -357,13 +358,16 @@ export async function getVaults(
 	for (const vault of _vaults) {
 		const	isV2Vault = Number(vault.version.replace('.', '')) <= 3;
 		const	vaultDetails = vaultsDetails.find((detail: {id: string}): boolean => utils.toAddress(detail.id) === utils.toAddress(vault.address));
-		const	withdrawalQueue: string[] = vault.strategies.map((strategy: {address: string}): string => utils.toAddress(strategy.address));
-		// const	withdrawalQueue: string[] = [];
-		// for (let i = 0; i < 20; i++) {
-		// 	const	addr = utils.toAddress(callResult[rIndex++] as string);
-		// 	if (!utils.isZeroAddress(addr))
-		// 		withdrawalQueue.push(addr as string);
-		// }
+		let		withdrawalQueue: string[] = [];
+		if (shouldFetchStratsFromVault) {
+			for (let i = 0; i < 20; i++) {
+				const	addr = utils.toAddress(callResult[rIndex++] as string);
+				if (!utils.isZeroAddress(addr))
+					withdrawalQueue.push(addr as string);
+			}
+		} else {
+			withdrawalQueue = vault.strategies.map((strategy: {address: string}): string => utils.toAddress(strategy.address));
+		}
 
 		//Let's build our data for the vault
 		vault.alerts = [];
