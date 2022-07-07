@@ -1,9 +1,6 @@
 const DOTENV = require('dotenv-webpack');
 
 module.exports = ({
-	experimental: {
-		concurrentFeatures: true
-	},
 	plugins: [new DOTENV()],
 	images: {
 		domains: [
