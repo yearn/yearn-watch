@@ -13,7 +13,7 @@
     "lintfix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
-    "@headlessui/react": "^1.6.5",
+    "@headlessui/react": "^1.6.6",
     "@yearn-finance/web-lib": "^0.11.9",
     "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
