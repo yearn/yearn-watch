@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.6.5",
-    "@yearn-finance/web-lib": "^0.11.9",
+    "@yearn-finance/web-lib": "^0.11.12",
     "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
     "ethcall": "^4.7.2",
