@@ -14,12 +14,12 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 	const		[strategies, set_strategies] = React.useState<TStrategy[]>([]);
 
 	React.useEffect((): void => {
-		set_strategies(vault.strategies.filter((strat): boolean => isOnlyInQueue ? strat.index !== 21 : true));
+		set_strategies(vault.strategies);
 	}, [vault.strategies, isOnlyInQueue]);
 
 	function	renderSummaryStart(): ReactElement {
 		return (
-			<div className={'justify-between w-full md:w-max flex-row-start'}>
+			<div className={'flex-row-start w-full justify-between md:w-max'}>
 				<div className={'flex-row-start'}>
 					{vault.icon ? <Image
 						alt={`token ${vault.name}`}
@@ -28,9 +28,9 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 						height={40}
 						src={vault.icon}
 						quality={70}
-						className={'w-10 h-10'} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-neutral-200'} />}
+						className={'h-10 w-10'} /> : <div className={'h-10 min-h-[40px] w-10 min-w-[40px] rounded-full bg-neutral-200'} />}
 					<div className={'ml-2 md:ml-6'}>
-						<b>{vault.display_name || vault.name}</b>
+						<b>{vault.name}</b>
 						<p className={'text-xs text-neutral-500'}>
 							{`v${vault.version}`}
 						</p>
@@ -41,7 +41,6 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 				</div>
 				<AddressWithActions
 					address={vault.address}
-					explorer={vault.explorer}
 					truncate={3}
 					wrapperClassName={'flex md:hidden'}
 					className={'font-mono text-sm leading-6 text-neutral-500'} />
@@ -50,7 +49,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 	}
 	function	renderSummaryEnd(): ReactElement {
 		return (
-			<div className={'flex flex-row justify-start items-center w-full md:justify-end'}>
+			<div className={'flex w-full flex-row items-center justify-start md:justify-end'}>
 				{(vault.alerts || []).length > 0 ? (
 					<>
 						<div
@@ -58,8 +57,8 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 								e.stopPropagation();
 								set_isOpen(true);
 							}}
-							className={'p-1 mr-2 w-32 h-8 border transition-colors cursor-pointer md:mr-5 rounded-default flex-row-center text-yellow-900 bg-yellow-300 hover:bg-yellow-200 border-yellow-900'}>
-							<AlertWarning className={'w-4 h-4 md:w-5 md:h-5'} />
+							className={'rounded-default flex-row-center mr-2 h-8 w-32 cursor-pointer border border-yellow-900 bg-yellow-300 p-1 text-yellow-900 transition-colors hover:bg-yellow-200 md:mr-5'}>
+							<AlertWarning className={'h-4 w-4 md:h-5 md:w-5'} />
 							<p className={'pl-1 md:pl-2'}>{`${vault.alerts.length} warning${vault.alerts.length === 1 ? ' ' : 's'}`}</p>
 						</div>
 						<ModalWarning
@@ -70,7 +69,6 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 				) : null}
 				<AddressWithActions
 					address={vault.address}
-					explorer={vault.explorer}
 					wrapperClassName={'hidden md:flex'}
 					className={'font-mono text-sm text-neutral-500'} />
 				<div className={'contents'} onClick={(e: MouseEvent): void => e.stopPropagation()}>
@@ -90,15 +88,15 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 
 	if (strategies.length === 0) {
 		return (
-			<Card padding={'none'} className={'justify-between w-full h-full text-justify transition-colors rounded-default bg-neutral-0'}>
-				<div className={'flex flex-col justify-between items-start p-6 w-full cursor-default md:flex-row md:items-center rounded-default'}>
+			<Card padding={'none'} className={'rounded-default h-full w-full justify-between bg-neutral-0 text-justify transition-colors'}>
+				<div className={'rounded-default flex w-full cursor-default flex-col items-start justify-between p-6 md:flex-row md:items-center'}>
 					<div className={'w-inherit'}>
 						{renderSummaryStart()}
 					</div>
-					<div className={'flex flex-row items-center mt-4 w-full md:mt-0'}>
+					<div className={'mt-4 flex w-full flex-row items-center md:mt-0'}>
 						{renderSummaryEnd()}
 						<div className={'ml-auto'}>
-							<Chevron className={'w-6 h-6 text-accent-500/0'} />
+							<Chevron className={'h-6 w-6 text-accent-500/0'} />
 						</div>
 					</div>
 				</div>
@@ -116,15 +114,14 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 			)}>
 			{
 				strategies
-					.sort((a, b): number => (a.index || 0) - (b.index || 0))
+					.sort((a, b): number => (a?.details?.index || 0) - (b?.details?.index || 0))
 					.map((strategy, index: number): ReactElement => (
 						<StrategyBox
 							key={index}
 							strategy={strategy}
 							symbol={vault.symbol}
 							decimals={vault.decimals}
-							vaultAddress={vault.address}
-							vaultExplorer={vault.explorer} />
+							vaultAddress={vault.address} />
 					))
 			}
 		</Card.Detail>

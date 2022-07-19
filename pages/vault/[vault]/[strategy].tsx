@@ -58,7 +58,7 @@ function	Index(): ReactElement {
 			return <div />;
 		return (
 			<div>
-				<SectionHealthCheck currentVault={currentVault} currentStrategy={currentStrategy} />
+				<SectionHealthCheck currentStrategy={currentStrategy} />
 			</div>
 		);
 	}

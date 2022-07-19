@@ -13,23 +13,5 @@ export type	TSettingsContext = {
 	switchShouldDisplayVaultsWithMigration: () => void,
 
 	shouldDisplayVaultNoStrats: boolean,
-	switchShouldDisplayVaultNoStrats: () => void,
-
-	shouldGivePriorityToSubgraph: boolean,
-	switchShouldGivePriorityToSubgraph: () => void,
-
-	shouldDisplayWithNoDebt: boolean,
-	switchShouldDisplayWithNoDebt: () => void,
-
-	shouldUseRemoteFetch: boolean,
-	switchShouldUseRemoteFetch: () => void,
-
-	shouldFetchStratsFromVault: boolean,
-	switchShouldFetchStratsFromVault: () => void,
-
-	subGraphURI: TNetworkURI,
-	updateSubGraphURI: (updated: TNetworkURI) => void,
-
-	rpcURI: TNetworkURI
-	updateRPCURI: (updated: TNetworkURI) => void,
+	switchShouldDisplayVaultNoStrats: () => void
 }

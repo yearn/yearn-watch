@@ -17,7 +17,7 @@ function	Index(): ReactElement {
 	const	[filteredVaults, set_filteredVaults] = React.useState<TVault[]>([]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[isOnlyWarning, set_isOnlyWarning] = React.useState(false);
-	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0, notAllocated: 0});
+	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0});
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -33,60 +33,43 @@ function	Index(): ReactElement {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (vault.alerts?.length || 0) > 0);
 		}
 
-		//If the shouldOnlyDisplayEndorsedVaults is checked, we only display the endorsed vaults (by the API)
-		if (settings.shouldOnlyDisplayEndorsedVaults) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => vault.isEndorsed);
-		}
-
 		//If the shouldDisplayVaultsWithMigration is checked, we also display the vaults with a migration
 		if (!settings.shouldDisplayVaultsWithMigration) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault.hasMigration);
+			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault?.migration?.available);
 		}
 
 		//If the shouldDisplayVaultNoStrats is checked, we to hide all vaults with 0 strategies or none in withdrawal queue
-		if (!settings.shouldDisplayVaultNoStrats) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => (
-				vault.strategies.length > 0
-				&& !vault.strategies.every((strat): boolean => strat.index === 21)
-			));
-		}
+		// if (!settings.shouldDisplayVaultNoStrats) {
+		// 	_filteredVaults = _filteredVaults.filter((vault): boolean => (
+		// 		vault.strategies.length > 0
+		// 		&& !vault.strategies.every((strat): boolean => strat.index === 21)
+		// 	));
+		// }
 
 		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
 		_filteredVaults = _filteredVaults.sort((a, b): number => Number(b.version.replace('.', '')) - Number(a.version.replace('.', '')));
 		utils.performBatchedUpdates((): void => {
-			let	notAllocated = 0;
-			for (const vault of _filteredVaults) {
-				const reduceSum = vault.strategies.reduce((acc, _strategy): number => (
-					acc += Number(_strategy.totalDebtUSDC)
-				), 0);
-				const	totalAssetsUSDC = Number(utils.format.units((vault?.balanceTokens) || 0, vault?.decimals || 18)) * vault.tokenPriceUSDC;
-
-				notAllocated += (totalAssetsUSDC - reduceSum);
-			}
-
 			set_filteredVaults(_filteredVaults);
 			set_searchResult({
 				vaults: _filteredVaults.length,
-				strategies: _filteredVaults.reduce((acc, vault): number => acc + ((vault.strategies.filter((strat): boolean => settings.shouldDisplayStratsInQueue ? strat.index !== 21 : true))?.length || 0), 0),
-				notAllocated: notAllocated
+				strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault.strategies?.length || 0), 0)
 			});
 		});
-	}, [vaults, searchTerm, isOnlyWarning, settings.shouldDisplayStratsInQueue, settings.shouldDisplayVaultNoStrats, settings.shouldOnlyDisplayEndorsedVaults, settings.shouldDisplayVaultsWithMigration]);
+	}, [vaults, searchTerm, isOnlyWarning, settings.shouldDisplayStratsInQueue, settings.shouldDisplayVaultNoStrats, settings.shouldDisplayVaultsWithMigration]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
 	**************************************************************************/
 	return (
 		<div className={'w-full'}>
-			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
-				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
+			<div className={'mb-5 flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
+				<div className={'mt-2 flex w-full flex-col space-y-2 md:mt-0'}>
 					<SearchBox
 						searchTerm={searchTerm}
 						onChange={set_searchTerm} />
 					<div className={'flex-row-center'}>
-						<p className={'mr-4 text-xs md:mr-10 text-neutral-500'}>{`Vaults Found: ${searchResult.vaults}`}</p>
-						<p className={'mr-4 text-xs md:mr-10 text-neutral-500'}>{`Strategies Found: ${searchResult.strategies}`}</p>
-						{/* <p className={'text-xs text-neutral-500'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p> */}
+						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Vaults Found: ${searchResult.vaults}`}</p>
+						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Strategies Found: ${searchResult.strategies}`}</p>
 					</div>
 				</div>
 				<div>
@@ -107,7 +90,7 @@ function	Index(): ReactElement {
 				</div>
 			</div>
 			{filteredVaults ? (
-				<List className={'flex flex-col space-y-2 w-full'}>
+				<List className={'flex w-full flex-col space-y-2'}>
 					{filteredVaults.map((vault): ReactElement => (
 						<div key={vault.address}>
 							<VaultBox vault={vault} isOnlyInQueue={settings.shouldDisplayStratsInQueue} />

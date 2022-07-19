@@ -4,7 +4,8 @@ module.exports = ({
 	plugins: [new DOTENV()],
 	images: {
 		domains: [
-			'rawcdn.githack.com'
+			'rawcdn.githack.com',
+			'raw.githubusercontent.com'
 		]
 	},
 	env: {
@@ -37,12 +38,6 @@ module.exports = ({
 		** 			   price? (require blockchain call)
 		** USE_NETWORKS: indicate if the app should be able to change networks
 		**********************************************************************/
-		USE_WALLET: false,
-		USE_PRICES: false,
-		USE_PRICE_TRI_CRYPTO: false,
-		USE_NETWORKS: true,
-		CG_IDS: [],
-		TOKENS: [],
 		KNOWN_ENS: {
 			'0xFEB4acf3df3cDEA7399794D0869ef76A6EfAff52': 'ychad.eth',
 			'0x846e211e8ba920B353FB717631C015cf04061Cc9': 'dev.ychad.eth'
@@ -67,12 +62,10 @@ module.exports = ({
 		/* 🔵 - Yearn Finance **************************************************
 		** Yearn Watch specific config
 		**********************************************************************/
+		// YDAEMON_BASE_URL: 'https://api.ycorpo.com',
+		YDAEMON_BASE_URL: 'http://localhost:8080',
+
 		RISK_GH_URL: 'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
-		RISK_API_URL: 'https://d3971bp2359cnv.cloudfront.net/api',
-		GRAPH_URL: {
-			1: 'https://api.thegraph.com/subgraphs/name/rareweasel/yearn-vaults-v2-subgraph-mainnet',
-			250: 'https://api.thegraph.com/subgraphs/name/bsamuels453/yearn-fantom-validation-grafted',
-			42161: 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-arbitrum'
-		}
+		RISK_API_URL: 'https://d3971bp2359cnv.cloudfront.net/api'
 	}
 });

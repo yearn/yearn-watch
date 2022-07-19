@@ -61,5 +61,5 @@
 	"next.config.js",
 	"theme.config.js",
 	".eslintrc.js"
-  ]
+, "pages/api/getVaults.tsxx"  ]
 }

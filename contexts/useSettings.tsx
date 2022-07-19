@@ -5,24 +5,12 @@ import	* as useSettingsTypes	from	'contexts/useSettings.d';
 const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 	shouldDisplayStratsInQueue: true,
 	switchShouldDisplayStratsInQueue: (): void => undefined,
-	shouldOnlyDisplayEndorsedVaults: false,
+	shouldOnlyDisplayEndorsedVaults: true,
 	switchShouldOnlyDisplayEndorsedVaults: (): void => undefined,
 	shouldDisplayVaultsWithMigration: false,
 	switchShouldDisplayVaultsWithMigration: (): void => undefined,
 	shouldDisplayVaultNoStrats: false,
-	switchShouldDisplayVaultNoStrats: (): void => undefined,
-	shouldDisplayWithNoDebt: true,
-	switchShouldDisplayWithNoDebt: (): void => undefined,
-	shouldGivePriorityToSubgraph: true,
-	switchShouldGivePriorityToSubgraph: (): void => undefined,
-	shouldUseRemoteFetch: true,
-	switchShouldUseRemoteFetch: (): void => undefined,
-	shouldFetchStratsFromVault: false,
-	switchShouldFetchStratsFromVault: (): void => undefined,
-	subGraphURI: {1: '', 250: '', 42161: ''},
-	updateSubGraphURI: (): void => undefined,
-	rpcURI: {1: '', 250: '', 42161: ''},
-	updateRPCURI: (): void => undefined
+	switchShouldDisplayVaultNoStrats: (): void => undefined
 });
 
 /* 🔵 - Yearn Finance **********************************************************
@@ -41,26 +29,19 @@ const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 ** variables.
 ******************************************************************************/
 type TStorageBoolean = [boolean, (s: boolean) => boolean];
-type TStorageNetworkURI = [useSettingsTypes.TNetworkURI, (s: useSettingsTypes.TNetworkURI) => useSettingsTypes.TNetworkURI];
 
 export const SettingsContextApp = ({children}: {children: ReactElement}): ReactElement => {
 	const	[shouldDisplayVaultNoStrats, set_shouldDisplayVaultNoStrats] = useLocalStorage('shouldDisplayVaultNoStrats', false) as TStorageBoolean;
-	const	[shouldOnlyDisplayEndorsedVaults, set_shouldOnlyDisplayEndorsedVaults] = useLocalStorage('shouldOnlyDisplayEndorsedVaults', false) as TStorageBoolean;
+	const	[shouldOnlyDisplayEndorsedVaults, set_shouldOnlyDisplayEndorsedVaults] = useLocalStorage('shouldOnlyDisplayEndorsedVaults', true) as TStorageBoolean;
 	const	[shouldDisplayVaultsWithMigration, set_shouldDisplayVaultsWithMigration] = useLocalStorage('shouldDisplayVaultsWithMigration', false) as TStorageBoolean;
 	const	[shouldDisplayStratsInQueue, set_shouldDisplayStratsInQueue] = useLocalStorage('shouldDisplayStratsInQueue', true) as TStorageBoolean;
-	const	[shouldGivePriorityToSubgraph, set_shouldGivePriorityToSubgraph] = useLocalStorage('shouldGivePriorityToSubgraph', true) as TStorageBoolean;
-	const	[shouldDisplayWithNoDebt, set_shouldDisplayWithNoDebt] = useLocalStorage('shouldDisplayWithNoDebt', true) as TStorageBoolean;
-	const	[shouldUseRemoteFetch, set_shouldUseRemoteFetch] = useLocalStorage('shouldUseRemoteFetch', true) as TStorageBoolean;
-	const	[shouldFetchStratsFromVault, set_shouldFetchStratsFromVault] = useLocalStorage('shouldFetchStratsFromVault', false) as TStorageBoolean;
-	const	[subGraphURI, set_subGraphURI] = useLocalStorage('subGraphURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
-	const	[rpcURI, set_rpcURI] = useLocalStorage('rpcURI', {1: '', 250: '', 42161: ''}) as TStorageNetworkURI;
 
 	return (
 		<SettingsContext.Provider
 			value={{
-				shouldDisplayVaultNoStrats,
-				switchShouldDisplayVaultNoStrats: (): void => {
-					set_shouldDisplayVaultNoStrats(!shouldDisplayVaultNoStrats);
+				shouldDisplayStratsInQueue,
+				switchShouldDisplayStratsInQueue: (): void => {
+					set_shouldDisplayStratsInQueue(!shouldDisplayStratsInQueue);
 				},
 				shouldOnlyDisplayEndorsedVaults,
 				switchShouldOnlyDisplayEndorsedVaults: (): void => {
@@ -70,33 +51,9 @@ export const SettingsContextApp = ({children}: {children: ReactElement}): ReactE
 				switchShouldDisplayVaultsWithMigration: (): void => {
 					set_shouldDisplayVaultsWithMigration(!shouldDisplayVaultsWithMigration);
 				},
-				shouldDisplayStratsInQueue,
-				switchShouldDisplayStratsInQueue: (): void => {
-					set_shouldDisplayStratsInQueue(!shouldDisplayStratsInQueue);
-				},
-				shouldDisplayWithNoDebt,
-				switchShouldDisplayWithNoDebt: (): void => {
-					set_shouldDisplayWithNoDebt(!shouldDisplayWithNoDebt);
-				},
-				shouldGivePriorityToSubgraph,
-				switchShouldGivePriorityToSubgraph: (): void => {
-					set_shouldGivePriorityToSubgraph(!shouldGivePriorityToSubgraph);
-				},
-				shouldUseRemoteFetch,
-				switchShouldUseRemoteFetch: (): void => {
-					set_shouldUseRemoteFetch(!shouldUseRemoteFetch);
-				},
-				shouldFetchStratsFromVault,
-				switchShouldFetchStratsFromVault: (): void => {
-					set_shouldFetchStratsFromVault(!shouldFetchStratsFromVault);
-				},
-				subGraphURI,
-				updateSubGraphURI: (updated): void => {
-					set_subGraphURI(updated);
-				},
-				rpcURI,
-				updateRPCURI: (updated): void => {
-					set_rpcURI(updated);
+				shouldDisplayVaultNoStrats,
+				switchShouldDisplayVaultNoStrats: (): void => {
+					set_shouldDisplayVaultNoStrats(!shouldDisplayVaultNoStrats);
 				}
 			}}
 		>

@@ -20,8 +20,8 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 		if (['risk', '-risk', ''].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				if (sortBy === '-risk')
-					return a.tvlImpact - b.tvlImpact;
-				return b.tvlImpact - a.tvlImpact;
+					return a?.details?.tvlImpact - b?.details?.tvlImpact;
+				return b?.details?.tvlImpact - a?.details?.tvlImpact;
 			});
 			utils.performBatchedUpdates((): void => {
 				set_sortedStrategies(_strategies);
@@ -30,8 +30,8 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 		} else if (['tvl', '-tvl'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				if (sortBy === '-tvl')
-					return a.totalDebtUSDC - b.totalDebtUSDC;
-				return b.totalDebtUSDC - a.totalDebtUSDC;
+					return a?.details?.totalDebtUSDC - b?.details?.totalDebtUSDC;
+				return b?.details?.totalDebtUSDC - a?.details?.totalDebtUSDC;
 			});
 			utils.performBatchedUpdates((): void => {
 				set_sortedStrategies(_strategies);
@@ -39,8 +39,8 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 			});
 		} else if (['name', '-name'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
-				const	aName = a.display_name || a.name || '';
-				const	bName = b.display_name || b.name || '';
+				const	aName = a.name || '';
+				const	bName = b.name || '';
 				if (sortBy === '-name')
 					return aName.localeCompare(bName);
 				return bName.localeCompare(aName);
@@ -62,7 +62,7 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 	function	computeTotalDebt(totalDebtUSDC: number): string {
 		return (
 			utils.format.amount(
-				totalDebtUSDC / Number((sortedStrategies?.reduce((acc: number, strategy: TStrategy): number => acc + strategy.totalDebtUSDC, 0) || 0)) * 100,
+				totalDebtUSDC / Number((sortedStrategies?.reduce((acc: number, strategy: TStrategy): number => acc + strategy?.details?.totalDebtUSDC, 0) || 0)) * 100,
 				2
 			)
 		);
@@ -72,8 +72,8 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 		const strategy = sortedStrategies[index];
 		return (
 			<Card key={strategy.address} className={'mb-2 w-[965px] md:w-full'}>
-				<div className={'grid relative grid-cols-22 w-full'}>
-					<div className={'flex flex-row col-span-8 items-center min-w-32'}>
+				<div className={'relative grid w-full grid-cols-22'}>
+					<div className={'min-w-32 col-span-8 flex flex-row items-center'}>
 						<div className={'text-neutral-500'}>
 							<div className={'flex-row-center'}>
 								{strategy.vault?.icon ? <Image
@@ -82,41 +82,44 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 									width={40}
 									height={40}
 									src={strategy.vault.icon}
-									quality={60} /> : <div className={'w-10 min-w-[40px] h-10 min-h-[40px] rounded-full bg-neutral-200'} />}
+									quality={60} /> : <div className={'h-10 min-h-[40px] w-10 min-w-[40px] rounded-full bg-neutral-200'} />}
 								<div className={'ml-2 md:ml-6'}>
-									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.display_name || strategy.name}`}</b>
+									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.name}`}</b>
 									<AddressWithActions
 										address={strategy.address}
-										explorer={strategy.vault.explorer}
 										wrapperClassName={'flex'}
 										className={'font-mono text-sm text-neutral-500'} />
 								</div>
 							</div>
 						</div>
 					</div>
-					<div className={'flex flex-row col-span-4 items-center tabular-nums min-w-36 cell-end'}>
+					<div className={'min-w-36 cell-end col-span-4 flex flex-row items-center tabular-nums'}>
 						<div>
-							<b>{`${utils.format.amount(strategy.totalDebtUSDC, 2)}$`}</b>
-							<p className={'text-sm'}>{`${computeTotalDebt(strategy.totalDebtUSDC)}%`}</p>
+							<b>
+								{`${utils.format.amount(strategy?.details?.totalDebtUSDC, 2)}$`}
+							</b>
+							<p className={'text-sm'}>
+								{`${computeTotalDebt(strategy?.details?.totalDebtUSDC)}%`}
+							</p>
 						</div>
 					</div>
-					<div className={'flex flex-row col-span-4 items-center tabular-nums min-w-36 cell-end'}>
+					<div className={'min-w-36 cell-end col-span-4 flex flex-row items-center tabular-nums'}>
 						<div>
-							<b>{utils.format.bigNumberAsAmount(strategy.debtOutstanding, strategy.vault.decimals, 4)}</b>
+							<b>{utils.format.bigNumberAsAmount(utils.format.BN(strategy?.details?.debtOutstanding), strategy.vault.decimals, 4)}</b>
 							<p className={'text-sm'}>{strategy.vault.name}</p>
 						</div>
 					</div>
-					<div className={'flex flex-row col-span-3 justify-end items-center tabular-nums min-w-36'}>
+					<div className={'min-w-36 col-span-3 flex flex-row items-center justify-end tabular-nums'}>
 						<div>
-							<b className={'text-base'}>{utils.format.amount(parseInt(strategy.keepCRV), 0)}</b>
+							<b className={'text-base'}>{utils.format.amount(strategy?.details?.keepCRV, 0)}</b>
 						</div>
 					</div>
-					<div className={'flex flex-row col-span-3 items-center min-w-36 cell-end'}>
+					<div className={'min-w-36 cell-end col-span-3 flex flex-row items-center'}>
 						<Link passHref href={`/vault/${strategy.vault.address}/${strategy.address}`}>
 							<Button
 								as={'a'}
 								variant={'light'}
-								className={'px-5 min-w-fit'}>
+								className={'min-w-fit px-5'}>
 								<span className={'sr-only'}>{'Access details about this strategy'}</span>
 								{'Details'}
 							</Button>
@@ -130,13 +133,13 @@ const	SectionTrackList = React.memo(function SectionTrackList({sortBy, strategie
 	return (
 		<section
 			aria-label={'strats-vaults-track-list'}
-			className={'min-w-full h-full'}>
+			className={'h-full min-w-full'}>
 			<List>
 				{sortedStrategies.slice(pageIndex, pageIndex + amountToDisplay).map((_, index): ReactElement => rowRenderer(
 					index + pageIndex
 				))}
 			</List>
-			<div className={'flex flex-row justify-end items-center'}>
+			<div className={'flex flex-row items-center justify-end'}>
 				<PageController
 					pageIndex={pageIndex}
 					pageLen={sortedStrategies.length}
