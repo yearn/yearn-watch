@@ -138,7 +138,6 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 							<b>{stratOrVault.vault?.name}</b>
 							<AddressWithActions
 								address={stratOrVault.vault.address}
-								explorer={stratOrVault.vault.explorer}
 								wrapperClassName={'flex'}
 								className={'font-mono text-xs text-neutral-500'} />
 						</div>
@@ -146,10 +145,9 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 					<div className={'flex-row-start my-4 w-full md:my-0 md:w-[300px]'}>
 						<div className={'mr-2 flex w-10 md:hidden'}/>
 						<div>
-							<b>{stratOrVault.display_name}</b>
+							<b>{stratOrVault.name}</b>
 							<AddressWithActions
 								address={stratOrVault.address}
-								explorer={stratOrVault.vault.explorer}
 								wrapperClassName={'flex'}
 								className={'font-mono text-xs text-neutral-500'} />
 						</div>
@@ -173,7 +171,6 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 							<b>{stratOrVault.name}</b>
 							<AddressWithActions
 								address={stratOrVault.address}
-								explorer={stratOrVault.explorer}
 								wrapperClassName={'flex'}
 								className={'font-mono text-xs text-neutral-500'} />
 						</div>

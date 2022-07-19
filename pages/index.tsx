@@ -17,7 +17,7 @@ function	Index(): ReactElement {
 	const	[filteredVaults, set_filteredVaults] = React.useState<TVault[]>([]);
 	const	[searchTerm, set_searchTerm] = React.useState('');
 	const	[isOnlyWarning, set_isOnlyWarning] = React.useState(false);
-	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0, notAllocated: 0});
+	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0});
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -33,45 +33,29 @@ function	Index(): ReactElement {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (vault.alerts?.length || 0) > 0);
 		}
 
-		//If the shouldOnlyDisplayEndorsedVaults is checked, we only display the endorsed vaults (by the API)
-		if (settings.shouldOnlyDisplayEndorsedVaults) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => vault.isEndorsed);
-		}
-
 		//If the shouldDisplayVaultsWithMigration is checked, we also display the vaults with a migration
 		if (!settings.shouldDisplayVaultsWithMigration) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault.hasMigration);
+			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault?.migration?.available);
 		}
 
 		//If the shouldDisplayVaultNoStrats is checked, we to hide all vaults with 0 strategies or none in withdrawal queue
-		if (!settings.shouldDisplayVaultNoStrats) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => (
-				vault.strategies.length > 0
-				&& !vault.strategies.every((strat): boolean => strat.index === 21)
-			));
-		}
+		// if (!settings.shouldDisplayVaultNoStrats) {
+		// 	_filteredVaults = _filteredVaults.filter((vault): boolean => (
+		// 		vault.strategies.length > 0
+		// 		&& !vault.strategies.every((strat): boolean => strat.index === 21)
+		// 	));
+		// }
 
 		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
 		_filteredVaults = _filteredVaults.sort((a, b): number => Number(b.version.replace('.', '')) - Number(a.version.replace('.', '')));
 		utils.performBatchedUpdates((): void => {
-			let	notAllocated = 0;
-			for (const vault of _filteredVaults) {
-				const reduceSum = vault.strategies.reduce((acc, _strategy): number => (
-					acc += Number(_strategy.totalDebtUSDC)
-				), 0);
-				const	totalAssetsUSDC = Number(utils.format.units((vault?.balanceTokens) || 0, vault?.decimals || 18)) * vault.tokenPriceUSDC;
-
-				notAllocated += (totalAssetsUSDC - reduceSum);
-			}
-
 			set_filteredVaults(_filteredVaults);
 			set_searchResult({
 				vaults: _filteredVaults.length,
-				strategies: _filteredVaults.reduce((acc, vault): number => acc + ((vault.strategies.filter((strat): boolean => settings.shouldDisplayStratsInQueue ? strat.index !== 21 : true))?.length || 0), 0),
-				notAllocated: notAllocated
+				strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault.strategies?.length || 0), 0)
 			});
 		});
-	}, [vaults, searchTerm, isOnlyWarning, settings.shouldDisplayStratsInQueue, settings.shouldDisplayVaultNoStrats, settings.shouldOnlyDisplayEndorsedVaults, settings.shouldDisplayVaultsWithMigration]);
+	}, [vaults, searchTerm, isOnlyWarning, settings.shouldDisplayStratsInQueue, settings.shouldDisplayVaultNoStrats, settings.shouldDisplayVaultsWithMigration]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
@@ -86,7 +70,10 @@ function	Index(): ReactElement {
 					<div className={'flex-row-center'}>
 						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Vaults Found: ${searchResult.vaults}`}</p>
 						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Strategies Found: ${searchResult.strategies}`}</p>
+<<<<<<< HEAD
 						{/* <p className={'text-xs text-neutral-500'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p> */}
+=======
+>>>>>>> 7f7c4a4 (feat: working on next)
 					</div>
 				</div>
 				<div>

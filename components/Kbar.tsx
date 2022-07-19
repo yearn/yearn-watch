@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import	React, {ReactElement}		from	'react';
 import {
 	ActionId,
@@ -47,7 +48,7 @@ const ResultItem = React.forwardRef((
 ): ReactElement => {
 	const ancestors = React.useMemo((): unknown => {
 		if (!currentRootActionId) return action.ancestors;
-		const index = action.ancestors.findIndex((ancestor: any): any => ancestor.id === currentRootActionId);
+		const index = action.ancestors.findIndex((ancestor: any): boolean => ancestor.id === currentRootActionId);
 		return action.ancestors.slice(index + 1);
 	}, [action.ancestors, currentRootActionId]);
 	

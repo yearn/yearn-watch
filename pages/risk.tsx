@@ -46,7 +46,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 ******************************************************************************/
 function	Risk(): ReactElement {
 	const	{chainID} = useWeb3();
-	const	{isUpdating, dataChainID, vaults} = useWatch();
+	const	{isUpdating, vaults} = useWatch();
 	const	[sortBy, set_sortBy] = React.useState('score');
 	const	[groups, set_groups] = React.useState<TRiskGroup[]>([]);
 	const [risk, set_risk] = React.useState<TRiskGroup[]>([]);
@@ -81,7 +81,7 @@ function	Risk(): ReactElement {
 	** filters.
 	**************************************************************************/
 	React.useEffect((): void => {
-		if (dataChainID !== chainID && !(dataChainID === 1 && chainID === 0)) {
+		if (chainID === 0) {
 			set_groups([]);
 			return;
 		}
@@ -102,12 +102,12 @@ function	Risk(): ReactElement {
 					}
 					if (group.criteria.nameLike.some((include): boolean => findStrategyBySearch(strategy, include)) ||
 							group.criteria.strategies.some((include): boolean => include !== '' && findStrategyBySearch(strategy, include))) {
-						_totalDebt += strategy.totalDebtUSDC;
-						_group.tvl += strategy.totalDebtUSDC;
+						_totalDebt += strategy?.details?.totalDebtUSDC;
+						_group.tvl += strategy?.details?.totalDebtUSDC;
 						_group.strategiesCount += 1;
 						_group.strategies.push(strategy);
-						if (_group.oldestActivation === 0 || _group.oldestActivation > Number(strategy.activation)) {
-							_group.oldestActivation = Number(strategy.activation);
+						if (_group.oldestActivation === 0 || _group.oldestActivation > Number(strategy?.details?.activation)) {
+							_group.oldestActivation = Number(strategy?.details?.activation);
 						}
 					}
 				}
@@ -135,7 +135,7 @@ function	Risk(): ReactElement {
 		}
 
 		set_groups(_groups);
-	}, [vaults, dataChainID, chainID, isUpdating, risk]);
+	}, [vaults, chainID, isUpdating, risk]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.

@@ -9,7 +9,7 @@ const	SectionStrategies = React.memo(function SectionStrategies({currentVault}: 
 	const	[strategies, set_strategies] = React.useState<TStrategy[]>([]);
 
 	React.useEffect((): void => {
-		set_strategies(currentVault.strategies.filter((strat): boolean => shouldDisplayStratsInQueue ? strat.index !== 21 : true));
+		set_strategies(currentVault.strategies.filter((strat): boolean => shouldDisplayStratsInQueue ? strat?.details?.index !== 21 : true));
 	}, [currentVault.strategies, shouldDisplayStratsInQueue]);
 
 	return (
@@ -18,15 +18,14 @@ const	SectionStrategies = React.memo(function SectionStrategies({currentVault}: 
 			className={'flex flex-col'}>
 			{
 				strategies
-					.sort((a, b): number => (a.index || 0) - (b.index || 0))
+					.sort((a, b): number => (a?.details?.index || 0) - (b?.details?.index || 0))
 					.map((strategy, index: number): ReactElement => (
 						<StrategyBox
 							key={index}
 							strategy={strategy}
 							symbol={currentVault.symbol}
 							decimals={currentVault.decimals}
-							vaultAddress={currentVault.address}
-							vaultExplorer={currentVault.explorer} />
+							vaultAddress={currentVault.address} />
 					))
 			}
 		</section>

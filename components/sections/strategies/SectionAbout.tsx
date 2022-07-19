@@ -15,7 +15,6 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStra
 					<b className={'mb-2 block'}>{currentVault.name}</b>
 					<AddressWithActions
 						address={currentVault.address}
-						explorer={currentVault.explorer}
 						truncate={0}
 						className={'break-all font-mono text-sm text-neutral-500'} />
 				</div>

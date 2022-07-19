@@ -32,7 +32,7 @@ function	HeaderTitle(): ReactElement {
 		return (
 			<div className={'items-start'}>
 				<b>{currentStrategy.name}</b>
-				<p className={'text-xs text-neutral-500'}>{currentVault.display_name}</p>
+				<p className={'text-xs text-neutral-500'}>{currentVault.name}</p>
 			</div>
 		);	
 	}
@@ -116,7 +116,7 @@ function	HeaderTitle(): ReactElement {
 				src={currentVault.icon}
 				quality={90} /> : <div className={'h-8 w-8 rounded-full bg-neutral-200'} />}
 			<div className={'ml-2 md:ml-6'}>
-				<b>{currentVault.display_name || currentVault.name}</b>
+				<b>{currentVault.name}</b>
 				<p className={'text-xs text-neutral-500'}>
 					{(currentVault.strategies).length > 1 ? `${(currentVault.strategies).length} strats` : `${(currentVault.strategies).length} strat`}
 				</p>

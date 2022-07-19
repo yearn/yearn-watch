@@ -42,194 +42,118 @@ export type TRiskGroup = {
 export type TStrategyReport = {
 	id: string;
 	timestamp: string,
-	apr: number,
-	durationPR: number,
-	duration: string,
-	debtLimit: BigNumber,
-	debtPaid: BigNumber,
-	debtAdded: BigNumber,
-	totalDebt: BigNumber,
-	totalLoss: BigNumber,
-	totalGain: BigNumber,
-	loss: BigNumber,
-	gain: BigNumber
+	debtLimit: string,
+	debtPaid: string,
+	debtAdded: string,
+	totalDebt: string,
+	totalLoss: string,
+	totalGain: string,
+	loss: string,
+	gain: string,
+	results: {
+		APR: string,
+		durationPR: string,
+		duration: string,
+	}[]
 }
+
 export type TStrategy = {
-	name: string,
-	display_name: string,
-	description: string,
-	activation: string,
-	apiVersion: string,
-	protocols: string[],
-	alertHash: string,
-	index?: number,
-	apr?: number,
-	totalDebtUSDC: number,
-	tvlImpact: number,
-	isEmergencyExit: boolean,
-	isActive: boolean,
-	isHidden: boolean,
-	shouldDoHealthCheck: boolean,
 	address: utils.TAddress,
-	addrHealthCheck: utils.TAddress,
-	addrKeeper: utils.TAddress,
-	addrStrategist: utils.TAddress,
-	addrRewards: utils.TAddress,
-	performanceFee: BigNumber,
-	debtRatio: BigNumber,
-	minDebtPerHarvest: BigNumber,
-	maxDebtPerHarvest: BigNumber,
-	lastReport: BigNumber,
-	totalDebt: BigNumber,
-	totalGain: BigNumber,
-	totalLoss: BigNumber,
-	estimatedTotalAssets: BigNumber,
-	creditAvailable: BigNumber,
-	debtOutstanding: BigNumber,
-	expectedReturn: BigNumber,
-	reports: TStrategyReport[],
-	alerts: TAlert[],
-	keepCRV: string,
+	name: string,
+	description: string,
+	details: {
+		version: string
+		keeper: string
+		strategist: string
+		rewards: string
+		healthCheck: string
+		totalDebt: string
+		totalLoss: string
+		totalGain: string
+		rateLimit: string
+		minDebtPerHarvest: string
+		maxDebtPerHarvest: string
+		estimatedTotalAssets: string
+		creditAvailable: string
+		debtOutstanding: string
+		expectedReturn: string
+		apr: number
+		performanceFee: number
+		lastReport: number
+		activation: number
+		keepCRV: number
+		debtRatio: number
+		debtLimit: number
+		doHealthCheck: boolean
+		inQueue: boolean
+		emergencyExit: boolean
+		isActive: boolean
+		protocols: string[],
+		//computed
+		totalDebtUSDC: number,
+		tvlImpact: number,
+		//TODO: missing
+		index: number,
+	}
 	vault: {
 		address: utils.TAddress,
 		name: string,
-		explorer: string,
 		icon: string,
 		decimals?: number,
 		tokenPriceUSDC?: number,
 	},
-	details?: {
-		debtPaid: string,
-		gain: string,
-		loss: string,
-		timestamp: string,
-		totalDebt: string,
-		totalGain: string,
-		totalLoss: string,
-		results: {
-			apr: string
-		}[],
-	}
+	alerts: TAlert[],
+	alertHash: string,
 }
 
 export type TVault = {
 	name: string, //From Yearn API or graph (shareToken.name)
-	display_name: string, //From Yearn API
 	symbol: string, //From Yearn API or graph (shareToken.symbol)
 	icon: string, //From Yearn API
 	version: string, //From Yearn API == apiVersion
 	type?: string, //From Yearn API
-	explorer: string, //from chainID (aka computed)
 	alertHash: string, //computed from app logic
-	tokenPriceUSDC: number, //From multicall
 	inception: number, //From Yearn API == activation
 	decimals: number, //From Yearn API
 	emergency_shutdown: boolean, //From Yearn API
 	isHidden: boolean,
 	isEndorsed: boolean,
-	hasMigration: boolean,
 	address: utils.TAddress, //From Yearn API
-	guardian: utils.TAddress, //From multicall
-	management: utils.TAddress, //From multicall
-	governance: utils.TAddress, //From multicall
-	rewards: utils.TAddress, //From multicall
 	balanceTokens: BigNumber, //From the GraphQL schema
-	managementFeeBps: BigNumber, //From the GraphQL schema
-	performanceFeeBps: BigNumber, //From the GraphQL schema
 	totalSupply: BigNumber,
-	depositLimit: BigNumber, //From multicall
-	availableDepositLimit: BigNumber, //From multicall
 	alerts: TAlert[],
+	tvl: {
+		total_assets: string
+		tvl: number,
+		price: number,
+	},
+	migration: {
+		available: boolean,
+		address: utils.TAddress,
+	},
 	token: {
-		name: string //From API & subgraph
+		name: string //From API
 		symbol: string //From API & subgraph
 		address: utils.TAddress //From API, match subgraph ID
 		decimals: number //From API & subgraph
-		display_name: string //From API
 		icon: string //From API
 	},
+	details: {
+		guardian: utils.TAddress,
+		management: utils.TAddress,
+		governance: utils.TAddress,
+		rewards: utils.TAddress,
+		depositLimit: string,
+		availableDepositLimit: string,
+		managementFee: number,
+		performanceFee: number,
+	},
 	strategies: TStrategy[] //From API & subgraph & multicall
-}
-
-export type TGraphStrategies = {
-	address: string,
-	name: string,
-	apiVersion: string,
-	emergencyExit: string,
-	estimatedTotalAssets: string,
-	isActive: string,
-	keeper: string,
-	strategist: string,
-	rewards: string,
-	doHealthCheck: boolean,
-	healthCheck: string,
-	reports: [{
-		id: string;
-		timestamp: string,
-		totalDebt: string,
-		totalLoss: string,
-		totalGain: string,
-		debtLimit: string,
-		debtPaid: string,
-		debtAdded: string,
-		loss: string,
-		gain: string,
-		results: {
-			apr: string,
-			duration: string,
-			durationPr: string,				
-		}
-	}]
-}
-
-export type TGraphVault = {
-	id: string,
-	guardian: string,
-	management: string,
-	governance: string,
-	rewards: string,
-	availableDepositLimit: string,
-	depositLimit: string,
-	balanceTokens: string,
-	balanceTokensIdle: string,
-	balanceTokensInvested: string,
-	managementFeeBps: string,
-	performanceFeeBps: string,
-	apiVersion: string,
-	activation: string,
-	shareToken: {
-		decimals: string,
-		id: string,
-		name: string,
-		symbol: string
-	},
-	token: {
-		decimals: string,
-		id: string,
-		name: string,
-		symbol: string
-	},
-	strategies: TGraphStrategies[]
-}
-
-
-export type	TNetworkData = {
-	status: {
-		rpc: number,
-		graph: number,
-		yearnApi: number,
-		yearnMeta: number
-	},
-	blockNumber: number,
-	graphBlockNumber: number,
-	hasGraphIndexingErrors: boolean
 }
 
 export type	TWatchContext = {
 	vaults: TVault[],
 	lastUpdate: number,
 	isUpdating: boolean,
-	dataChainID: number,
-	network: TNetworkData,
-	update: () => void
+	hasError: boolean,
 }

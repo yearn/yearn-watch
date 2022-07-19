@@ -61,41 +61,37 @@ function	Healthcheck(): ReactElement {
 		let		_filteredVaults = [..._vaults];
 		const	_filteredStrategies = [];
 
-		//If the shouldOnlyDisplayEndorsedVaults is checked, we only display the endorsed vaults (by the API)
-		if (settings.shouldOnlyDisplayEndorsedVaults) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => vault.isEndorsed);
-		}
 
 		//If the shouldDisplayVaultsWithMigration is checked, we also display the vaults with a migration
 		if (!settings.shouldDisplayVaultsWithMigration) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault.hasMigration);
+			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault?.migration?.available);
 		}
 
 		//If the shouldDisplayVaultNoStrats is checked, we to hide all vaults with 0 strategies or none in withdrawal queue
 		if (!settings.shouldDisplayVaultNoStrats) {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (
 				vault.strategies.length > 0
-				&& !vault.strategies.every((strat): boolean => strat.index === 21)
+				&& !vault.strategies.every((strat): boolean => strat?.details?.index === 21)
 			));
 		}
 
 		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
 		_filteredVaults = _filteredVaults.sort((a, b): number => Number(b.version.replace('.', '')) - Number(a.version.replace('.', '')));
 		for (const vault of _filteredVaults) {
-			let	_strategies = vault.strategies.filter((strat): boolean => strat.shouldDoHealthCheck);
+			let	_strategies = vault.strategies.filter((strat): boolean => strat?.details?.doHealthCheck);
 			_strategies = _strategies.filter((strat): boolean => findStrategyBySearch(strat, searchTerm));
 
 			for (const strategy of vault.strategies) {
-				const	shouldDoHealtcheck = strategy.shouldDoHealthCheck;
-				const	hasValidHealtcheckAddr = !utils.isZeroAddress(strategy.addrHealthCheck);
+				const	shouldDoHealtcheck = strategy?.details?.doHealthCheck;
+				const	hasValidHealtcheckAddr = !utils.isZeroAddress(strategy?.details?.healthCheck);
 
-				if (shouldDoHealtcheck || hasValidHealtcheckAddr || (strategy?.totalDebt.isZero() && isOnlyWithTvl))
+				if (shouldDoHealtcheck || hasValidHealtcheckAddr || (utils.format.BN(strategy?.details?.totalDebt).isZero() && isOnlyWithTvl))
 					continue;
 				_filteredStrategies.push(strategy);
 			}
 		}
 		set_filteredStrategies(_filteredStrategies);
-	}, [vaults, searchTerm, isOnlyWithTvl, settings.shouldOnlyDisplayEndorsedVaults, settings.shouldDisplayVaultsWithMigration, settings.shouldDisplayVaultNoStrats]);
+	}, [vaults, searchTerm, isOnlyWithTvl, settings.shouldDisplayVaultsWithMigration, settings.shouldDisplayVaultNoStrats]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.

@@ -14,7 +14,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 	const		[strategies, set_strategies] = React.useState<TStrategy[]>([]);
 
 	React.useEffect((): void => {
-		set_strategies(vault.strategies.filter((strat): boolean => isOnlyInQueue ? strat.index !== 21 : true));
+		set_strategies(vault.strategies);
 	}, [vault.strategies, isOnlyInQueue]);
 
 	function	renderSummaryStart(): ReactElement {
@@ -30,7 +30,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 						quality={70}
 						className={'h-10 w-10'} /> : <div className={'h-10 min-h-[40px] w-10 min-w-[40px] rounded-full bg-neutral-200'} />}
 					<div className={'ml-2 md:ml-6'}>
-						<b>{vault.display_name || vault.name}</b>
+						<b>{vault.name}</b>
 						<p className={'text-xs text-neutral-500'}>
 							{`v${vault.version}`}
 						</p>
@@ -41,7 +41,6 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 				</div>
 				<AddressWithActions
 					address={vault.address}
-					explorer={vault.explorer}
 					truncate={3}
 					wrapperClassName={'flex md:hidden'}
 					className={'font-mono text-sm leading-6 text-neutral-500'} />
@@ -70,7 +69,6 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 				) : null}
 				<AddressWithActions
 					address={vault.address}
-					explorer={vault.explorer}
 					wrapperClassName={'hidden md:flex'}
 					className={'font-mono text-sm text-neutral-500'} />
 				<div className={'contents'} onClick={(e: MouseEvent): void => e.stopPropagation()}>
@@ -116,15 +114,14 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 			)}>
 			{
 				strategies
-					.sort((a, b): number => (a.index || 0) - (b.index || 0))
+					.sort((a, b): number => (a?.details?.index || 0) - (b?.details?.index || 0))
 					.map((strategy, index: number): ReactElement => (
 						<StrategyBox
 							key={index}
 							strategy={strategy}
 							symbol={vault.symbol}
 							decimals={vault.decimals}
-							vaultAddress={vault.address}
-							vaultExplorer={vault.explorer} />
+							vaultAddress={vault.address} />
 					))
 			}
 		</Card.Detail>

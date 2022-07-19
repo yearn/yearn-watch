@@ -38,7 +38,7 @@ function	Alerts(): ReactElement {
 			for (const strategy of vault.strategies) {
 				if ((strategy?.alerts || []).length > 0) {
 					if (findStrategyBySearch(strategy, searchTerm)) {
-						if (alertFilter === 'none' || strategy.alerts.some((alert): boolean => alert.level === alertFilter))
+						if (alertFilter === 'none' || strategy?.alerts.some((alert): boolean => alert.level === alertFilter))
 							_filteredStrategies.push(strategy);
 					}
 				}

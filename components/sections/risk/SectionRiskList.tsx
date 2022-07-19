@@ -121,8 +121,7 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): Rea
 								strategy={strategy}
 								symbol={strategy.vault.name}
 								decimals={strategy.vault.decimals || 18}
-								vaultAddress={strategy.vault.address}
-								vaultExplorer={strategy.vault.explorer} />
+								vaultAddress={strategy.vault.address} />
 						))
 				}
 			</div>

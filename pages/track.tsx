@@ -1,9 +1,10 @@
 import	React, {ReactElement} 					from	'react';
+import	{Card, Switch, SearchBox} 				from	'@yearn-finance/web-lib/components';
+import	{format}								from	'@yearn-finance/web-lib/utils';
 import	useWatch								from	'contexts/useWatch';
 import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
-import	{Card, Switch, SearchBox}  from '@yearn-finance/web-lib/components';
 import	{deepFindVaultBySearch}					from	'utils/filters';
-import	SectionTrackList					from	'components/sections/track/SectionTrackList';
+import	SectionTrackList						from	'components/sections/track/SectionTrackList';
 import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
 
 /* 🔵 - Yearn Finance **********************************************************
@@ -53,16 +54,16 @@ function	Track(): ReactElement {
 	**************************************************************************/
 	React.useEffect((): void => {
 		const	_vaults = vaults;
-		let		_filteredVaults = [..._vaults];
 		const	_filteredStrategies = [];
+		let		_filteredVaults = [..._vaults];
 
 		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
 
 		for (const vault of _filteredVaults) {
 			for (const strategy of vault.strategies) {
-				const	keepCRV = strategy.keepCRV;
+				const	keepCRV = strategy?.details?.keepCRV;
 
-				if (keepCRV === 'N/A' || (strategy?.totalDebt.isZero() && isOnlyWithTvl))
+				if (keepCRV === 0 || (format.BN(strategy?.details?.totalDebt).isZero() && isOnlyWithTvl))
 					continue;
 				_filteredStrategies.push(strategy);
 			}

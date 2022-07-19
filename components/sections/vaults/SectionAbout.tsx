@@ -1,6 +1,6 @@
 import	React, {ReactElement}					from	'react';
-import	{ethers, BigNumber}						from	'ethers';
-import	{TVault, TStrategy}						from	'contexts/useWatch.d';
+import	{ethers}								from	'ethers';
+import	{TVault}								from	'contexts/useWatch.d';
 import	{DescriptionList, AddressWithActions}	from	'@yearn-finance/web-lib/components';
 import	{format} 								from	'@yearn-finance/web-lib/utils';
 
@@ -13,7 +13,15 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	** number.
 	**************************************************************************/
 	function	computeTotalAssets(): number {
-		return (Number(format.units((currentVault?.balanceTokens) || 0, currentVault?.decimals || 18)));
+		return (Number(format.units((format.BN(currentVault?.tvl?.total_assets)), currentVault?.decimals || 18)));
+	}
+
+	/* 🔵 - Yearn Finance ******************************************************
+	** The deposit limit represents the maximum amount of want tokens that can
+	** be deposited into the vault.
+	**************************************************************************/
+	function	computeDepositLimit(): number {
+		return (Number(format.units((format.BN(currentVault?.details?.depositLimit)), currentVault?.decimals || 18)));
 	}
 
 	/* 🔵 - Yearn Finance ******************************************************
@@ -23,13 +31,11 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	** converted to a human readable number.
 	**************************************************************************/
 	function	computeTotalDebt(): number {
-		return (
-			Number(format.units(
-				(currentVault?.strategies?.
-					reduce((acc: BigNumber, strategy: TStrategy): BigNumber => acc.add(strategy.totalDebt), ethers.constants.Zero) || 0),
-				currentVault?.decimals || 18
-			))
-		);
+		let	totalDebt = ethers.constants.Zero;
+		for (const strategy of currentVault?.strategies || []) {
+			totalDebt = totalDebt.add(format.BN(strategy?.details?.totalDebt));
+		}
+		return format.toNormalizedValue(totalDebt, currentVault?.decimals || 18);
 	}
 
 	/* 🔵 - Yearn Finance ******************************************************
@@ -38,9 +44,9 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	** This function check all the strategies and returns the latest report.
 	**************************************************************************/
 	function	findLastReport(): string {
-		const	lastReportedStrategy = ((currentVault?.strategies || []).sort((a, b): number => (Number(b.lastReport) || 0) - (Number(a.lastReport) || 0)))[0];
-		if (lastReportedStrategy?.lastReport) {
-			return (format.since(Number(lastReportedStrategy.lastReport) * 1000));
+		const	lastReportedStrategy = ((currentVault?.strategies || []).sort((a, b): number => (Number(b?.details?.lastReport) || 0) - (Number(a?.details?.lastReport) || 0)))[0];
+		if (lastReportedStrategy?.details?.lastReport) {
+			return (format.since(Number(lastReportedStrategy?.details?.lastReport) * 1000));
 		}
 		return '-';
 	}
@@ -52,13 +58,11 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	** readable number.
 	**************************************************************************/
 	function	computeTotalDebtRatio(): number {
-		return (
-			Number(format.units(
-				(currentVault?.strategies?.
-					reduce((acc: BigNumber, strategy: TStrategy): BigNumber => acc.add(strategy.debtRatio), ethers.constants.Zero) || 0),
-				2
-			))
-		);
+		let	ratio = 0;
+		for (const strategy of currentVault?.strategies || []) {
+			ratio += (strategy?.details?.debtRatio || 0);
+		}
+		return ratio / 100;
 	}
 
 	return (
@@ -68,42 +72,83 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 			<h4 className={'mb-4'}>{'About'}</h4>
 			<AddressWithActions
 				address={currentVault.address}
-				explorer={currentVault.explorer}
 				truncate={0}
 				className={'break-all font-mono text-sm text-neutral-500'} />
 
 			<DescriptionList
 				className={'mt-8'}
 				options={[
-					{title: 'API Version', details: currentVault?.version}, 
-					{title: 'Emergency shut down', details: currentVault?.emergency_shutdown ? 'YES' : 'NO'}, 
-					{title: 'Since Last Report', details: findLastReport()}, 
-					{title: 'Management fee', details: format.bigNumberAsAmount(currentVault.managementFeeBps, 2, 2, '%')}, 
-					{title: 'Performance fee', details: format.bigNumberAsAmount(currentVault.performanceFeeBps, 2, 2, '%')}
+					{
+						title: 'API Version',
+						details: currentVault?.version
+					}, 
+					{
+						title: 'Emergency shut down',
+						details: currentVault?.emergency_shutdown ? 'YES' : 'NO'
+					}, 
+					{
+						title: 'Since Last Report',
+						details: findLastReport()
+					}, 
+					{
+						title: 'Management fee',
+						details: `${format.amount((currentVault?.details?.managementFee || 0) / 100, 0, 2)}%`
+					}, 
+					{
+						title: 'Performance fee',
+						details: `${format.amount((currentVault?.details?.performanceFee || 0) / 100, 0, 2)}%`
+					}
 				]} />
 
 			<DescriptionList
 				className={'mt-8'}
 				options={[
-					{title: 'Total assets', details: format.bigNumberAsAmount(currentVault.balanceTokens, currentVault.decimals, 4, currentVault.symbol)}, 
-					{title: 'Deposit limit', details: format.bigNumberAsAmount(currentVault.depositLimit, currentVault.decimals, 4, currentVault.symbol)}
+					{
+						title: 'Total assets',
+						details: `${format.amount(computeTotalAssets(), 4)} ${currentVault?.symbol || ''}`
+					}, 
+					{
+						title: 'Deposit limit',
+						details: `${format.amount(computeDepositLimit(), 0)} ${currentVault?.symbol || ''}`
+					}
 				]} />
 
 			<DescriptionList
 				className={'mt-8'}
 				options={[
-					{title: 'Total Debt', details: `${format.amount(computeTotalDebt(), 4)} ${currentVault?.symbol || ''}`}, 
-					{title: 'Total Asset - Total Debt', details: `${format.amount(computeTotalAssets() - computeTotalDebt(), 4)} ${currentVault?.symbol || ''}`}, 
-					{title: 'Total Debt Ratio', details: `${format.amount(computeTotalDebtRatio(), 4)}%`}
+					{
+						title: 'Total Debt',
+						details: `${format.amount(computeTotalDebt(), 4)} ${currentVault?.symbol || ''}`
+					}, 
+					{
+						title: 'Total Asset - Total Debt',
+						details: `${format.amount(computeTotalAssets() - computeTotalDebt(), 4)} ${currentVault?.symbol || ''}`
+					}, 
+					{
+						title: 'Total Debt Ratio',
+						details: `${format.amount(computeTotalDebtRatio(), 2)}%`
+					}
 				]} />
 		
 			<DescriptionList
 				className={'mt-8'}
 				options={[
-					{title: 'Management', details: <AddressWithActions address={currentVault?.management} explorer={currentVault.explorer} />}, 
-					{title: 'Governance', details: <AddressWithActions address={currentVault?.governance} explorer={currentVault.explorer} />}, 
-					{title: 'Guardian', details: <AddressWithActions address={currentVault?.guardian} explorer={currentVault.explorer} />}, 
-					{title: 'Rewards', details: <AddressWithActions address={currentVault?.rewards} explorer={currentVault.explorer} />}
+					{
+						title: 'Management',
+						details: <AddressWithActions address={currentVault?.details?.management} />
+					}, 
+					{
+						title: 'Governance',
+						details: <AddressWithActions address={currentVault?.details?.governance} />
+					}, 
+					{
+						title: 'Guardian',
+						details: <AddressWithActions address={currentVault?.details?.guardian} />
+					}, 
+					{
+						title: 'Rewards',
+						details: <AddressWithActions address={currentVault?.details?.rewards} />
+					}
 				]} />
 		</section>
 	);
