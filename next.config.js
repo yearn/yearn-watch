@@ -37,8 +37,8 @@ module.exports = withPWA({
 			'0xFEB4acf3df3cDEA7399794D0869ef76A6EfAff52': 'ychad.eth',
 			'0x846e211e8ba920B353FB717631C015cf04061Cc9': 'dev.ychad.eth'
 		},
-		// YDAEMON_BASE_URL: 'https://api.ycorpo.com',
-		YDAEMON_BASE_URL: 'http://localhost:8080',
+		YDAEMON_BASE_URL: 'https://api.ycorpo.com',
+		// YDAEMON_BASE_URL: 'http://localhost:8080',
 
 		RISK_GH_URL: 'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
 		RISK_API_URL: 'https://d3971bp2359cnv.cloudfront.net/api'
