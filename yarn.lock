@@ -928,20 +928,15 @@
   dependencies:
     next "*"
 
-"@types/node@*":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.0.tgz#67c7b724e1bcdd7a8821ce0d5ee184d3b4dd525a"
-  integrity sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==
+"@types/node@*", "@types/node@^18.0.3":
+  version "18.0.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.3.tgz#463fc47f13ec0688a33aec75d078a0541a447199"
+  integrity sha512-HzNRZtp4eepNitP+BD6k2L6DROIDG4Q0fm4x+dwfsr6LGmROENnok75VGw40628xf+iR24WeMFcHuuBDUAzzsQ==
 
 "@types/node@^17.0.33":
   version "17.0.43"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.43.tgz#7f16898cdd791c9d64069000ad448b47b3ca8353"
   integrity sha512-jnUpgw8fL9kP2iszfIDyBQtw5Mf4/XSqy0Loc1J9pI14ejL83XcCEvSf50Gs/4ET0I9VCCDoOfufQysj0S66xA==
-
-"@types/node@^18.0.3":
-  version "18.0.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.3.tgz#463fc47f13ec0688a33aec75d078a0541a447199"
-  integrity sha512-HzNRZtp4eepNitP+BD6k2L6DROIDG4Q0fm4x+dwfsr6LGmROENnok75VGw40628xf+iR24WeMFcHuuBDUAzzsQ==
 
 "@types/pbkdf2@^3.0.0":
   version "3.1.0"
@@ -2638,10 +2633,10 @@ eth-sig-util@^1.4.2:
     ethereumjs-abi "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     ethereumjs-util "^5.1.1"
 
-ethcall@^4.7.0, ethcall@^4.7.2:
-  version "4.7.2"
-  resolved "https://registry.yarnpkg.com/ethcall/-/ethcall-4.7.2.tgz#9b979dc9c1e357e049d7f3a660920bb78fb01b34"
-  integrity sha512-GyIBiRzJXfHt6CoLFhq5wPrKoqVpkKgzun2h6zZF1/tc+JDLmqcBkVkSKijV/NvzKQUBfAi5ziUZ36Alx4NO9A==
+ethcall@^4.7.0, ethcall@^4.8.2:
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/ethcall/-/ethcall-4.8.2.tgz#0506a0d171f45d5d95e3caafb1cd15c0447b0159"
+  integrity sha512-/tJ+zl/GaNAdDxZhms54hvGTmFAUbST+hy/A0YmMHxxEwecK5FFFZWyOjeGs2YaocAi8Lmuz0R7mR9Tur7566w==
   dependencies:
     "@ethersproject/abi" "^5.0.0"
     "@ethersproject/bytes" "^5.0.0"
