@@ -26,12 +26,12 @@ function	SectionFormRpcURI(): ReactElement {
 				updateRPCURI(_rpcURI);
 				(toast as any).success('RPC endpoints updated');
 			}}>
-			<Card className={`flex flex-col space-y-4 w-full transition-opacity ${shouldUseRemoteFetch ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}>
+			<Card className={`flex w-full flex-col space-y-4 transition-opacity ${shouldUseRemoteFetch ? 'pointer-events-none opacity-60' : 'opacity-100'}`}>
 				<div className={'pb-6'}>
 					<h4>{'RPC endpoints'}</h4>
 				</div>
-				<div className={'w-full md:flex-row md:items-center flex-col-start'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Ethereum RPC URI'}</label></div>
+				<div className={'flex-col-start w-full md:flex-row md:items-center'}>
+					<div className={'w-full pb-2 md:w-3/12 md:pb-0'}><label className={'test-sm'}>{'Ethereum RPC URI'}</label></div>
 					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'component--input-wrapper'}>
@@ -44,8 +44,8 @@ function	SectionFormRpcURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'w-full md:flex-row md:items-center flex-col-start'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Fantom RPC URI'}</label></div>
+				<div className={'flex-col-start w-full md:flex-row md:items-center'}>
+					<div className={'w-full pb-2 md:w-3/12 md:pb-0'}><label className={'test-sm'}>{'Fantom RPC URI'}</label></div>
 					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'component--input-wrapper'}>
@@ -58,8 +58,8 @@ function	SectionFormRpcURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'w-full md:flex-row md:items-center flex-col-start'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-3/12'}><label className={'test-sm'}>{'Arbitrum RPC URI'}</label></div>
+				<div className={'flex-col-start w-full md:flex-row md:items-center'}>
+					<div className={'w-full pb-2 md:w-3/12 md:pb-0'}><label className={'test-sm'}>{'Arbitrum RPC URI'}</label></div>
 					<div className={'w-full md:w-9/12'}>
 						<div
 							className={'component--input-wrapper'}>
@@ -72,7 +72,7 @@ function	SectionFormRpcURI(): ReactElement {
 						</div>
 					</div>
 				</div>
-				<div className={'flex flex-row w-full'}>
+				<div className={'flex w-full flex-row'}>
 					<Button
 						variant={'outlined'}
 						type={'submit'}

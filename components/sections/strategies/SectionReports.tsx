@@ -26,8 +26,8 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 	return (
 		<section
 			aria-label={'reports-of-strategy'}
-			className={'flex flex-col w-full'}>
-			<div className={'grid grid-cols-2 gap-4 mb-6 w-full md:grid-cols-3 md:gap-8'}>
+			className={'flex w-full flex-col'}>
+			<div className={'mb-6 grid w-full grid-cols-2 gap-4 md:grid-cols-3 md:gap-8'}>
 				<div className={'col-span-1 text-left md:text-center'}>
 					<b className={'text-base md:text-lg'}>{'Last 10 reports'}</b>
 				</div>
@@ -55,7 +55,7 @@ const	SectionReports = React.memo(function SectionReports({currentVault, current
 													txHash={report?.id.split('-')[0]}
 													explorer={currentVault.explorer}
 													className={'font-mono font-bold'} />
-												<p className={'block mt-2 text-neutral-500'}>
+												<p className={'mt-2 block text-neutral-500'}>
 													{format.date(Number(report?.timestamp || 0))}
 												</p>
 											</div>

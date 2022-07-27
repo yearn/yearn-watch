@@ -64,13 +64,13 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAb
 	return (
 		<section
 			aria-label={'about-vault'}
-			className={'flex flex-col col-span-1'}>
+			className={'col-span-1 flex flex-col'}>
 			<h4 className={'mb-4'}>{'About'}</h4>
 			<AddressWithActions
 				address={currentVault.address}
 				explorer={currentVault.explorer}
 				truncate={0}
-				className={'font-mono text-sm break-all text-neutral-500'} />
+				className={'break-all font-mono text-sm text-neutral-500'} />
 
 			<DescriptionList
 				className={'mt-8'}

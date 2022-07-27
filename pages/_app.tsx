@@ -1,26 +1,24 @@
 import	React, {ReactElement}			from	'react';
-import	Head							from	'next/head';
 import	Link							from	'next/link';
-import	Image							from	'next/image';
-import	{useRouter}						from	'next/router';
 import	{AppProps}						from	'next/app';
-import	{DefaultSeo}					from	'next-seo';
-import	{KBarProvider, Action,
-	createAction, useRegisterActions}	from	'kbar';
-import	useWatch, {WatchContextApp}		from	'contexts/useWatch';
+import	{KBarProvider}					from	'kbar';
+import	{AnimatePresence, motion}		from	'framer-motion';
+import	{WatchContextApp}				from	'contexts/useWatch';
 import	{SettingsContextApp}			from	'contexts/useSettings';
 import	KBar							from	'components/Kbar';
 import	Footer							from	'components/StandardFooter';
 import	HeaderTitle						from	'components/HeaderTitle';
 import	IconHealthcheck					from	'components/icons/IconHealthcheck';
-import	IconTrack				from	'components/icons/IconTrack';
+import	IconTrack						from	'components/icons/IconTrack';
 import	IconQuery						from	'components/icons/IconQuery';
 import	LogoWatch						from	'components/logo/LogoWatch';
 import	KBarButton						from	'components/KBarButton';
+import	KBarWrapper						from	'components/KBarWrapper';
+import	AppSync							from	'components/AppSync';
+import	Meta							from	'components/Meta';
+import	Navbar							from	'components/Navbar';
+import	Header							from	'components/Header';
 import	{WithYearn}						from	'@yearn-finance/web-lib/contexts';
-import	{Header, Navbar}				from	'@yearn-finance/web-lib/layouts';
-import	{useInterval}					from	'@yearn-finance/web-lib/hooks';
-import	* as utils						from	'@yearn-finance/web-lib/utils';
 import	{
 	Vault as IconVault,
 	Settings as IconSettings,
@@ -29,203 +27,17 @@ import	{
 
 import	'../style.css';
 
-function	AppHead(): ReactElement {
-	return (
-		<>
-			<Head>
-				<title>{process.env.WEBSITE_NAME}</title>
-				<meta httpEquiv={'X-UA-Compatible'} content={'IE=edge'} />
-				<meta name={'viewport'} content={'width=device-width, initial-scale=1'} />
-				<meta name={'description'} content={process.env.WEBSITE_NAME} />
-				<meta name={'msapplication-TileColor'} content={'#62688F'} />
-				<meta name={'theme-color'} content={'#ffffff'} />
+const transition = {duration: 0.3, ease: [0.17, 0.67, 0.83, 0.67]};
+const thumbnailVariants = {
+	initial: {y: 20, opacity: 0, transition},
+	enter: {y: 0, opacity: 1, transition},
+	exit: {y: -20, opacity: 0, transition}
+};
 
-				<link rel={'shortcut icon'} type={'image/x-icon'} href={'/favicons/favicon.ico'} />
-				<link rel={'apple-touch-icon'} sizes={'180x180'} href={'/favicons/apple-touch-icon.png'} />
-				<link rel={'icon'} type={'image/png'} sizes={'32x32'} href={'/favicons/favicon-32x32.png'} />
-				<link rel={'icon'} type={'image/png'} sizes={'16x16'} href={'/favicons/favicon-16x16.png'} />
-				<link rel={'icon'} type={'image/png'} sizes={'192x192'} href={'/favicons/android-chrome-192x192.png'} />
-				<link rel={'icon'} type={'image/png'} sizes={'512x512'} href={'/favicons/android-chrome-512x512.png'} />
-
-				<meta name={'robots'} content={'index,nofollow'} />
-				<meta name={'googlebot'} content={'index,nofollow'} />
-				<meta charSet={'utf-8'} />
-			</Head>
-			<DefaultSeo
-				title={process.env.WEBSITE_NAME}
-				defaultTitle={process.env.WEBSITE_NAME}
-				description={process.env.WEBSITE_DESCRIPTION}
-				openGraph={{
-					type: 'website',
-					locale: 'en_US',
-					url: process.env.WEBSITE_URI,
-					site_name: process.env.WEBSITE_NAME,
-					title: process.env.WEBSITE_NAME,
-					description: process.env.WEBSITE_DESCRIPTION,
-					images: [
-						{
-							url: `${process.env.WEBSITE_URI}og.png`,
-							width: 1200,
-							height: 675,
-							alt: 'Yearn'
-						}
-					]
-				}}
-				twitter={{
-					handle: '@iearnfinance',
-					site: '@iearnfinance',
-					cardType: 'summary_large_image'
-				}} />
-		</>
-	);
-}
-
-function	AppSync(): ReactElement {
-	const	{network, lastUpdate, isUpdating, update} = useWatch();
-	const	[blockDiff, set_blockDiff] = React.useState<number>(0);
-	const	[lastUpdateDiff, set_lastUpdateDiff] = React.useState<number>(0);
-
-	/* 🔵 - Yearn Finance ******************************************************
-	** We are using the subgraph for some of the data. The subgraph could be
-	** a few blocks outdated, so we need to display the difference between
-	** the rpc block height and the subgraph block height.
-	**
-	** -1 is returned if the subgraph is not available, otherwise the we return
-	** the absolute difference between the two.
-	**************************************************************************/
-	React.useEffect((): void => {
-		if (network.hasGraphIndexingErrors)
-			set_blockDiff(-1);
-		else if (network.blockNumber && network.graphBlockNumber)
-			set_blockDiff(Math.abs(network.blockNumber - network.graphBlockNumber));
-	}, [network.blockNumber, network.graphBlockNumber, network.hasGraphIndexingErrors]);
-
-	/* 🔵 - Yearn Finance ******************************************************
-	** Data are cached for 10 minutes to avoid too many loading time for not
-	** much change. Theses data can be force updated on demand.
-	** Get the difference between the user's browser and the cache update time
-	** and register a interval to update this counter every minutes.
-	**************************************************************************/
-	useInterval((): void => {
-		if (lastUpdate) {
-			set_lastUpdateDiff(lastUpdate - new Date().valueOf());
-		}
-	}, 30 * 1000, true, [lastUpdate]);
-
-
-	function	renderBlockDiff(): string {
-		if (blockDiff === -1)
-			return 'Error with graph height';
-		if (blockDiff === 0)
-			return 'Graph is up to date';
-		return `Graph is ${blockDiff} block${blockDiff > 1 ? 's' : ''} behind`;
-	}
-
-	return (
-		<>
-			<div className={'space-x-2 cursor-pointer flex-row-center'} onClick={update}>
-				<div className={`aspect-square w-2 h-2 rounded-full ${isUpdating ? 'bg-neutral-200 border-2 border-transparent border-t-accent-500 border-l-accent-500 animate-spin' : lastUpdateDiff < -300_000 ? 'bg-yellow-900' : 'bg-accent-500'}`} />
-				<p className={'text-xs text-neutral-500'}>{isUpdating ? 'Fetching data ...' : `Sync ${utils.format.duration(lastUpdateDiff, true)}`}</p>
-			</div>
-			<div className={'space-x-2 flex-row-center'}>
-				<div className={`aspect-square w-2 h-2 rounded-full ${blockDiff === -1 ? 'bg-pink-900' : blockDiff > 100 ? 'bg-yellow-900' : 'bg-accent-500'}`} />
-				<p className={'text-xs text-neutral-500'}>{renderBlockDiff()}</p>
-			</div>
-			{
-				network?.status?.rpc === 0 ? (
-					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
-						<p className={'text-xs text-neutral-500'}>{'RPC is down'}</p>
-					</div>
-				) : null
-			}
-			{
-				network?.status?.graph === 0 ? (
-					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
-						<p className={'text-xs text-neutral-500'}>{'SubGraph is down'}</p>
-					</div>
-				) : null
-			}
-			{
-				network?.status?.yearnApi === 0 ? (
-					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
-						<p className={'text-xs text-neutral-500'}>{'Yearn API is down'}</p>
-					</div>
-				) : null
-			}
-			{
-				network?.status?.yearnMeta === 0 ? (
-					<div className={'space-x-2 flex-row-center'}>
-						<div className={'aspect-square w-2 h-2 rounded-full bg-pink-900'} />
-						<p className={'text-xs text-neutral-500'}>{'Yearn Meta is down'}</p>
-					</div>
-				) : null
-			}
-		</>
-	);
-}
-
-function	KBarWrapper(): React.ReactElement {
-	const	[actions, set_actions] = React.useState<Action[]>([]);
-	const	{vaults} = useWatch();
-	const	router = useRouter();
-
-	React.useEffect((): void => {
-		const	_actions = [];
-		for (const vault of vaults) {
-			const	vaultAction = createAction({
-				name: `${vault.display_name || vault.name} v${vault.version}`,
-				keywords: `${vault.display_name || vault.name} ${vault.symbol} ${vault.address}`,
-				section: 'Vaults',
-				perform: async (): Promise<boolean> => router.push(`/vault/${vault.address}`),
-				icon: (vault.icon ? 
-					<Image
-						src={vault.icon}
-						alt={vault.display_name || vault.name}
-						decoding={'async'}
-						quality={70}
-						width={36}
-						height={36}
-						className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-neutral-200'} />
-				),
-				subtitle: `${vault.address}`
-			});
-
-			_actions.push(vaultAction);
-			for (const strategy of vault.strategies) {
-				const	strategyAction = createAction({
-					parent: vaultAction.id,
-					section: 'Strategies',
-					name: strategy.name,
-					keywords: `${strategy.name} ${strategy.address}`,
-					perform: async (): Promise<boolean> => router.push(`/vault/${vault.address}/${strategy.address}`),
-					icon: (vault.icon ? 
-						<Image
-							src={vault.icon}
-							alt={vault.display_name || vault.name}
-							decoding={'async'}
-							quality={70}
-							width={36}
-							height={36}
-							className={'w-9 h-9'}/> : <div className={'w-9 min-w-[36px] h-9 min-h-[40px] rounded-full bg-neutral-200'} />
-					),
-					subtitle: `${strategy.address}`
-				});
-				_actions.push(strategyAction);
-			}
-		}
-		set_actions(_actions);
-	}, [vaults]); // eslint-disable-line react-hooks/exhaustive-deps
-	useRegisterActions(actions, [actions]);
-
-	return <span />;
-}
-
-function	AppWrapper(props: AppProps): ReactElement {
+function	WithLayout(props: AppProps): ReactElement {
 	const	{Component, pageProps, router} = props;
-	const	navbarMenuOptions = [
+
+	const		navbarMenuOptions = [
 		{
 			route: '/',
 			values: ['/', '/vault/[vault]', '/vault/[vault]/[strategy]'],
@@ -270,45 +82,66 @@ function	AppWrapper(props: AppProps): ReactElement {
 		}
 	];
 
+	function 	handleExitComplete(): void {
+		if (typeof window !== 'undefined') {
+			window.scrollTo({top: 0});
+		}
+	}
+
 	function	onChangeRoute(selected: string): void {
 		router.push(selected);
 	}
 
 	return (
-		<>
-			<AppHead />
-			<KBarProvider>
-				<div className={'z-[9999]'}>
-					<KBar />
-					<KBarWrapper />
-				</div>
-				<div id={'app'} className={'grid flex-col grid-cols-12 gap-x-4 mx-auto mb-0 max-w-[1200px] md:flex-row'}>
-					<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2'}>
-						<div className={'flex flex-col justify-between h-full'}>
-							<Navbar
-								selected={router.pathname}
-								set_selected={onChangeRoute}
-								logo={<LogoWatch className={'w-full h-12 text-accent-500'} />}
-								options={navbarMenuOptions}
-								wrapper={<Link passHref href={''} />}>
-								<div className={'flex flex-col mt-auto mb-6 space-y-2'}>
-									<AppSync />
-								</div>
-								<KBarButton />
-							</Navbar>
+		<div id={'app'} className={'mx-auto mb-0 grid max-w-[1200px] grid-cols-12 flex-col gap-x-4 md:flex-row'}>
+			<div className={'sticky top-0 z-50 col-span-12 h-auto md:relative md:col-span-2'}>
+				<div className={'flex h-full flex-col justify-between'}>
+					<Navbar
+						selected={router.pathname}
+						set_selected={onChangeRoute}
+						logo={<LogoWatch className={'h-12 w-full text-accent-500'} />}
+						options={navbarMenuOptions}
+						wrapper={<Link passHref href={''} />}>
+						<div className={'mt-auto mb-6 flex flex-col space-y-2'}>
+							<AppSync />
 						</div>
-					</div>
-					<div className={'flex flex-col col-span-12 w-full max-w-6xl min-h-[100vh] md:col-span-10'}>
-						<Header shouldUseNetworks={(process?.env?.USE_NETWORKS || true) as boolean}>
-							<HeaderTitle />
-						</Header>
+						<KBarButton />
+					</Navbar>
+				</div>
+			</div>
+			<div className={'col-span-12 flex min-h-[100vh] w-full max-w-6xl flex-col md:col-span-10'}>
+				<Header shouldUseNetworks>
+					<HeaderTitle />
+				</Header>
+				<AnimatePresence exitBeforeEnter onExitComplete={handleExitComplete}>
+					<motion.div
+						key={router.asPath}
+						initial={'initial'}
+						animate={'enter'}
+						exit={'exit'}
+						variants={thumbnailVariants}>
 						<Component
 							key={router.route}
 							router={props.router}
 							{...pageProps} />
 						<Footer />
-					</div>
+					</motion.div>
+				</AnimatePresence>
+			</div>
+		</div>
+	);
+}
+
+function	AppWrapper(props: AppProps): ReactElement {
+	return (
+		<>
+			<Meta />
+			<KBarProvider>
+				<div className={'z-[9999]'}>
+					<KBar />
+					<KBarWrapper />
 				</div>
+				<WithLayout {...props} />
 			</KBarProvider>
 		</>
 	);
@@ -319,7 +152,15 @@ function	MyApp(props: AppProps): ReactElement {
 	
 	return (
 		<SettingsContextApp>
-			<WithYearn>
+			<WithYearn
+				options={{
+					web3: {
+						shouldUseWallets: true,
+						shouldUseStrictChainMode: false,
+						defaultChainID: 1,
+						supportedChainID: [1, 250, 42161, 1337, 31337]
+					}
+				}}>
 				<WatchContextApp>
 					<AppWrapper
 						Component={Component}

@@ -18,23 +18,23 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 	return (
 		<TableHead sortBy={sortBy} set_sortBy={set_sortBy}>
 			<TableHeadCell
-				className={'col-span-6 cell-start min-w-32'}
+				className={'cell-start min-w-32 col-span-6'}
 				label={'Group'}
 				sortId={'name'} />
 			<TableHeadCell
-				className={'col-span-4 cell-end min-w-36'}
+				className={'cell-end min-w-36 col-span-4'}
 				label={'Total Value Locked'}
 				sortId={'tvl'} />
 			<TableHeadCell
-				className={'col-span-3 cell-end min-w-36'}
+				className={'cell-end min-w-36 col-span-3'}
 				label={'Risk'}
 				sortId={'risk'} />
 			<TableHeadCell
-				className={'col-span-3 cell-end min-w-36'}
+				className={'cell-end min-w-36 col-span-3'}
 				label={'Likelihood'}
 				sortId={'likelihood'} />
 			<TableHeadCell
-				className={'col-span-2 cell-end min-w-36'}
+				className={'cell-end min-w-36 col-span-2'}
 				label={'Score'}
 				sortId={'score'} />
 		</TableHead>
@@ -145,8 +145,8 @@ function	Risk(): ReactElement {
 			<div>
 				<SectionMatrix groups={groups} />
 			</div>
-			<div className={'flex overflow-x-scroll pb-0 mt-10 h-full'}>
-				<div className={'flex flex-col w-[965px] h-full md:w-full'}>
+			<div className={'mt-10 flex h-full overflow-x-scroll pb-0'}>
+				<div className={'flex h-full w-[965px] flex-col md:w-full'}>
 					<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
 					<SectionRiskList sortBy={sortBy} groups={groups} />
 				</div>

@@ -15,18 +15,18 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 	return (
 		<TableHead sortBy={sortBy} set_sortBy={set_sortBy}>
 			<TableHeadCell
-				className={'col-span-8 cell-start min-w-32'}
+				className={'cell-start min-w-32 col-span-8'}
 				label={'Strategy'}
 				sortId={'name'} />
 			<TableHeadCell
-				className={'col-span-4 cell-end min-w-36'}
+				className={'cell-end min-w-36 col-span-4'}
 				label={'Total Value Locked'}
 				sortId={'tvl'} />
 			<TableHeadCell
-				className={'col-span-4 cell-end min-w-36'}
+				className={'cell-end min-w-36 col-span-4'}
 				label={'Debt Outstanding'} />
 			<TableHeadCell
-				className={'col-span-3 cell-end min-w-36'}
+				className={'cell-end min-w-36 col-span-3'}
 				label={'KeepCRV'} />
 		</TableHead>
 	);
@@ -75,16 +75,8 @@ function	Track(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'flex-col-full'}>
-			{/* <div className={'mb-4'}>
-				<Banner title={'Healthchecks'}>
-					<div>
-						<p>{'The healthchecks have been added since v0.4.2 for the Yearn\'s strategies in order to ensure that they are working properly. The healthchecks are automatically triggered on harvest if the doHealthCheck parameter is enabled, and if a valid address for this check is set. The strategies missing one of theses parameters will be displayed bellow.'}</p>
-						<p className={'block mt-4'}>{'Based on the Total Value Locked (TVL) in the strategy, a Risk score, from 5 (most risky) to 1 (least risky), is computed.'}</p>
-					</div>
-				</Banner>
-			</div> */}
-			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
-				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
+			<div className={'mb-5 flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
+				<div className={'mt-2 flex w-full flex-col space-y-2 md:mt-0'}>
 					<SearchBox
 						searchTerm={searchTerm}
 						onChange={set_searchTerm} />
@@ -102,8 +94,8 @@ function	Track(): ReactElement {
 				</div>
 			</div>
 
-			<div className={'flex overflow-x-scroll pb-0 h-full'}>
-				<div className={'flex flex-col w-[965px] h-full md:w-full'}>
+			<div className={'flex h-full overflow-x-scroll pb-0'}>
+				<div className={'flex h-full w-[965px] flex-col md:w-full'}>
 					<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
 					<SectionTrackList sortBy={sortBy} strategies={filteredStrategies} />
 				</div>

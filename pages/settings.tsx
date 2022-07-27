@@ -22,13 +22,13 @@ function	Settings(): ReactElement {
 	** Main render of the page.
 	**************************************************************************/
 	return (
-		<div className={'space-y-4 flex-col-full'}>
-			<Card className={'flex flex-col space-y-4 w-full'}>
+		<div className={'flex-col-full space-y-4'}>
+			<Card className={'flex w-full flex-col space-y-4'}>
 				<div className={'pb-6'}>
 					<h4>{'Vaults & Strategies'}</h4>
 				</div>
-				<div className={'flex flex-row w-full'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>
+				<div className={'flex w-full flex-row'}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}><label className={'test-sm'}>
 						{'Only display endorsed Vaults'}
 					</label></div>
 					<div className={'w-full md:w-7/12'}>
@@ -37,8 +37,8 @@ function	Settings(): ReactElement {
 							onSwitch={(): void => switchShouldOnlyDisplayEndorsedVaults()} />
 					</div>
 				</div>
-				<div className={'flex flex-row w-full'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>
+				<div className={'flex w-full flex-row'}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}><label className={'test-sm'}>
 						{'Display vaults with migration'}
 					</label></div>
 					<div className={'w-full md:w-7/12'}>
@@ -47,8 +47,8 @@ function	Settings(): ReactElement {
 							onSwitch={(): void => switchShouldDisplayVaultsWithMigration()} />
 					</div>
 				</div>
-				<div className={'flex flex-row w-full'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>
+				<div className={'flex w-full flex-row'}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}><label className={'test-sm'}>
 						{'Hide vaults with no strategies'}
 					</label></div>
 					<div className={'w-full md:w-7/12'}>
@@ -57,8 +57,8 @@ function	Settings(): ReactElement {
 							onSwitch={(): void => switchShouldDisplayVaultNoStrats()} />
 					</div>
 				</div>
-				<div className={'flex flex-row w-full'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>{'Hide strategies not in withdraw queue'}</label></div>
+				<div className={'flex w-full flex-row'}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}><label className={'test-sm'}>{'Hide strategies not in withdraw queue'}</label></div>
 					<div className={'w-full md:w-7/12'}>
 						<Switch
 							isEnabled={shouldDisplayStratsInQueue}
@@ -67,28 +67,28 @@ function	Settings(): ReactElement {
 				</div>
 			</Card>
 
-			<Card className={'flex flex-col space-y-4 w-full'}>
+			<Card className={'flex w-full flex-col space-y-4'}>
 				<div className={'pb-6'}>
 					<h4>{'Fetching method'}</h4>
 				</div>
-				<div className={'flex flex-row w-full'}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>{'Should use remote fetcher'}</label></div>
+				<div className={'flex w-full flex-row'}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}><label className={'test-sm'}>{'Should use remote fetcher'}</label></div>
 					<div className={'w-full md:w-7/12'}>
 						<Switch
 							isEnabled={shouldUseRemoteFetch}
 							onSwitch={(): void => switchShouldUseRemoteFetch()} />
 					</div>
 				</div>
-				<div className={`flex flex-row w-full ${shouldUseRemoteFetch ? 'opacity-60 cursor-not-allowed' : ''}`}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}><label className={'test-sm'}>{'Give priority to Subgraph'}</label></div>
+				<div className={`flex w-full flex-row ${shouldUseRemoteFetch ? 'cursor-not-allowed opacity-60' : ''}`}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}><label className={'test-sm'}>{'Give priority to Subgraph'}</label></div>
 					<div className={'w-full md:w-7/12'}>
 						<Switch
 							isEnabled={shouldGivePriorityToSubgraph}
 							onSwitch={(): void => switchShouldGivePriorityToSubgraph()} />
 					</div>
 				</div>
-				<div className={`flex flex-row w-full ${shouldUseRemoteFetch ? 'opacity-60 cursor-not-allowed' : ''}`}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}>
+				<div className={`flex w-full flex-row ${shouldUseRemoteFetch ? 'cursor-not-allowed opacity-60' : ''}`}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}>
 						<label className={'test-sm'}>
 							{'Display vault with balanceTokensIdle and balanceTokensInvested equal to 0'}
 						</label>
@@ -99,8 +99,8 @@ function	Settings(): ReactElement {
 							onSwitch={(): void => switchShouldDisplayWithNoDebt()} />
 					</div>
 				</div>
-				<div className={`flex flex-row w-full ${shouldFetchStratsFromVault ? 'opacity-60 cursor-not-allowed' : ''}`}>
-					<div className={'pb-2 w-full md:pb-0 md:w-5/12'}>
+				<div className={`flex w-full flex-row ${shouldFetchStratsFromVault ? 'cursor-not-allowed opacity-60' : ''}`}>
+					<div className={'w-full pb-2 md:w-5/12 md:pb-0'}>
 						<label className={'test-sm'}>
 							{'Fetch withdrawal queue from contract directly (slower)'}
 						</label>

@@ -15,29 +15,29 @@ function	PageController({pageIndex, pageLen, amountToDisplay, nextPage, previous
 
 	function	renderPreviousChevron(): ReactElement {
 		if (!canPreviousPage) 
-			return (<Chevron className={'w-4 h-4 opacity-50 cursor-not-allowed'} />);
+			return (<Chevron className={'h-4 w-4 cursor-not-allowed opacity-50'} />);
 		return (
 			<Chevron
-				className={'w-4 h-4 cursor-pointer'}
+				className={'h-4 w-4 cursor-pointer'}
 				onClick={previousPage} />
 		);
 	}
 
 	function	renderNextChevron(): ReactElement {
 		if (!canNextPage) 
-			return (<Chevron className={'w-4 h-4 opacity-50 rotate-180 cursor-not-allowed'} />);
+			return (<Chevron className={'h-4 w-4 rotate-180 cursor-not-allowed opacity-50'} />);
 		return (
 			<Chevron
-				className={'w-4 h-4 rotate-180 cursor-pointer'}
+				className={'h-4 w-4 rotate-180 cursor-pointer'}
 				onClick={nextPage} />
 		);
 	}
 	return (
 		<>
 			{canPreviousPage || canNextPage ? (
-				<div className={'flex flex-row justify-end items-center p-4 space-x-2'}>
+				<div className={'flex flex-row items-center justify-end space-x-2 p-4'}>
 					{renderPreviousChevron()}
-					<p className={'text-sm tabular-nums select-none'}>
+					<p className={'select-none text-sm tabular-nums'}>
 						{`${Math.ceil(pageIndex / amountToDisplay) + 1}/${Math.ceil(pageLen / amountToDisplay)}`}
 					</p>
 					{renderNextChevron()}

@@ -23,17 +23,17 @@ function	AlertSelector({selectedLevel, onSelect}: TAlertSelector): ReactElement 
 			<div
 				onClick={(): void => onSelect('warning')}
 				className={`component--alertSelector-base ${selectedLevel === 'warning' ? warningClassName : defaultClassName}`}>
-				<AlertWarning className={'w-6 h-6 text-yellow-900'} />
+				<AlertWarning className={'h-6 w-6 text-yellow-900'} />
 			</div>
 			<div
 				onClick={(): void => onSelect('error')}
 				className={`component--alertSelector-base ${selectedLevel === 'error' ? errorClassName : defaultClassName}`}>
-				<AlertError className={'w-6 h-6 text-pink-900'} />
+				<AlertError className={'h-6 w-6 text-pink-900'} />
 			</div>
 			<div
 				onClick={(): void => onSelect('critical')}
 				className={`component--alertSelector-base ${selectedLevel === 'critical' ? criticalClassName : defaultClassName}`}>
-				<AlertCritical className={'w-6 h-6 text-red-900'} />
+				<AlertCritical className={'h-6 w-6 text-red-900'} />
 			</div>
 		</div>
 	);
