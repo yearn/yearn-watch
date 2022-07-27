@@ -8,7 +8,7 @@ type 		TStrategyBox = {strategy: TStrategy, symbol: string, decimals: number, va
 function	StrategyBox({strategy, symbol, decimals, vaultAddress, vaultExplorer}: TStrategyBox): ReactElement {
 	return (
 		<Card variant={'background'} className={'mb-4'}>
-			<div className={'justify-between md:items-center flex-row-start'}>
+			<div className={'flex-row-start justify-between md:items-center'}>
 				<div>
 					<b className={'mb-2'}>{strategy.name}</b>
 					<p className={'text-xs text-neutral-500'}>

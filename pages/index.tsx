@@ -78,14 +78,14 @@ function	Index(): ReactElement {
 	**************************************************************************/
 	return (
 		<div className={'w-full'}>
-			<div className={'flex flex-col-reverse mb-5 space-x-0 md:flex-row md:space-x-4'}>
-				<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
+			<div className={'mb-5 flex flex-col-reverse space-x-0 md:flex-row md:space-x-4'}>
+				<div className={'mt-2 flex w-full flex-col space-y-2 md:mt-0'}>
 					<SearchBox
 						searchTerm={searchTerm}
 						onChange={set_searchTerm} />
 					<div className={'flex-row-center'}>
-						<p className={'mr-4 text-xs md:mr-10 text-neutral-500'}>{`Vaults Found: ${searchResult.vaults}`}</p>
-						<p className={'mr-4 text-xs md:mr-10 text-neutral-500'}>{`Strategies Found: ${searchResult.strategies}`}</p>
+						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Vaults Found: ${searchResult.vaults}`}</p>
+						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Strategies Found: ${searchResult.strategies}`}</p>
 						{/* <p className={'text-xs text-neutral-500'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p> */}
 					</div>
 				</div>
@@ -97,7 +97,7 @@ function	Index(): ReactElement {
 						</label>
 					</Card>
 				</div>
-				<div>
+				<div className={'mb-2 md:mb-0'}>
 					<Card padding={'narrow'}>
 						<label className={'component--switchCard-wrapper'}>
 							<p>{'Only in queue'}</p>
@@ -107,7 +107,7 @@ function	Index(): ReactElement {
 				</div>
 			</div>
 			{filteredVaults ? (
-				<List className={'flex flex-col space-y-2 w-full'}>
+				<List className={'flex w-full flex-col space-y-2'}>
 					{filteredVaults.map((vault): ReactElement => (
 						<div key={vault.address}>
 							<VaultBox vault={vault} isOnlyInQueue={settings.shouldDisplayStratsInQueue} />

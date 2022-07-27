@@ -73,14 +73,14 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 					{
 						Object.entries(allocations.protocolsAllocation).map(([key, value]): ReactElement => {
 							return <div className={'flex flex-col'} key={key}>
-								<span className={'flex flex-row justify-between items-center mb-2'}>
+								<span className={'mb-2 flex flex-row items-center justify-between'}>
 									<p className={'text-left text-neutral-500'}>{`${key}`}</p>
 									<b className={'text-left text-accent-500'}>
 										{`${format.amount(Number(value) / Number(allocations.totalProtocolsAllocation) * 100)}%`}
 									</b>
 								</span>
 								<div>
-									<div className={'overflow-hidden relative w-full h-2 rounded-2xl transition-transform bg-neutral-200'}>
+									<div className={'relative h-2 w-full overflow-hidden rounded-2xl bg-neutral-200 transition-transform'}>
 										<div className={'inset-y-0 left-0 h-full rounded-2xl bg-accent-500'} style={{width: `${Number(value) / Number(allocations.totalProtocolsAllocation) * 100}%`}} />
 									</div>
 								</div>
@@ -90,18 +90,18 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 				</div>
 			</div>
 
-			<div className={'flex flex-col mt-8'}>
+			<div className={'mt-8 flex flex-col'}>
 				<h4 className={'mb-4'}>{'Strategy Allocation'}</h4>
 				<div className={'space-y-4'}>
 					<div className={'flex flex-col'}>
-						<span className={'flex flex-row justify-between items-center mb-2'}>
+						<span className={'mb-2 flex flex-row items-center justify-between'}>
 							<p className={'text-left text-neutral-500'}>{'Not Allocated'}</p>
 							<b className={'text-left text-accent-500'}>
 								{`${format.amount(100 - Number(format.units(allocations.notAllocated, 2)), 2)}%`}
 							</b>
 						</span>
 						<div>
-							<div className={'overflow-hidden relative w-full h-2 rounded-2xl transition-transform bg-neutral-200'}>
+							<div className={'relative h-2 w-full overflow-hidden rounded-2xl bg-neutral-200 transition-transform'}>
 								<div className={'inset-y-0 left-0 h-full rounded-2xl bg-accent-500'} style={{width: `${100 - Number(format.units(allocations.notAllocated, 2))}%`}} />
 							</div>
 						</div>
@@ -109,14 +109,14 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 					{
 						allocations.notEmpty.map((strategy: TStrategy): ReactElement => (
 							<div className={'flex flex-col'} key={strategy.address}>
-								<span className={'flex flex-row justify-between items-center mb-2'}>
+								<span className={'mb-2 flex flex-row items-center justify-between'}>
 									<p className={'text-left text-neutral-500'}>{`${strategy.name}`}</p>
 									<b className={'text-left text-accent-500'}>
 										{`${format.amount(Number(format.units(strategy.debtRatio, 2)), 2)}%`}
 									</b>
 								</span>
 								<div>
-									<div className={'overflow-hidden relative w-full h-2 rounded-2xl transition-transform bg-neutral-200'}>
+									<div className={'relative h-2 w-full overflow-hidden rounded-2xl bg-neutral-200 transition-transform'}>
 										<div className={'inset-y-0 left-0 h-full rounded-2xl bg-accent-500'} style={{width: `${Number(format.units(strategy.debtRatio, 2))}%`}} />
 									</div>
 								</div>
@@ -129,9 +129,9 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 						{({open}): ReactElement => (
 							<>
 								<Disclosure.Button as={'div'} className={'w-full'}>
-									<span className={'flex flex-row justify-between items-center mb-2 w-full cursor-pointer'}>
+									<span className={'mb-2 flex w-full cursor-pointer flex-row items-center justify-between'}>
 										<p className={'text-left text-neutral-500'}>{'Empty Allocations'}</p>
-										<Chevron className={`w-4 h-4 transition-transform transform text-accent-500 ${open ? '-rotate-90' : '-rotate-180'}`} />
+										<Chevron className={`h-4 w-4 text-accent-500 transition-transform${open ? '-rotate-90' : '-rotate-180'}`} />
 									</span>
 								</Disclosure.Button>
 								<Transition
@@ -143,13 +143,13 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 									leave={'transition ease-out origin-top'}
 									leaveFrom={'transform scale-y-100 opacity-100 origin-top'}
 									leaveTo={'transform scale-y-0 opacity-0 origin-top'}>
-									<Disclosure.Panel static className={'py-2 px-4 w-full rounded-default bg-neutral-100'}>
+									<Disclosure.Panel static className={'rounded-default w-full bg-neutral-100 py-2 px-4'}>
 										{
 											allocations.empty.map((strategy: TStrategy): ReactElement => (
 												<div className={'flex flex-col'} key={strategy.address}>
-													<span className={'flex flex-row justify-between items-center mb-4 md:mb-2'}>
-														<p className={'text-left break-all text-neutral-500'}>{`${strategy.name}`}</p>
-														<b className={'ml-4 text-left md:ml-0 text-accent-500'}>{'0%'}</b>
+													<span className={'mb-4 flex flex-row items-center justify-between md:mb-2'}>
+														<p className={'break-all text-left text-neutral-500'}>{`${strategy.name}`}</p>
+														<b className={'ml-4 text-left text-accent-500 md:ml-0'}>{'0%'}</b>
 													</span>
 												</div>
 											))

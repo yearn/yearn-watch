@@ -11,8 +11,8 @@ import	{getImpactScoreColor}				from	'utils';
 const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): ReactElement {
 	function	renderSummary(p: {open: boolean}): ReactElement {
 		return (
-			<div className={`grid relative py-4 px-6 w-[965px] h-20 rounded-default md:w-full grid-cols-22 bg-neutral-0 transition-colors ${p.open ? '' : 'hover:bg-neutral-100'}`}>
-				<div className={'flex flex-row col-span-6 items-center min-w-32'}>
+			<div className={`rounded-default relative grid h-20 w-[965px] grid-cols-22 bg-neutral-0 py-4 px-6 transition-colors md:w-full ${p.open ? '' : 'hover:bg-neutral-100'}`}>
+				<div className={'min-w-32 col-span-6 flex flex-row items-center'}>
 					<div className={'text-neutral-500'}>
 						<div className={'flex-row-center'}>
 							<div>
@@ -24,41 +24,41 @@ const	GroupBox = React.memo(function GroupBox({group}: {group: TRiskGroup}): Rea
 						</div>
 					</div>
 				</div>
-				<div className={'flex flex-row col-span-4 items-center tabular-nums min-w-36 cell-end'}>
+				<div className={'min-w-36 cell-end col-span-4 flex flex-row items-center tabular-nums'}>
 					<div>
 						<b>{`${utils.format.amount(group.tvl, 2)}$`}</b>
 						<p className={'text-sm'}>{`${utils.format.amount(group.totalDebtRatio, 2)}%`}</p>
 					</div>
 				</div>
-				<div className={'flex flex-row col-span-3 items-center tabular-nums min-w-36 cell-end'}>
+				<div className={'min-w-36 cell-end col-span-3 flex flex-row items-center tabular-nums'}>
 					<div>
 						{/* <HumanizeRisk risk={group.tvlImpact} /> */}
 						{group.tvlImpact}
 					</div>
 				</div>
-				<div className={'flex flex-row col-span-3 items-center tabular-nums min-w-36 cell-end'}>
+				<div className={'min-w-36 cell-end col-span-3 flex flex-row items-center tabular-nums'}>
 					<div>
 						{/* <HumanizeRisk risk={group.medianScore} /> */}
 						{group.medianScore}
 					</div>
 				</div>
-				<div className={'flex flex-row col-span-2 justify-end items-center tabular-nums min-w-36'}>
-					<div className={'w-4 h-4 rounded-full'} style={{backgroundColor: getImpactScoreColor(group.impactScore)}} />
+				<div className={'min-w-36 col-span-2 flex flex-row items-center justify-end tabular-nums'}>
+					<div className={'h-4 w-4 rounded-full'} style={{backgroundColor: getImpactScoreColor(group.impactScore)}} />
 				</div>
-				<div className={'flex flex-row col-span-4 items-center min-w-36 cell-end'}>
+				<div className={'min-w-36 cell-end col-span-4 flex flex-row items-center'}>
 					<Link passHref href={`/query${group.urlParams}`}>
 						<Button
 							onClick={(e: MouseEvent): void => e.stopPropagation()}
 							as={'a'}
 							variant={'light'}
-							className={'px-5 min-w-fit'}>
+							className={'min-w-fit px-5'}>
 							<span className={'sr-only'}>{'Access details about this strategy'}</span>
 							{'Details'}
 						</Button>
 					</Link>
 					<div className={'ml-2'}>
 						<Chevron
-							className={`w-6 h-6 text-accent-500 transition-transform ${p.open ? '-rotate-90' : '-rotate-180'}`} />
+							className={`h-6 w-6 text-accent-500 transition-transform ${p.open ? '-rotate-90' : '-rotate-180'}`} />
 					</div>
 				</div>
 			</div>
@@ -179,7 +179,7 @@ const	SectionRiskList = React.memo(function SectionRiskList({sortBy, groups}: TS
 	}, [groups, sortBy]);
 
 	return (
-		<List className={'flex flex-col space-y-2 w-full'}>
+		<List className={'flex w-full flex-col space-y-2'}>
 			{sortedGroups.map((group): ReactElement => <span key={group.id}><GroupBox group={group} /></span>)}
 		</List>
 	);

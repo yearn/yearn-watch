@@ -13,13 +13,13 @@ const	SectionStats = React.memo(function SectionStats({currentVault, currentStra
 	return (
 		<section
 			aria-label={'stats-of-the-strategy'}
-			className={'flex flex-col col-span-1'}>
+			className={'col-span-1 flex flex-col'}>
 			<h4 className={'mb-4'}>{'About'}</h4>
 			<AddressWithActions
 				address={currentStrategy.address}
 				explorer={currentVault.explorer}
 				truncate={0}
-				className={'font-mono text-sm break-all text-neutral-500'} />
+				className={'break-all font-mono text-sm text-neutral-500'} />
 			<DescriptionList
 				className={'mt-8'}
 				options={[

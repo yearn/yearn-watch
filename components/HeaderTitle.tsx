@@ -3,6 +3,7 @@ import	Image					from	'next/image';
 import	{useRouter}				from	'next/router';
 import	useWatch				from	'contexts/useWatch';
 import	{TStrategy, TVault}		from	'contexts/useWatch.d';
+import	LogoYearn				from	'components/icons/LogoYearn';
 import	{toAddress} 			from	'@yearn-finance/web-lib/utils';
 
 function	HeaderTitle(): ReactElement {
@@ -38,8 +39,9 @@ function	HeaderTitle(): ReactElement {
 	if (!currentVault) {
 		if (router.asPath.includes('/healthcheck')) {
 			return (
-				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
+				<div className={'flex-row-center space-x-4'}>
+					<LogoYearn className={'h-10 w-10'} />
+					<h1 className={'mr-2 font-bold text-neutral-700 md:mr-4'}>
 						{'Healthcheck'}
 					</h1>
 				</div>
@@ -47,8 +49,9 @@ function	HeaderTitle(): ReactElement {
 		}
 		if (router.asPath.includes('/query')) {
 			return (
-				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
+				<div className={'flex-row-center space-x-4'}>
+					<LogoYearn className={'h-10 w-10'} />
+					<h1 className={'mr-2 font-bold text-neutral-700 md:mr-4'}>
 						{'Query'}
 					</h1>
 				</div>
@@ -56,8 +59,9 @@ function	HeaderTitle(): ReactElement {
 		}
 		if (router.asPath.includes('/alerts')) {
 			return (
-				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
+				<div className={'flex-row-center space-x-4'}>
+					<LogoYearn className={'h-10 w-10'} />
+					<h1 className={'mr-2 font-bold text-neutral-700 md:mr-4'}>
 						{'Alerts'}
 					</h1>
 				</div>
@@ -65,8 +69,8 @@ function	HeaderTitle(): ReactElement {
 		}
 		if (router.asPath.includes('/risk')) {
 			return (
-				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
+				<div className={'flex-row-center space-x-4'}>
+					<h1 className={'mr-2 text-neutral-700 md:mr-4'}>
 						{'Risk'}
 					</h1>
 				</div>
@@ -74,8 +78,9 @@ function	HeaderTitle(): ReactElement {
 		}
 		if (router.asPath.includes('/settings')) {
 			return (
-				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
+				<div className={'flex-row-center space-x-4'}>
+					<LogoYearn className={'h-10 w-10'} />
+					<h1 className={'mr-2 font-bold text-neutral-700 md:mr-4'}>
 						{'Settings'}
 					</h1>
 				</div>
@@ -83,16 +88,18 @@ function	HeaderTitle(): ReactElement {
 		}
 		if (router.asPath.includes('/track')) {
 			return (
-				<div className={'flex-row-center'}>
-					<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
+				<div className={'flex-row-center space-x-4'}>
+					<LogoYearn className={'h-10 w-10'} />
+					<h1 className={'mr-2 font-bold text-neutral-700 md:mr-4'}>
 						{'Track - KeepCRV'}
 					</h1>
 				</div>
 			);
 		}
 		return (
-			<div className={'flex-row-center'}>
-				<h1 className={'mr-2 md:mr-4 text-neutral-700'}>
+			<div className={'flex-row-center space-x-4'}>
+				<LogoYearn className={'h-10 w-10'} />
+				<h1 className={'mr-2 font-bold text-neutral-700 md:mr-4'}>
 					{'Vaults'}
 				</h1>
 			</div>
@@ -100,14 +107,14 @@ function	HeaderTitle(): ReactElement {
 	}
 	
 	return (
-		<div className={'flex-row-center'}>
+		<div className={'flex-row-center space-x-4'}>
 			{currentVault.icon ? <Image
 				alt={`token ${currentVault.name}`}
 				decoding={'async'}
 				width={32}
 				height={32}
 				src={currentVault.icon}
-				quality={90} /> : <div className={'w-8 h-8 rounded-full bg-neutral-200'} />}
+				quality={90} /> : <div className={'h-8 w-8 rounded-full bg-neutral-200'} />}
 			<div className={'ml-2 md:ml-6'}>
 				<b>{currentVault.display_name || currentVault.name}</b>
 				<p className={'text-xs text-neutral-500'}>

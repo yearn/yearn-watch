@@ -56,13 +56,13 @@ function	Alerts(): ReactElement {
 				<Banner title={'Alerts'}>
 					<div>
 						<p>{'The alert section is used to hightlight some potential issues. Issues are splitted in 3 categories: warning, error and critical. Alerts can be on the vault level or on the strategy level.'}</p>
-						<p className={'block mt-4'}>{'You can dismiss non-revelant alerts safely, they will no longer be displayed in your browser unless some new alerts are triggered on this same element.'}</p>
+						<p className={'mt-4 block'}>{'You can dismiss non-revelant alerts safely, they will no longer be displayed in your browser unless some new alerts are triggered on this same element.'}</p>
 					</div>
 				</Banner>
 			</div>
-			<div className={'space-y-5 flex-col-full'}>
+			<div className={'flex-col-full space-y-5'}>
 				<div className={'flex flex-col-reverse items-start space-x-0 md:flex-row md:space-x-4'}>
-					<div className={'flex flex-col mt-2 space-y-2 w-full md:mt-0'}>
+					<div className={'mt-2 flex w-full flex-col space-y-2 md:mt-0'}>
 						<SearchBox
 							searchTerm={searchTerm}
 							onChange={set_searchTerm} />
@@ -70,11 +70,11 @@ function	Alerts(): ReactElement {
 							<p className={'text-xs text-neutral-500'}>{`Search result: ${filteredStrategies.length}`}</p>
 						</div>
 					</div>
-					<div className={'flex flex-row justify-between items-center space-x-2 md:justify-start md:space-x-4'}>
+					<div className={'flex flex-row items-center justify-between space-x-2 md:justify-start md:space-x-4'}>
 						<div>
 							<Card padding={'narrow'}>
 								<label className={'component--switchCard-wrapper'}>
-									<p className={'text-sm md:text-base text-neutral-500'}>{'Dismissed'}</p>
+									<p className={'text-sm text-neutral-500 md:text-base'}>{'Dismissed'}</p>
 									<Switch isEnabled={shouldDisplayDismissed} onSwitch={set_shouldDisplayDismissed} />
 								</label>
 							</Card>

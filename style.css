@@ -1,6 +1,59 @@
 /* This will load Tailwindcss + all the overwrite from Yearn lib */
 @import '@yearn-finance/web-lib/style.css';
 
+:root body[data-theme="dark"] {
+	--color-neutral-0: 225 50% 27%;
+	--color-neutral-100: 225 51% 23%;
+	--color-neutral-200: 225 47% 21%;
+	--color-neutral-300: 219 60% 16%;
+	--color-neutral-400: 0 0% 100%;
+	--color-neutral-500: 230 27% 87%;
+	--color-neutral-700: 0 0% 100%;
+
+	--color-primary-100: 226 50% 18%;
+	--color-primary-200: 225 47% 41%;
+
+	@apply bg-neutral-200;
+	background-image: linear-gradient(180deg,transparent 0,#293e81 80vh);
+
+	& .yearn--button[data-variant="light"] {
+		@apply text-neutral-900 bg-primary-200 hover:bg-primary-100;
+		&:not(:disabled):not([aria-busy="true"]):hover {@apply bg-primary-100;}
+	}
+
+	& .yearn--card {
+		@apply border border-neutral-200 !shadow-none;
+	}
+
+	& .yearn--searchBox-wrapper {
+		--searchBox-text-color: hsl(var(--color-neutral-500));
+		--searchBox-border-color: hsl(var(--color-neutral-300));
+		--searchBox-bg-color: hsl(var(--color-neutral-0));
+		--searchBox-border-width: 1px;
+	}
+	& .yearn--searchBox {
+		@apply focus-within:border-neutral-200;
+	}
+
+	& .yearn--banner {
+		--banner-bg-color: hsl(var(--color-primary-100));
+		--banner-text-color: hsl(var(--color-neutral-700));
+		--banner-border-color: hsl(var(--color-neutral-200));
+		--banner-border-width: 2px;
+	}
+
+	& .yearn--elementWithActions {
+		--elementWithActions-text-color: hsl(var(--color-neutral-700));
+		--elementWithActions-action-color: hsl(var(--color-primary-500));
+		--elementWithActions-action-color-hover: hsl(var(--color-primary-600));
+	}
+
+	& .project--kbar-wrapper {
+		@apply rounded-lg opacity-60 bg-neutral-100/70 hover:bg-neutral-100 transition-colors;
+	}
+}
+
+
 /* 🔵 - Yearn Finance ******************************************************
 ** Shorthand for some group of style used across the application
 **************************************************************************/
@@ -24,3 +77,4 @@
 .yearn--searchBox-input {
 	@apply bg-transparent;
 }
+
