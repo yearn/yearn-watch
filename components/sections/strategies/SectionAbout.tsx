@@ -21,6 +21,15 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStra
 				</div>
 
 				<div className={'mb-8'}>
+					<b>{'Strategy Name'}</b>
+					<div className={'flex-row-center mt-4'}>
+						<p
+							className={'text-neutral-500'}
+						>{currentStrategy?.name}</p>
+					</div>
+				</div>
+
+				<div className={'mb-8'}>
 					<b>{'Description'}</b>
 					<div className={'flex-row-center mt-4'}>
 						<p
