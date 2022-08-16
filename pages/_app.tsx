@@ -124,8 +124,8 @@ function	WithLayout(props: AppProps): ReactElement {
 							key={router.route}
 							router={props.router}
 							{...pageProps} />
-						<Footer />
 					</motion.div>
+					<Footer />
 				</AnimatePresence>
 			</div>
 		</div>
@@ -158,7 +158,7 @@ function	MyApp(props: AppProps): ReactElement {
 						shouldUseWallets: true,
 						shouldUseStrictChainMode: false,
 						defaultChainID: 1,
-						supportedChainID: [1, 250, 42161, 1337, 31337]
+						supportedChainID: [1, 10, 250, 42161, 1337, 31337]
 					}
 				}}>
 				<WatchContextApp>

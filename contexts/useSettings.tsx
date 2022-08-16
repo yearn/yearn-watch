@@ -21,10 +21,10 @@ const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
 ** - shouldUseRemoteFetch: by default, vaults and strategies data are fetched
 ** from a serverless function hosted by Vercel/AWS. You can override this in
 ** order to perform the request from your browser directly.
-** - subGraphURI: for each supported network (1, 250, 42161), provide a way
+** - subGraphURI: for each supported network (1, 10, 250, 42161), provide a way
 ** to override the default subgraph URI. Empty string will use the default,
 ** aka env variables.
-** - rpcURI: for each supported network (1, 250, 42161), provide a way to
+** - rpcURI: for each supported network (1, 10, 250, 42161), provide a way to
 ** override the default RPC URI. Empty string will use the default, aka env
 ** variables.
 ******************************************************************************/

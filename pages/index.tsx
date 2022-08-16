@@ -70,10 +70,6 @@ function	Index(): ReactElement {
 					<div className={'flex-row-center'}>
 						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Vaults Found: ${searchResult.vaults}`}</p>
 						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Strategies Found: ${searchResult.strategies}`}</p>
-<<<<<<< HEAD
-						{/* <p className={'text-xs text-neutral-500'}>{`Not allocated: ~${utils.format.amount(searchResult.notAllocated, 2)} $`}</p> */}
-=======
->>>>>>> 7f7c4a4 (feat: working on next)
 					</div>
 				</div>
 				<div>

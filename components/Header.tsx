@@ -1,11 +1,12 @@
 import	React, {ReactElement}				from	'react';
 import	{useWeb3}							from	'@yearn-finance/web-lib/contexts';
 import	{Card, Dropdown, ModalMobileMenu}	from	'@yearn-finance/web-lib/components';
-import	{NetworkEthereum, NetworkFantom,
+import	{NetworkEthereum, NetworkFantom, NetworkOptimism,
 	NetworkArbitrum, Hamburger}				from	'@yearn-finance/web-lib/icons';
 
 const	options: any[] = [
 	{icon: <NetworkEthereum />, label: 'Ethereum', value: 1},
+	{icon: <NetworkOptimism />, label: 'Optimism', value: 10},
 	{icon: <NetworkFantom />, label: 'Fantom', value: 250},
 	{icon: <NetworkArbitrum />, label: 'Arbitrum', value: 42161}
 ];
