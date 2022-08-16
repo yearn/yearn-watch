@@ -2234,10 +2234,10 @@
     "@web3-react/types" "^8.0.20-beta.0"
     eventemitter3 "^4.0.7"
 
-"@yearn-finance/web-lib@^0.12.9":
-  version "0.12.9"
-  resolved "https://registry.yarnpkg.com/@yearn-finance/web-lib/-/web-lib-0.12.9.tgz#6ab1220613dbcd23d9a188c957633d7b1e0384af"
-  integrity sha512-8y1VcSPZnrrj75EZRU+EPQbuyYLn9c3/DEzx2rqFVQT2t/Rq7htT43Ne1HhGcLOrpYmXdPwxjBgk4WqRMzfouQ==
+"@yearn-finance/web-lib@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@yearn-finance/web-lib/-/web-lib-0.13.0.tgz#271a9f7aca725330fba17019d3094bb121b09be5"
+  integrity sha512-TJZqeBPSTf83pW40a9y4I0mNBdfrwKZgmhWNrFjqQol0Eop/Thl3uv9731xHXwA8DY3J4RwUWacYEf1sFavCLQ==
   dependencies:
     "@coinbase/wallet-sdk" "^3.4.2"
     "@ethersproject/experimental" "^5.6.3"
