@@ -14,14 +14,14 @@ function	KBarWrapper(): React.ReactElement {
 		const	_actions = [];
 		for (const vault of vaults) {
 			const	vaultAction = createAction({
-				name: `${vault.display_name || vault.name} v${vault.version}`,
-				keywords: `${vault.display_name || vault.name} ${vault.symbol} ${vault.address}`,
+				name: `${vault.name} v${vault.version}`,
+				keywords: `${vault.name} ${vault.symbol} ${vault.address}`,
 				section: 'Vaults',
 				perform: async (): Promise<boolean> => router.push(`/vault/${vault.address}`),
 				icon: (vault.icon ? 
 					<Image
 						src={vault.icon}
-						alt={vault.display_name || vault.name}
+						alt={vault.name}
 						decoding={'async'}
 						quality={70}
 						width={36}
@@ -42,7 +42,7 @@ function	KBarWrapper(): React.ReactElement {
 					icon: (vault.icon ? 
 						<Image
 							src={vault.icon}
-							alt={vault.display_name || vault.name}
+							alt={vault.name}
 							decoding={'async'}
 							quality={70}
 							width={36}
