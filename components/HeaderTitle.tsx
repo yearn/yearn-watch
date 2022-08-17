@@ -1,10 +1,11 @@
 import	React, {ReactElement}	from	'react';
 import	Image					from	'next/image';
 import	{useRouter}				from	'next/router';
+import	{toAddress} 			from	'@yearn-finance/web-lib/utils';
+import	{Button}				from	'@yearn-finance/web-lib/components';
 import	useWatch				from	'contexts/useWatch';
 import	{TStrategy, TVault}		from	'contexts/useWatch.d';
 import	LogoYearn				from	'components/icons/LogoYearn';
-import	{toAddress} 			from	'@yearn-finance/web-lib/utils';
 
 function	HeaderTitle(): ReactElement {
 	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);
@@ -69,11 +70,23 @@ function	HeaderTitle(): ReactElement {
 		}
 		if (router.asPath.includes('/risk')) {
 			return (
-				<div className={'flex-row-center space-x-4'}>
-					<h1 className={'mr-2 text-neutral-700 md:mr-4'}>
-						{'Risk'}
-					</h1>
-				</div>
+				<>
+					<div className={'flex-row-center space-x-4'}>
+						<h1 className={'mr-2 text-neutral-700 md:mr-4'}>
+							{'Risk'}
+						</h1>
+					</div>
+					<div className={'ml-auto mr-4'}>
+						<Button
+							as={'a'}
+							href={'https://docs.yearn.finance/resources/risks/risk-score#strategy-risk-score'}
+							target={'_blank'}
+							variant={'light'}
+							className={'ml-0 min-w-[132px] md:ml-6'}>
+							{'Explore Docs'}
+						</Button>
+					</div>
+				</>
 			);
 		}
 		if (router.asPath.includes('/settings')) {
