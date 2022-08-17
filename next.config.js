@@ -1,6 +1,14 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const withPWA = require('next-pwa');
+const {PHASE_EXPORT} = require('next/constants');
 
-module.exports = withPWA({
+module.exports = (phase) => withPWA({
+	assetPrefix: './',
+	experimental: {
+		images: {
+			unoptimized: process.env.IPFS_BUILD === 'true' || phase === PHASE_EXPORT //Exporting image does not support optimization
+		}
+	},
 	images: {
 		domains: [
 			'rawcdn.githack.com',
@@ -9,8 +17,6 @@ module.exports = withPWA({
 	},
 	pwa: {
 		dest: 'public',
-		register: true,
-		skipWaiting: true,
 		disable: process.env.NODE_ENV === 'development'
 	},
 	env: {				
@@ -41,7 +47,6 @@ module.exports = withPWA({
 		},
 		YDAEMON_BASE_URL: 'https://api.ycorpo.com',
 		// YDAEMON_BASE_URL: 'http://localhost:8080',
-
 		RISK_GH_URL: 'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
 		RISK_API_URL: 'https://d3971bp2359cnv.cloudfront.net/api'
 	}
