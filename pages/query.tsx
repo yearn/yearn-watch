@@ -1,5 +1,5 @@
 import	React, {ReactElement}			from	'react';
-import	{GetServerSideProps}			from	'next';
+// import	{GetServerSideProps}			from	'next';
 import	{useRouter}						from	'next/router';
 import	{SearchBox}						from	'@yearn-finance/web-lib/components';
 import	{findStrategyBySearch}			from	'utils/filters';
@@ -119,6 +119,6 @@ export default Query;
 
 // Used to directly fetch the query params
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getServerSideProps: GetServerSideProps = async (): Promise<any> => {
-	return {props: {}};
-};
+// export const getServerSideProps: GetServerSideProps = async (): Promise<any> => {
+// 	return {props: {}};
+// };
