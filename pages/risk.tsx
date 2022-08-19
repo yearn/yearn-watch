@@ -145,7 +145,7 @@ function	Risk(): ReactElement {
 			<div>
 				<SectionMatrix groups={groups} />
 			</div>
-			<div className={'mt-10 flex h-full overflow-x-scroll pb-0'}>
+			<div className={'mt-10 flex h-full overflow-x-scroll pb-0 scrollbar-none'}>
 				<div className={'flex h-full w-[965px] flex-col md:w-full'}>
 					<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
 					<SectionRiskList sortBy={sortBy} groups={groups} />

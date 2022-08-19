@@ -104,7 +104,7 @@ function	Query(): ReactElement {
 					</div>
 				</div>
 
-				<div className={'flex h-full overflow-x-scroll pb-0'}>
+				<div className={'flex h-full overflow-x-scroll pb-0 scrollbar-none'}>
 					<div className={'flex h-full w-[965px] flex-col md:w-full'}>
 						<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
 						<SectionQueryList sortBy={sortBy} strategies={filteredStrategies} />
