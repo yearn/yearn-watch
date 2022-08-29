@@ -119,7 +119,6 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 						<StrategyBox
 							key={index}
 							strategy={strategy}
-							symbol={vault.symbol}
 							decimals={vault.decimals}
 							vaultAddress={vault.address} />
 					))

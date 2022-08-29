@@ -120,7 +120,6 @@ const	GroupBox = React.memo(
 								<StrategyBox
 									key={index}
 									strategy={strategy}
-									symbol={strategy.vault.name}
 									decimals={strategy.vault.decimals || 18}
 									vaultAddress={strategy.vault.address} />
 							))

@@ -4,8 +4,16 @@ import	{TStrategy}											from	'contexts/useWatch.d';
 import	{StatisticCard, Card, Button, AddressWithActions}	from	'@yearn-finance/web-lib/components';
 import	* as utils											from	'@yearn-finance/web-lib/utils';
 
-type 		TStrategyBox = {strategy: TStrategy, symbol: string, decimals: number, vaultAddress: string}
-function	StrategyBox({strategy, symbol, decimals, vaultAddress}: TStrategyBox): ReactElement {
+type 		TStrategyBox = {
+	strategy: TStrategy,
+	decimals: number,
+	vaultAddress: string
+}
+function	StrategyBox({
+	strategy,
+	decimals,
+	vaultAddress
+}: TStrategyBox): ReactElement {
 	return (
 		<Card variant={'background'} className={'mb-4'}>
 			<div className={'flex-row-start justify-between md:items-center'}>
@@ -41,7 +49,7 @@ function	StrategyBox({strategy, symbol, decimals, vaultAddress}: TStrategyBox): 
 			<div className={'my-6 w-full md:w-3/4'}>
 				<p
 					className={'text-sm'}
-					dangerouslySetInnerHTML={{__html: utils.parseMarkdown((strategy?.description || '').replace(/{{token}}/g, symbol) || '')}} />
+					dangerouslySetInnerHTML={{__html: utils.parseMarkdown((strategy?.description || '').replace(/{{token}}/g, strategy.vault.underlyingTokenSymbol) || '')}} />
 			</div>
 			<StatisticCard.Wrapper>
 				<StatisticCard

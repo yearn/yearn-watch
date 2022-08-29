@@ -102,6 +102,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 						address: vault.address,
 						name: vault.name,
 						icon: vault.icon,
+						underlyingTokenSymbol: vault.token.symbol,
 						decimals: vault.decimals,
 						tokenPriceUSDC: vault.tvl.price
 					};

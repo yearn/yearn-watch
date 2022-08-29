@@ -99,6 +99,7 @@ export type TStrategy = {
 		address: utils.TAddress,
 		name: string,
 		icon: string,
+		underlyingTokenSymbol: string,
 		decimals?: number,
 		tokenPriceUSDC?: number,
 	},

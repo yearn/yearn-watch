@@ -23,7 +23,6 @@ const	SectionStrategies = React.memo(function SectionStrategies({currentVault}: 
 						<StrategyBox
 							key={index}
 							strategy={strategy}
-							symbol={currentVault.symbol}
 							decimals={currentVault.decimals}
 							vaultAddress={currentVault.address} />
 					))
