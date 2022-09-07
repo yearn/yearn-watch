@@ -6,10 +6,13 @@ import	{useWeb3}						from	'@yearn-finance/web-lib/contexts';
 import	{useLocalStorage}				from	'@yearn-finance/web-lib/hooks';
 import	{format, performBatchedUpdates}	from	'@yearn-finance/web-lib/utils';
 import	useSettings						from	'contexts/useSettings';
+import  {options} 						from 	'../components/Header';
 import	{getVaults}						from	'pages/api/getVaults';
+import {TVaultByChain} from "contexts/useWatch.d";
 
 const	WatchContext = React.createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
+	dataByChain:[],
 	lastUpdate: 0,
 	isUpdating: false,
 	dataChainID: 1,
@@ -47,6 +50,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 	const	[networkSync, set_networkSync] = useLocalStorage('networkSync', {}) as TStorageNetworkSync;
 	const	[lastUpdate, set_lastUpdate] = useLocalStorage('vaultsLastUpdate', 0) as TStorageLastUpdate;
 	const	[isUpdating, set_isUpdating] = React.useState<boolean>(false);
+	const	[dataByChain, set_dataByChain] = React.useState<TVaultByChain[] | []>([]);
 	const	[dataChainID, set_dataChainID] = React.useState<number>(1);
 	const	getVaultIsRunning = React.useRef(false);
 	const	getVaultRunNonce = React.useRef(0);
@@ -93,7 +97,6 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 				}
 				return value;
 			});
-			
 
 			getVaultIsRunning.current = false;
 			if (getVaultRunNonce.current === currentNonce) {
@@ -138,8 +141,46 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 		NProgress.done();
 	}
 
+	async function fetchVaultsByChain(): Promise<void> {
+		if(!dataByChain.length){
+			const chainData = [{vaults: [...vaults], chainId: dataChainID, name: ''}];
+			for (const chain of options){
+				if(chain.value === dataChainID){
+					chainData[0]['name'] = chain.label;
+					continue;
+				}
+				try{
+					if (shouldUseRemoteFetch) {
+						const	{data} = await axios.get(`/api/getVaults?chainID=${chain.value}&revalidate=false`);
+						chainData.push({vaults: data.data.vaults, chainId: chain.value, name: chain.label})
+					} else {
+						const	data = await getVaults(
+							chain.value,
+							true,
+							shouldGivePriorityToSubgraph,
+							shouldDisplayWithNoDebt,
+							shouldFetchStratsFromVault,
+							rpcURI[chain.value],
+							subGraphURI[chain.value]
+						);
+						const	_vaults = JSON.parse(JSON.stringify(data.vaults), (_key: unknown, value: {type: string}): unknown => {
+							if (value?.type === 'BigNumber') {
+								return format.BN(value as never);
+							}
+							return value;
+						});
+						chainData.push({vaults: _vaults, chainId: chain.value, name: chain.label})
+					}
+				} catch (e) {
+					console.log(`Can't get info on ${chain.label} chain`, e);
+				}
+			}
+			set_dataByChain(chainData);
+		}
+	}
+
 	React.useEffect((): void => {
-		fetchVaults(chainID);
+		fetchVaults(chainID).then(()=>fetchVaultsByChain());
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chainID]);
 
@@ -147,13 +188,14 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 		<WatchContext.Provider
 			value={{
 				vaults,
+				dataByChain,
 				lastUpdate,
 				isUpdating,
 				dataChainID,
 				network: networkSync,
 				update: (): void => {
 					fetchVaults(chainID, true);
-				}
+				},
 			}}>
 			{children}
 		</WatchContext.Provider>

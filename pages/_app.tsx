@@ -54,7 +54,7 @@ function	WithLayout(props: AppProps): ReactElement {
 		// 	route: '/risk',
 		// 	values: ['/risk'],
 		// 	label: 'Risk',
-		// 	icon: <IconRisk />
+		// 	icon: <IconHealthcheck />
 		// },
 		{
 			route: '/alerts',
@@ -72,6 +72,12 @@ function	WithLayout(props: AppProps): ReactElement {
 			route: '/track',
 			values: ['/track'],
 			label: 'Track',
+			icon: <IconTrack />
+		},
+		{
+			route: '/allocations',
+			values: ['/allocations'],
+			label: 'Allocations',
 			icon: <IconTrack />
 		},
 		{
