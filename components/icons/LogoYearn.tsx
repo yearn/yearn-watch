@@ -1,4 +1,4 @@
-import	React, {ReactElement}		from	'react';
+import React, {ReactElement} from 'react';
 
 function	LogoYearn(props: React.SVGProps<SVGSVGElement>): ReactElement {
 	return (

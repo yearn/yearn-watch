@@ -1,11 +1,11 @@
-import	React, {ReactElement}					from	'react';
-import	{ethers}								from	'ethers';
-import	{TVault}								from	'contexts/useWatch.d';
-import	{DescriptionList, AddressWithActions}	from	'@yearn-finance/web-lib/components';
-import	{format} 								from	'@yearn-finance/web-lib/utils';
+import React, {ReactElement, memo} from 'react';
+import {ethers} from 'ethers';
+import {TVault} from 'contexts/useWatch.d';
+import {AddressWithActions, DescriptionList} from '@yearn-finance/web-lib/components';
+import {format}  from '@yearn-finance/web-lib/utils';
 
 type	TSectionAbout = {currentVault: TVault};
-const	SectionAbout = React.memo(function SectionAbout({currentVault}: TSectionAbout): ReactElement {
+const	SectionAbout = memo(function SectionAbout({currentVault}: TSectionAbout): ReactElement {
 	/* 🔵 - Yearn Finance ******************************************************
 	** The total asset represents the total amount of want tokens in the vault.
 	** It is calculated by calling balanceOf(vault) on the token contract.

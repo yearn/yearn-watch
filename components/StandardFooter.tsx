@@ -1,7 +1,7 @@
-import	React, {ReactElement}		from	'react';
-import	{SwitchTheme}				from	'@yearn-finance/web-lib/components';
-import	{useUI}						from	'@yearn-finance/web-lib/contexts';
-import	meta						from	'public/manifest.json';
+import React, {ReactElement} from 'react';
+import {SwitchTheme} from '@yearn-finance/web-lib/components';
+import {useUI} from '@yearn-finance/web-lib/contexts';
+import meta from 'public/manifest.json';
 
 function	Footer(): ReactElement {
 	const	{theme, switchTheme} = useUI();

@@ -92,8 +92,7 @@ export type TStrategy = {
 		//computed
 		totalDebtUSDC: number,
 		tvlImpact: number,
-		//TODO: missing
-		index: number,
+		withdrawalQueuePosition: number,
 	}
 	vault: {
 		address: utils.TAddress,

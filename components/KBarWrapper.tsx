@@ -1,16 +1,15 @@
-import	React							from	'react';
-import	Image							from	'next/image';
-import	{useRouter}						from	'next/router';
-import	{Action, createAction,
-	useRegisterActions}					from	'kbar';
-import	useWatch						from	'contexts/useWatch';
+import React, {useEffect, useState} from 'react';
+import Image from 'next/image';
+import {useRouter} from 'next/router';
+import {Action, createAction, useRegisterActions} from 'kbar';
+import {useWatch} from 'contexts/useWatch';
 
 function	KBarWrapper(): React.ReactElement {
-	const	[actions, set_actions] = React.useState<Action[]>([]);
+	const	[actions, set_actions] = useState<Action[]>([]);
 	const	{vaults} = useWatch();
 	const	router = useRouter();
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_actions = [];
 		for (const vault of vaults) {
 			const	vaultAction = createAction({

@@ -1,10 +1,10 @@
-import	React, {ReactElement}					from	'react';
-import	{TStrategy}								from	'contexts/useWatch.d';
-import	{DescriptionList, AddressWithActions} 	from	'@yearn-finance/web-lib/components';
+import React, {ReactElement, memo} from 'react';
+import {TStrategy} from 'contexts/useWatch.d';
+import {AddressWithActions, DescriptionList}  from '@yearn-finance/web-lib/components';
 
 type	TSectionHealthCheck = {currentStrategy: TStrategy | undefined};
 
-const	SectionHealthCheck = React.memo(
+const	SectionHealthCheck = memo(
 	function SectionHealthCheck({currentStrategy}: TSectionHealthCheck): ReactElement {
 		function	renderShouldDoHealthcheck(): ReactElement {
 			if (currentStrategy?.details?.doHealthCheck) {

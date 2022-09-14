@@ -1,11 +1,11 @@
-import	React, {ReactElement} 					from	'react';
-import	{Card, Switch, SearchBox} 				from	'@yearn-finance/web-lib/components';
-import	{format}								from	'@yearn-finance/web-lib/utils';
-import	useWatch								from	'contexts/useWatch';
-import	{TStrategy, TRowHead}					from	'contexts/useWatch.d';
-import	{deepFindVaultBySearch}					from	'utils/filters';
-import	SectionTrackList						from	'components/sections/track/SectionTrackList';
-import	{TableHead, TableHeadCell}				from	'components/TableHeadCell';
+import React, {ReactElement, useEffect, useState}  from 'react';
+import {Card, SearchBox, Switch}  from '@yearn-finance/web-lib/components';
+import {format} from '@yearn-finance/web-lib/utils';
+import {useWatch} from 'contexts/useWatch';
+import {TRowHead, TStrategy} from 'contexts/useWatch.d';
+import {deepFindVaultBySearch} from 'utils/filters';
+import SectionTrackList from 'components/sections/track/SectionTrackList';
+import {TableHead, TableHeadCell} from 'components/TableHeadCell';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -38,10 +38,10 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 ******************************************************************************/
 function	Track(): ReactElement {
 	const	{vaults} = useWatch();
-	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as TStrategy[]);
-	const	[searchTerm, set_searchTerm] = React.useState('');
-	const	[isOnlyWithTvl, set_isOnlyWithTvl] = React.useState(true);
-	const	[sortBy, set_sortBy] = React.useState('risk');
+	const	[filteredStrategies, set_filteredStrategies] = useState([] as TStrategy[]);
+	const	[searchTerm, set_searchTerm] = useState('');
+	const	[isOnlyWithTvl, set_isOnlyWithTvl] = useState(true);
+	const	[sortBy, set_sortBy] = useState('risk');
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -52,7 +52,7 @@ function	Track(): ReactElement {
 	** - Track is false
 	** - TVL is not 0 (can be forced with the isOnlyWithTVL variable)
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_vaults = vaults;
 		const	_filteredStrategies = [];
 		let		_filteredVaults = [..._vaults];

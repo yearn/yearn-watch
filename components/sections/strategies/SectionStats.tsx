@@ -1,11 +1,11 @@
-import	React, {ReactElement}					from	'react';
-import	{TVault, TStrategy}						from	'contexts/useWatch.d';
-import	{DescriptionList, AddressWithActions}	from	'@yearn-finance/web-lib/components';
-import	{format} 								from	'@yearn-finance/web-lib/utils';
+import React, {ReactElement, memo} from 'react';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
+import {AddressWithActions, DescriptionList} from '@yearn-finance/web-lib/components';
+import {format}  from '@yearn-finance/web-lib/utils';
 import {ethers} from 'ethers';
 
 type	TSectionStats = {currentVault: TVault, currentStrategy: TStrategy | undefined};
-const	SectionStats = React.memo(function SectionStats({currentVault, currentStrategy}: TSectionStats): ReactElement {
+const	SectionStats = memo(function SectionStats({currentVault, currentStrategy}: TSectionStats): ReactElement {
 	if (!currentStrategy) {
 		return <div />;
 	}

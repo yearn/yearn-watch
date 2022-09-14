@@ -1,12 +1,12 @@
-import	React, {ReactElement} 							from	'react';
-import	{Card, Banner, Switch, SearchBox}				from	'@yearn-finance/web-lib/components';
-import	* as utils										from	'@yearn-finance/web-lib/utils';
-import	useWatch										from	'contexts/useWatch';
-import	{TStrategy, TRowHead}							from	'contexts/useWatch.d';
-import	useSettings										from	'contexts/useSettings';
-import	{deepFindVaultBySearch, findStrategyBySearch}	from	'utils/filters';
-import	SectionHealthcheckList							from	'components/sections/healthcheck/SectionHealthcheckList';
-import	{TableHead, TableHeadCell}						from	'components/TableHeadCell';
+import React, {ReactElement, useEffect, useState}  from 'react';
+import {Banner, Card, SearchBox, Switch} from '@yearn-finance/web-lib/components';
+import * as utils from '@yearn-finance/web-lib/utils';
+import {useWatch} from 'contexts/useWatch';
+import {TRowHead, TStrategy} from 'contexts/useWatch.d';
+import {useSettings} from 'contexts/useSettings';
+import {deepFindVaultBySearch, findStrategyBySearch} from 'utils/filters';
+import SectionHealthcheckList from 'components/sections/healthcheck/SectionHealthcheckList';
+import {TableHead, TableHeadCell} from 'components/TableHeadCell';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -41,10 +41,10 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 function	Healthcheck(): ReactElement {
 	const	{vaults} = useWatch();
 	const	settings = useSettings(); // eslint-disable-line @typescript-eslint/naming-convention
-	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as TStrategy[]);
-	const	[searchTerm, set_searchTerm] = React.useState('');
-	const	[isOnlyWithTvl, set_isOnlyWithTvl] = React.useState(true);
-	const	[sortBy, set_sortBy] = React.useState('risk');
+	const	[filteredStrategies, set_filteredStrategies] = useState([] as TStrategy[]);
+	const	[searchTerm, set_searchTerm] = useState('');
+	const	[isOnlyWithTvl, set_isOnlyWithTvl] = useState(true);
+	const	[sortBy, set_sortBy] = useState('risk');
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -56,7 +56,7 @@ function	Healthcheck(): ReactElement {
 	** - Healtchecker address is invalid
 	** - TVL is not 0 (can be forced with the isOnlyWithTVL variable)
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_vaults = vaults;
 		let		_filteredVaults = [..._vaults];
 		const	_filteredStrategies = [];
@@ -71,7 +71,7 @@ function	Healthcheck(): ReactElement {
 		if (!settings.shouldDisplayVaultNoStrats) {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (
 				vault.strategies.length > 0
-				&& !vault.strategies.every((strat): boolean => strat?.details?.index === 21)
+				&& !vault.strategies.every((strat): boolean => strat?.details?.withdrawalQueuePosition === -1)
 			));
 		}
 

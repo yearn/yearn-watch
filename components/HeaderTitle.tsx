@@ -1,15 +1,15 @@
-import	React, {ReactElement}	from	'react';
-import	Image					from	'next/image';
-import	{useRouter}				from	'next/router';
-import	{toAddress} 			from	'@yearn-finance/web-lib/utils';
-import	{Button}				from	'@yearn-finance/web-lib/components';
-import	useWatch				from	'contexts/useWatch';
-import	{TStrategy, TVault}		from	'contexts/useWatch.d';
-import	LogoYearn				from	'components/icons/LogoYearn';
+import React, {ReactElement, useEffect, useState} from 'react';
+import Image from 'next/image';
+import {useRouter} from 'next/router';
+import {toAddress}  from '@yearn-finance/web-lib/utils';
+import {Button} from '@yearn-finance/web-lib/components';
+import {useWatch} from 'contexts/useWatch';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
+import LogoYearn from 'components/icons/LogoYearn';
 
 function	HeaderTitle(): ReactElement {
-	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);
-	const	[currentStrategy, set_currentStrategy] = React.useState<TStrategy | undefined>(undefined);
+	const	[currentVault, set_currentVault] = useState<TVault | undefined>(undefined);
+	const	[currentStrategy, set_currentStrategy] = useState<TStrategy | undefined>(undefined);
 	const	{vaults} = useWatch();
 	const	router = useRouter();
 
@@ -17,7 +17,7 @@ function	HeaderTitle(): ReactElement {
 	** This effect is triggered every time the vault list or the router query
 	** is changed. It retrieves the data about the current vault.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		if (router.query.vault && router.query.strategy) {
 			const	_currentVault = vaults.find((vault): boolean => toAddress(vault.address) === toAddress(router.query.vault as string));
 			set_currentVault(_currentVault);

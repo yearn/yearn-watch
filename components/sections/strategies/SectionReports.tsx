@@ -1,15 +1,15 @@
-import	React, {ReactElement}						from	'react';
-import	axios										from	'axios';
-import	useSWR										from	'swr';
-import	{useWeb3}									from	'@yearn-finance/web-lib/contexts';
-import	{Card, TxHashWithActions, StatisticCard}	from	'@yearn-finance/web-lib/components';
-import	{format} 									from	'@yearn-finance/web-lib/utils';
-import	{TVault, TStrategy, TStrategyReport}		from	'contexts/useWatch.d';
+import React, {ReactElement, memo} from 'react';
+import axios from 'axios';
+import useSWR from 'swr';
+import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import {Card, StatisticCard, TxHashWithActions} from '@yearn-finance/web-lib/components';
+import {format}  from '@yearn-finance/web-lib/utils';
+import {TStrategy, TStrategyReport, TVault} from 'contexts/useWatch.d';
 
 const fetcher = async (url: string): Promise<TStrategyReport[]> => axios.get(url).then((res): TStrategyReport[] => res.data);
 
 type	TSectionReports = {currentVault: TVault, currentStrategy: TStrategy | undefined};
-const	SectionReports = React.memo(
+const	SectionReports = memo(
 	function SectionReports({currentVault, currentStrategy}: TSectionReports): ReactElement {
 		const	{chainID} = useWeb3();
 		const	{data: allReports} = useSWR(`${process.env.YDAEMON_BASE_URL}/${chainID}/reports/${currentStrategy?.address}`, fetcher);

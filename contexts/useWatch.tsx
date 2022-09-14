@@ -1,16 +1,15 @@
-import	React, {ReactElement}			from	'react';
-import	axios							from	'axios';
-import	useSWR							from	'swr';
-import	NProgress						from	'nprogress';
-import	{createHash}					from	'crypto';
-import	* as useWatchTypes				from	'contexts/useWatch.d';
-import	{useWeb3}						from	'@yearn-finance/web-lib/contexts';
-import	{isZeroAddress, format,
-	performBatchedUpdates}				from	'@yearn-finance/web-lib/utils';
-import	{getTvlImpact}					from	'utils';
-import useSettings from './useSettings';
+import React, {ReactElement, createContext, useContext, useEffect, useState} from 'react';
+import axios from 'axios';
+import useSWR from 'swr';
+import NProgress from 'nprogress';
+import {createHash} from 'crypto';
+import * as useWatchTypes from 'contexts/useWatch.d';
+import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import {format, isZeroAddress, performBatchedUpdates} from '@yearn-finance/web-lib/utils';
+import {getTvlImpact} from 'utils';
+import {useSettings} from 'contexts/useSettings';
 
-const	WatchContext = React.createContext<useWatchTypes.TWatchContext>({
+const	WatchContext = createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
 	lastUpdate: 0,
 	isUpdating: true,
@@ -30,12 +29,12 @@ const fetcher = async (url: string): Promise<any> => axios.get(url).then((res): 
 export const WatchContextApp = ({children}: {children: ReactElement}): ReactElement => {
 	const	{chainID} = useWeb3();
 	const	{shouldOnlyDisplayEndorsedVaults} = useSettings();
-	const	[vaults, set_vaults] = React.useState<useWatchTypes.TVault[]>([]);
-	const	[lastUpdate, set_lastUpdate] = React.useState<number>(0);
+	const	[vaults, set_vaults] = useState<useWatchTypes.TVault[]>([]);
+	const	[lastUpdate, set_lastUpdate] = useState<number>(0);
 
 	const	{data: allVaults, error} = useSWR(`${process.env.YDAEMON_BASE_URL}/${chainID}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`, fetcher);
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		if (!allVaults) {
 			NProgress.start();
 		} else if (allVaults) {
@@ -52,7 +51,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 	** useless and heavy calls, and a loading bar is triggering when the
 	** process is starting.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const _allVaults: useWatchTypes.TVault[] = [];
 		if (allVaults) {
 			for (const _vault of allVaults) {
@@ -85,9 +84,9 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					vault.alerts.push({level: 'warning', message: 'Invalid value for performance fee'});
 				vault.alertHash = createHash('sha256').update(`${vault.address}_${JSON.stringify(vault.alerts)}`).digest('hex');
 
-				for (let index = 0; index < vault.strategies.length; index++) {
-					const strategy: useWatchTypes.TStrategy = vault.strategies[index];
-
+				for (const _strategy of vault.strategies) {
+					const strategy = _strategy as useWatchTypes.TStrategy;
+					
 					/* 🔵 - Yearn Finance ******************************************************
 					** Computing some extra data for the UI, like the totalDebtUSDC, the parent
 					** vault for a strategy etc.
@@ -96,9 +95,9 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 						format.toNormalizedValue(format.BN(strategy?.details?.totalDebt), vault.decimals)
 						* vault.tvl.price
 					);
-					vault.strategies[index].details.totalDebtUSDC = totalDebtUSDC;
-					vault.strategies[index].details.tvlImpact = getTvlImpact(totalDebtUSDC);
-					vault.strategies[index].vault = {
+					strategy.details.totalDebtUSDC = totalDebtUSDC;
+					strategy.details.tvlImpact = getTvlImpact(totalDebtUSDC);
+					strategy.vault = {
 						address: vault.address,
 						name: vault.name,
 						icon: vault.icon,
@@ -111,27 +110,28 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					** Listing some easy to find potential alerts for the user. This part is
 					** focused on the strategies
 					**************************************************************************/
-					vault.strategies[index].alerts = [];
-					if (index === -1) { //TODO: enable index
-						vault.strategies[index].alerts.push({level: 'warning', message: 'Strategy is not in withdrawal queue'});
+					strategy.alerts = [];
+					if (strategy.details.withdrawalQueuePosition === -1) {
+						strategy.details.withdrawalQueuePosition = 21;
+						strategy.alerts.push({level: 'warning', message: 'Strategy is not in withdrawal queue'});
 						if (strategy?.details?.tvlImpact > 0) {
-							vault.strategies[index].alerts.push({level: 'error', message: 'Strategy with debt is not in withdrawal queue'});
+							strategy.alerts.push({level: 'error', message: 'Strategy with debt is not in withdrawal queue'});
 						}
 					}
 					if (strategy?.details?.emergencyExit)
-						vault.strategies[index].alerts.push({level: 'critical', message: 'Emergency mode enabled'});
+						strategy.alerts.push({level: 'critical', message: 'Emergency mode enabled'});
 					if (!strategy?.details?.inQueue)
-						vault.strategies[index].alerts.push({level: 'warning', message: 'Strategy not in withdrawal queue'});
+						strategy.alerts.push({level: 'warning', message: 'Strategy not in withdrawal queue'});
 					if (!strategy?.details?.isActive && strategy?.details?.tvlImpact > 0)
-						vault.strategies[index].alerts.push({level: 'error', message: 'Inactive strategy with debt'});
+						strategy.alerts.push({level: 'error', message: 'Inactive strategy with debt'});
 					if (!strategy?.details?.doHealthCheck && isZeroAddress(strategy?.details?.healthCheck))
-						vault.strategies[index].alerts.push({level: 'warning', message: 'Strategy has healthcheck issue'});
+						strategy.alerts.push({level: 'warning', message: 'Strategy has healthcheck issue'});
 					
 					const	isV2Strategy = Number((strategy?.details?.version || '0').replace('.', '')) <= 3;
 					const	isV2Vault = Number((vault?.version || '0').replace('.', '')) <= 3;
 					if ((isV2Strategy && !isV2Vault) || (!isV2Strategy && isV2Vault))
 						strategy.alerts.push({level: 'warning', message: `Strategy (${strategy?.details?.version}) and Vault (${vault.version}) version mismatch`});
-					vault.strategies[index].alertHash = createHash('sha256').update(`${vault.address}_${strategy.address}_${JSON.stringify(vault.strategies[index].alerts)}`).digest('hex');
+					strategy.alertHash = createHash('sha256').update(`${vault.address}_${strategy.address}_${JSON.stringify(strategy.alerts)}`).digest('hex');
 				}
 				_allVaults.push(vault);
 			}
@@ -156,5 +156,5 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 	);
 };
 
-export const useWatch = (): useWatchTypes.TWatchContext => React.useContext(WatchContext);
+export const useWatch = (): useWatchTypes.TWatchContext => useContext(WatchContext);
 export default useWatch;

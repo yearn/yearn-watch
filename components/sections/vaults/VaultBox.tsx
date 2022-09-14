@@ -1,19 +1,19 @@
-import	React, {MouseEvent, ReactElement}	from	'react';
-import	Link								from	'next/link';
-import	Image								from	'next/image';
-import	{Card, AddressWithActions, Button}	from	'@yearn-finance/web-lib/components';
-import	{AlertWarning, Chevron}				from	'@yearn-finance/web-lib/icons';
-import	{TStrategy, TVault}					from	'contexts/useWatch.d';
-import	StrategyBox							from	'components/sections/vaults/StrategyBox';
-import	ModalWarning						from	'components/ModalWarning';
+import React, {MouseEvent, ReactElement, memo, useEffect, useState} from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import {AddressWithActions, Button, Card} from '@yearn-finance/web-lib/components';
+import {AlertWarning, Chevron} from '@yearn-finance/web-lib/icons';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
+import StrategyBox from 'components/sections/vaults/StrategyBox';
+import ModalWarning from 'components/ModalWarning';
 
 type 		TVaultBox = {vault: TVault, isOnlyInQueue?: boolean}
 
-const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TVaultBox): ReactElement {
-	const		[isOpen, set_isOpen] = React.useState(false);
-	const		[strategies, set_strategies] = React.useState<TStrategy[]>([]);
+const VaultBox = memo(function VaultBox({vault, isOnlyInQueue = false}: TVaultBox): ReactElement {
+	const		[isOpen, set_isOpen] = useState(false);
+	const		[strategies, set_strategies] = useState<TStrategy[]>([]);
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		set_strategies(vault.strategies);
 	}, [vault.strategies, isOnlyInQueue]);
 
@@ -114,7 +114,7 @@ const VaultBox = React.memo(function VaultBox({vault, isOnlyInQueue = false}: TV
 			)}>
 			{
 				strategies
-					.sort((a, b): number => (a?.details?.index || 0) - (b?.details?.index || 0))
+					.sort((a, b): number => (a?.details?.withdrawalQueuePosition || 0) - (b?.details?.withdrawalQueuePosition || 0))
 					.map((strategy, index: number): ReactElement => (
 						<StrategyBox
 							key={index}

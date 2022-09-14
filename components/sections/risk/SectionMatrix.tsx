@@ -1,12 +1,12 @@
-import	React, {ReactElement} 	from	'react';
-import	{TRiskGroup}			from	'contexts/useWatch.d';
+import React, {ReactElement, useEffect, useState}  from 'react';
+import {TRiskGroup} from 'contexts/useWatch.d';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the Matrix chart, used to quickly identify the risk for
 ** each strategy.
 ******************************************************************************/
 function	SectionMatrix({groups}: {groups: TRiskGroup[]}): ReactElement {
-	const	[labelPerPosition, set_labelPerPosition] = React.useState([
+	const	[labelPerPosition, set_labelPerPosition] = useState([
 		[[], [], [], [], []],
 		[[], [], [], [], []],
 		[[], [], [], [], []],
@@ -14,7 +14,7 @@ function	SectionMatrix({groups}: {groups: TRiskGroup[]}): ReactElement {
 		[[], [], [], [], []]
 	]);
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_labelPerPosition = [
 			[[], [], [], [], []],
 			[[], [], [], [], []],

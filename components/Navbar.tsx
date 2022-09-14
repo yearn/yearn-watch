@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, cloneElement} from 'react';
 import type * as NavbarTypes from './Navbar.d';
 
 function	NavbarMenuItem({option, selected}: NavbarTypes.TMenuItem): ReactElement {
@@ -6,7 +6,7 @@ function	NavbarMenuItem({option, selected}: NavbarTypes.TMenuItem): ReactElement
 		<div className={'group flex flex-row items-center'}>
 			<div className={`mr-4 cursor-pointer py-1 transition-colors ${option.values.includes(selected) ? 'text-primary-500' : 'text-neutral-500 group-hover:text-primary-500'}`}>
 				{option.icon ? (
-					React.cloneElement(option.icon, {className: 'w-6 min-w-[1.5rem] h-6'})
+					cloneElement(option.icon, {className: 'w-6 min-w-[1.5rem] h-6'})
 				) : (
 					<div className={'mr-4 h-6 w-6 min-w-[1.5rem] cursor-pointer py-1'} />
 				)}
@@ -52,7 +52,7 @@ function	Navbar({
 					<div className={'flex cursor-pointer flex-row items-center'}>
 						<span className={'sr-only'}>{'Home'}</span>
 						<div className={title ? 'mr-4' : ''}>
-							{React.cloneElement(logo)}
+							{cloneElement(logo)}
 						</div>
 						{title ? <h1 className={'lowercase'}>{title}</h1> : null}
 					</div>
@@ -62,14 +62,14 @@ function	Navbar({
 						if (wrapper) {
 							return (
 								<div key={option.route} className={'space-y-2'}>
-									{React.cloneElement(
+									{cloneElement(
 										wrapper,
 										{href: option.route},
 										<a><NavbarMenuItem option={option} selected={selected} /></a>
 									)}
 									{(option.options || [])?.map((subOption): ReactElement => (
 										<div key={subOption.route}>
-											{React.cloneElement(
+											{cloneElement(
 												wrapper,
 												{href: subOption.route},
 												<a><NavbarMenuSubItem option={subOption} selected={selected} /></a>

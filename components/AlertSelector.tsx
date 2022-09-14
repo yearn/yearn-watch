@@ -1,6 +1,6 @@
-import	React, {ReactElement}						from	'react';
-import	{AlertWarning, AlertError, AlertCritical}	from	'@yearn-finance/web-lib/icons';
-import	{TAlertLevels}								from	'contexts/useWatch.d';
+import React, {ReactElement} from 'react';
+import {AlertCritical, AlertError, AlertWarning} from '@yearn-finance/web-lib/icons';
+import {TAlertLevels} from 'contexts/useWatch.d';
 
 type		TAlertSelector = {
 	selectedLevel: TAlertLevels,

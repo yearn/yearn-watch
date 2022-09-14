@@ -1,22 +1,22 @@
-import	React, {ReactElement}	from	'react';
-import	{useRouter}				from	'next/router';
-import	useWatch				from	'contexts/useWatch';
-import	{TVault}				from	'contexts/useWatch.d';
-import	SectionAbout			from	'components/sections/vaults/SectionAbout';
-import	SectionAllocations		from	'components/sections/vaults/SectionAllocations';
-import	SectionStrategies		from	'components/sections/vaults/SectionStrategies';
-import	{Card}					from	'@yearn-finance/web-lib/components';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {useRouter} from 'next/router';
+import {useWatch} from 'contexts/useWatch';
+import {TVault} from 'contexts/useWatch.d';
+import SectionAbout from 'components/sections/vaults/SectionAbout';
+import SectionAllocations from 'components/sections/vaults/SectionAllocations';
+import SectionStrategies from 'components/sections/vaults/SectionStrategies';
+import {Card} from '@yearn-finance/web-lib/components';
 
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();
 	const	router = useRouter();
-	const	[currentVault, set_currentVault] = React.useState<TVault | undefined>(undefined);
+	const	[currentVault, set_currentVault] = useState<TVault | undefined>(undefined);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the router query
 	** is changed. It retrieves the data about the current vault.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		set_currentVault(vaults.find((vault): boolean => vault.address === router.query.vault));
 	}, [router.query.vault, vaults]);
 

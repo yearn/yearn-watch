@@ -1,30 +1,26 @@
-import	React, {ReactElement}			from	'react';
-import	Link							from	'next/link';
-import	{AppProps}						from	'next/app';
-import	{KBarProvider}					from	'kbar';
-import	{AnimatePresence, motion}		from	'framer-motion';
-import	{WatchContextApp}				from	'contexts/useWatch';
-import	{SettingsContextApp}			from	'contexts/useSettings';
-import	KBar							from	'components/Kbar';
-import	Footer							from	'components/StandardFooter';
-import	HeaderTitle						from	'components/HeaderTitle';
-import	IconHealthcheck					from	'components/icons/IconHealthcheck';
-import	IconTrack						from	'components/icons/IconTrack';
-import	IconQuery						from	'components/icons/IconQuery';
-import	IconRisk						from	'components/icons/IconRisk';
-import	LogoWatch						from	'components/logo/LogoWatch';
-import	KBarButton						from	'components/KBarButton';
-import	KBarWrapper						from	'components/KBarWrapper';
-import	AppSync							from	'components/AppSync';
-import	Meta							from	'components/Meta';
-import	Navbar							from	'components/Navbar';
-import	Header							from	'components/Header';
-import	{WithYearn}						from	'@yearn-finance/web-lib/contexts';
-import	{
-	Vault as IconVault,
-	Settings as IconSettings,
-	AlertWarning as IconAlert
-}										from	'@yearn-finance/web-lib/icons';
+import React, {ReactElement} from 'react';
+import Link from 'next/link';
+import {AppProps} from 'next/app';
+import {KBarProvider} from 'kbar';
+import {AnimatePresence, motion} from 'framer-motion';
+import {WatchContextApp} from 'contexts/useWatch';
+import {SettingsContextApp} from 'contexts/useSettings';
+import KBar from 'components/Kbar';
+import Footer from 'components/StandardFooter';
+import HeaderTitle from 'components/HeaderTitle';
+import IconHealthcheck from 'components/icons/IconHealthcheck';
+import IconTrack from 'components/icons/IconTrack';
+import IconQuery from 'components/icons/IconQuery';
+import IconRisk from 'components/icons/IconRisk';
+import LogoWatch from 'components/logo/LogoWatch';
+import KBarButton from 'components/KBarButton';
+import KBarWrapper from 'components/KBarWrapper';
+import AppSync from 'components/AppSync';
+import Meta from 'components/Meta';
+import Navbar from 'components/Navbar';
+import Header from 'components/Header';
+import {WithYearn} from '@yearn-finance/web-lib/contexts';
+import {AlertWarning as IconAlert, Settings as IconSettings, Vault as IconVault} from '@yearn-finance/web-lib/icons';
 
 import	'../style.css';
 
@@ -114,7 +110,7 @@ function	WithLayout(props: AppProps): ReactElement {
 				<Header shouldUseNetworks>
 					<HeaderTitle />
 				</Header>
-				<AnimatePresence exitBeforeEnter onExitComplete={handleExitComplete}>
+				<AnimatePresence mode={'wait'} onExitComplete={handleExitComplete}>
 					<motion.div
 						key={router.asPath}
 						initial={'initial'}

@@ -1,14 +1,14 @@
-import	React, {MouseEvent, ReactElement}	from	'react';
-import	Link								from	'next/link';
-import	{List}								from	'@yearn-finance/web-lib/layouts';
-import	{Card, Button, StatisticCard}		from	'@yearn-finance/web-lib/components';
-import	* as utils							from	'@yearn-finance/web-lib/utils';
-import	{Chevron}							from	'@yearn-finance/web-lib/icons';
-import	{TRiskGroup}						from	'contexts/useWatch.d';
-import	StrategyBox							from	'components/sections/vaults/StrategyBox';
-import	{getImpactScoreColor}				from	'utils';
+import React, {MouseEvent, ReactElement, memo, useEffect, useState} from 'react';
+import Link from 'next/link';
+import {List} from '@yearn-finance/web-lib/layouts';
+import {Button, Card, StatisticCard} from '@yearn-finance/web-lib/components';
+import * as utils from '@yearn-finance/web-lib/utils';
+import {Chevron} from '@yearn-finance/web-lib/icons';
+import {TRiskGroup} from 'contexts/useWatch.d';
+import StrategyBox from 'components/sections/vaults/StrategyBox';
+import {getImpactScoreColor} from 'utils';
 
-const	GroupBox = React.memo(
+const	GroupBox = memo(
 	function GroupBox({group}: {group: TRiskGroup}): ReactElement {
 		function	renderSummary(p: {open: boolean}): ReactElement {
 			return (
@@ -115,7 +115,7 @@ const	GroupBox = React.memo(
 					<b className={'mb-1 ml-2'}>{'Attached Strategies'}</b>
 					{
 						group.strategies
-							.sort((a, b): number => (a?.details?.index || 0) - (b?.details?.index || 0))
+							.sort((a, b): number => (a?.details?.withdrawalQueuePosition || 0) - (b?.details?.withdrawalQueuePosition || 0))
 							.map((strategy, index: number): ReactElement => (
 								<StrategyBox
 									key={index}
@@ -130,15 +130,15 @@ const	GroupBox = React.memo(
 	}
 );
 
-	type		TSectionRiskList = {
-		sortBy: string,
-		groups: TRiskGroup[],
-	};
-const	SectionRiskList = React.memo(
+type		TSectionRiskList = {
+	sortBy: string,
+	groups: TRiskGroup[],
+};
+const	SectionRiskList = memo(
 	function SectionRiskList({sortBy, groups}: TSectionRiskList): ReactElement {
-		const	[sortedGroups, set_sortedGroups] = React.useState([] as (TRiskGroup)[]);
+		const	[sortedGroups, set_sortedGroups] = useState([] as (TRiskGroup)[]);
 		
-		React.useEffect((): void => {
+		useEffect((): void => {
 			if (['risk', '-risk', ''].includes(sortBy)) {
 				const	_groups = [...groups].sort((a, b): number => {
 					if (sortBy === '-risk')

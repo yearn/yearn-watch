@@ -1,23 +1,23 @@
-import	React, {ReactElement}									from	'react';
-import	Image													from	'next/image';
-import	{List}													from	'@yearn-finance/web-lib/layouts';
-import	{Card, AddressWithActions, AlertBox, Button}			from	'@yearn-finance/web-lib/components';
-import	{useLocalStorage}										from	'@yearn-finance/web-lib/hooks';
-import	{performBatchedUpdates}									from	'@yearn-finance/web-lib/utils';
-import	{ArrowDown, AlertCritical, AlertError, AlertWarning}	from	'@yearn-finance/web-lib/icons';
-import	{TVault, TStrategy}										from	'contexts/useWatch.d';
-import	{PageController}										from	'components/PageController';
+import React, {ReactElement, memo, useEffect, useState} from 'react';
+import Image from 'next/image';
+import {List} from '@yearn-finance/web-lib/layouts';
+import {AddressWithActions, AlertBox, Button, Card} from '@yearn-finance/web-lib/components';
+import {useLocalStorage} from '@yearn-finance/web-lib/hooks';
+import {performBatchedUpdates} from '@yearn-finance/web-lib/utils';
+import {AlertCritical, AlertError, AlertWarning, ArrowDown} from '@yearn-finance/web-lib/icons';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
+import {PageController} from 'components/PageController';
 
 type	TSectionAlertList = {
 	stratOrVault: (TStrategy | TVault)[],
 	shouldDisplayDismissed: boolean
 };
 type	TStorageDismissed = [string[], (s: string[]) => string[]];
-const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, shouldDisplayDismissed}: TSectionAlertList): ReactElement {
-	const	[sortBy, set_sortBy] = React.useState('');
-	const	[pageIndex, set_pageIndex] = React.useState(0);
-	const	[amountToDisplay] = React.useState(20);
-	const	[sortedStratOrVault, set_sortedStratOrVault] = React.useState([] as (TStrategy | TVault)[]);
+const	SectionAlertList = memo(function SectionAlertList({stratOrVault, shouldDisplayDismissed}: TSectionAlertList): ReactElement {
+	const	[sortBy, set_sortBy] = useState('');
+	const	[pageIndex, set_pageIndex] = useState(0);
+	const	[amountToDisplay] = useState(20);
+	const	[sortedStratOrVault, set_sortedStratOrVault] = useState([] as (TStrategy | TVault)[]);
 	const	[dismissed, set_dismissed] = useLocalStorage('dismissedAlerts', []) as TStorageDismissed;
 	
 	/* 🔵 - Yearn Finance ******************************************************
@@ -25,7 +25,7 @@ const	SectionAlertList = React.memo(function SectionAlertList({stratOrVault, sho
 	** The easy win for this part is to split the alerts in 3 differents array
 	** and then to merge them with the right order.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_default = [] as (TStrategy | TVault)[];
 		const	_criticals = [] as (TStrategy | TVault)[];
 		const	_errors = [] as (TStrategy | TVault)[];

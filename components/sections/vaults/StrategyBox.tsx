@@ -1,8 +1,8 @@
-import	React, {MouseEvent, ReactElement}					from	'react';
-import	Link												from	'next/link';
-import	{TStrategy}											from	'contexts/useWatch.d';
-import	{StatisticCard, Card, Button, AddressWithActions}	from	'@yearn-finance/web-lib/components';
-import	* as utils											from	'@yearn-finance/web-lib/utils';
+import React, {MouseEvent, ReactElement} from 'react';
+import Link from 'next/link';
+import {TStrategy} from 'contexts/useWatch.d';
+import {AddressWithActions, Button, Card, StatisticCard} from '@yearn-finance/web-lib/components';
+import * as utils from '@yearn-finance/web-lib/utils';
 
 type 		TStrategyBox = {
 	strategy: TStrategy,
@@ -75,7 +75,7 @@ function	StrategyBox({
 				<StatisticCard
 					className={'col-span-6 md:col-span-4'}
 					label={'Index'}
-					value={utils.format.amount((strategy?.details?.index === 21 ? -1 : strategy?.details?.index || 0), 0, 0)} />
+					value={utils.format.amount((strategy?.details?.withdrawalQueuePosition === 21 ? -1 : strategy?.details?.withdrawalQueuePosition || 0), 0, 0)} />
 			</StatisticCard.Wrapper>
 		</Card>
 	);

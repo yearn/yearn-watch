@@ -1,8 +1,7 @@
-import	React, {ReactElement}				from	'react';
-import	{useWeb3}							from	'@yearn-finance/web-lib/contexts';
-import	{Card, Dropdown, ModalMobileMenu}	from	'@yearn-finance/web-lib/components';
-import	{NetworkEthereum, NetworkFantom, NetworkOptimism,
-	NetworkArbitrum, Hamburger}				from	'@yearn-finance/web-lib/icons';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import {Card, Dropdown, ModalMobileMenu} from '@yearn-finance/web-lib/components';
+import {Hamburger, NetworkArbitrum, NetworkEthereum, NetworkFantom, NetworkOptimism} from '@yearn-finance/web-lib/icons';
 
 const	options: any[] = [
 	{icon: <NetworkEthereum />, label: 'Ethereum', value: 1},
@@ -21,10 +20,10 @@ function	Header({
 	children
 }: THeader): ReactElement {
 	const	{chainID, onSwitchChain, isActive} = useWeb3();
-	const	[selectedOption, set_selectedOption] = React.useState(options[0]);
-	const	[hasMobileMenu, set_hasMobileMenu] = React.useState(false);
+	const	[selectedOption, set_selectedOption] = useState(options[0]);
+	const	[hasMobileMenu, set_hasMobileMenu] = useState(false);
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_selectedOption = options.find((e): boolean => e.value === Number(chainID)) || options[0];
 		set_selectedOption(_selectedOption);
 	}, [chainID, isActive]);

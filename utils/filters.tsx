@@ -1,4 +1,4 @@
-import {TVault, TStrategy}	from	'contexts/useWatch.d';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
 
 /* 🔵 - Yearn Finance ******************************************************
 ** When using the search field, one of the things we will check is if from

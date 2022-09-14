@@ -1,12 +1,12 @@
-import	React, {ReactElement}			from	'react';
-import	{List}							from	'@yearn-finance/web-lib/layouts';
-import	{Card, SearchBox, Switch}		from	'@yearn-finance/web-lib/components';
-import	* as utils						from	'@yearn-finance/web-lib/utils';
-import	useWatch						from	'contexts/useWatch';
-import	{TVault}						from	'contexts/useWatch.d';
-import	useSettings						from	'contexts/useSettings';
-import	VaultBox						from	'components/sections/vaults/VaultBox';
-import	{deepFindVaultBySearch}			from	'utils/filters';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {List} from '@yearn-finance/web-lib/layouts';
+import {Card, SearchBox, Switch} from '@yearn-finance/web-lib/components';
+import * as utils from '@yearn-finance/web-lib/utils';
+import {useWatch} from 'contexts/useWatch';
+import {TVault} from 'contexts/useWatch.d';
+import {useSettings} from 'contexts/useSettings';
+import VaultBox from 'components/sections/vaults/VaultBox';
+import {deepFindVaultBySearch} from 'utils/filters';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** Main render of the home page
@@ -14,17 +14,17 @@ import	{deepFindVaultBySearch}			from	'utils/filters';
 function	Index(): ReactElement {
 	const	{vaults} = useWatch();
 	const	settings = useSettings(); // eslint-disable-line @typescript-eslint/naming-convention
-	const	[filteredVaults, set_filteredVaults] = React.useState<TVault[]>([]);
-	const	[searchTerm, set_searchTerm] = React.useState('');
-	const	[isOnlyWarning, set_isOnlyWarning] = React.useState(false);
-	const	[searchResult, set_searchResult] = React.useState({vaults: 0, strategies: 0});
+	const	[filteredVaults, set_filteredVaults] = useState<TVault[]>([]);
+	const	[searchTerm, set_searchTerm] = useState('');
+	const	[isOnlyWarning, set_isOnlyWarning] = useState(false);
+	const	[searchResult, set_searchResult] = useState({vaults: 0, strategies: 0});
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
 	** changed. It filters the vault list based on the search term. This action
 	** takes into account the strategies too.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_vaults = vaults;
 		let		_filteredVaults = [..._vaults];
 

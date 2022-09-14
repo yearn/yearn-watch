@@ -1,6 +1,6 @@
-import	React, {ReactElement}		from	'react';
-import	{Card, Switch}				from	'@yearn-finance/web-lib/components';
-import	useSettings					from	'contexts/useSettings';
+import React, {ReactElement} from 'react';
+import {Card, Switch} from '@yearn-finance/web-lib/components';
+import {useSettings} from 'contexts/useSettings';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** Main render of the Settings page

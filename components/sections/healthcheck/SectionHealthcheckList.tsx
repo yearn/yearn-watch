@@ -1,23 +1,23 @@
-import	React, {ReactElement}				from	'react';
-import	Image								from	'next/image';
-import	Link								from	'next/link';
-import	{List}								from	'@yearn-finance/web-lib/layouts';
-import	{AddressWithActions, Button, Card}	from	'@yearn-finance/web-lib/components';
-import	* as utils							from	'@yearn-finance/web-lib/utils';
-import	{TStrategy}							from	'contexts/useWatch.d';
-import	{HumanizeRisk}						from	'components/HumanizedRisk';
-import	{PageController}					from	'components/PageController';
+import React, {ReactElement, memo, useEffect, useState} from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import {List} from '@yearn-finance/web-lib/layouts';
+import {AddressWithActions, Button, Card} from '@yearn-finance/web-lib/components';
+import * as utils from '@yearn-finance/web-lib/utils';
+import {TStrategy} from 'contexts/useWatch.d';
+import {HumanizeRisk} from 'components/HumanizedRisk';
+import {PageController} from 'components/PageController';
 
 type		TSectionHealthcheckList = {
 	sortBy: string,
 	strategies: (TStrategy)[],
 };
-const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortBy, strategies}: TSectionHealthcheckList): ReactElement {
-	const	[sortedStrategies, set_sortedStrategies] = React.useState([] as (TStrategy)[]);
-	const	[pageIndex, set_pageIndex] = React.useState(0);
-	const	[amountToDisplay] = React.useState(20);
+const	SectionHealthcheckList = memo(function SectionHealthcheckList({sortBy, strategies}: TSectionHealthcheckList): ReactElement {
+	const	[sortedStrategies, set_sortedStrategies] = useState([] as (TStrategy)[]);
+	const	[pageIndex, set_pageIndex] = useState(0);
+	const	[amountToDisplay] = useState(20);
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		if (['risk', '-risk', ''].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				if (sortBy === '-risk')

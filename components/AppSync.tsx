@@ -1,11 +1,11 @@
-import	React, {ReactElement}	from	'react';
-import	useWatch				from	'contexts/useWatch';
-import	{useInterval}			from	'@yearn-finance/web-lib/hooks';
-import	* as utils				from	'@yearn-finance/web-lib/utils';
+import React, {ReactElement, useState} from 'react';
+import {useWatch} from 'contexts/useWatch';
+import {useInterval} from '@yearn-finance/web-lib/hooks';
+import * as utils from '@yearn-finance/web-lib/utils';
 
 function	AppSync(): ReactElement {
 	const	{hasError, lastUpdate, isUpdating} = useWatch();
-	const	[lastUpdateDiff, set_lastUpdateDiff] = React.useState<number>(0);
+	const	[lastUpdateDiff, set_lastUpdateDiff] = useState<number>(0);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Data are cached for 10 minutes to avoid too many loading time for not

@@ -1,12 +1,12 @@
-import	React, {ReactElement}			from	'react';
-import	{Disclosure, Transition}		from	'@headlessui/react';
-import	{TVault, TStrategy}				from	'contexts/useWatch.d';
-import	{Chevron}						from	'@yearn-finance/web-lib/icons';
-import	{useClientEffect}				from	'@yearn-finance/web-lib/hooks';
-import	{format} 						from	'@yearn-finance/web-lib/utils';
+import React, {Fragment, ReactElement, memo, useState} from 'react';
+import {Disclosure, Transition} from '@headlessui/react';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
+import {Chevron} from '@yearn-finance/web-lib/icons';
+import {useClientEffect} from '@yearn-finance/web-lib/hooks';
+import {format}  from '@yearn-finance/web-lib/utils';
 
 type	TSectionAllocations = {currentVault: TVault};
-const	SectionAllocations = React.memo(function SectionAllocations({currentVault}: TSectionAllocations): ReactElement {
+const	SectionAllocations = memo(function SectionAllocations({currentVault}: TSectionAllocations): ReactElement {
 	type	TStateAllocation = {
 		empty: TStrategy[],
 		notEmpty: TStrategy[],
@@ -14,7 +14,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 		totalProtocolsAllocation: number,
 		notAllocated: number
 	};
-	const	[allocations, set_allocations] = React.useState<TStateAllocation>({
+	const	[allocations, set_allocations] = useState<TStateAllocation>({
 		empty: [],
 		notEmpty: [],
 		protocolsAllocation: {},
@@ -139,7 +139,7 @@ const	SectionAllocations = React.memo(function SectionAllocations({currentVault}
 										</span>
 									</Disclosure.Button>
 									<Transition
-										as={React.Fragment}
+										as={Fragment}
 										show={open}
 										enter={'transition duration-100 ease-out origin-top'}
 										enterFrom={'transform scale-y-0 opacity-0 origin-top'}

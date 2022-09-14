@@ -1,20 +1,20 @@
-import	React, {ReactElement}						from	'react';
-import	useWatch									from	'contexts/useWatch';
-import	{TVault, TStrategy, TAlertLevels}			from	'contexts/useWatch.d';
-import	{Card, SearchBox, Switch, Banner}			from	'@yearn-finance/web-lib/components';
-import	{AlertSelector}								from	'components/AlertSelector';
-import	SectionAlertList							from	'components/sections/alerts/SectionAlertList';
-import	{findVaultBySearch, findStrategyBySearch}	from	'utils/filters';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {useWatch} from 'contexts/useWatch';
+import {TAlertLevels, TStrategy, TVault} from 'contexts/useWatch.d';
+import {Banner, Card, SearchBox, Switch} from '@yearn-finance/web-lib/components';
+import {AlertSelector} from 'components/AlertSelector';
+import SectionAlertList from 'components/sections/alerts/SectionAlertList';
+import {findStrategyBySearch, findVaultBySearch} from 'utils/filters';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** Main render of the Alerts page
 ******************************************************************************/
 function	Alerts(): ReactElement {
 	const	{vaults} = useWatch();
-	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as (TStrategy | TVault)[]);
-	const	[searchTerm, set_searchTerm] = React.useState('');
-	const	[shouldDisplayDismissed, set_shouldDisplayDismissed] = React.useState(false);
-	const	[alertFilter, set_alertFilter] = React.useState<TAlertLevels>('none');
+	const	[filteredStrategies, set_filteredStrategies] = useState([] as (TStrategy | TVault)[]);
+	const	[searchTerm, set_searchTerm] = useState('');
+	const	[shouldDisplayDismissed, set_shouldDisplayDismissed] = useState(false);
+	const	[alertFilter, set_alertFilter] = useState<TAlertLevels>('none');
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -23,7 +23,7 @@ function	Alerts(): ReactElement {
 	** If shouldDisplayDismissed is false then only the strategies that are not
 	** dismissed are displayed.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_vaults = vaults;
 		const	_filteredVaults = [..._vaults];
 		const	_filteredStrategies = [];

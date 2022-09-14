@@ -1,13 +1,13 @@
-import	React, {ReactElement} 		from	'react';
-import	axios						from	'axios';
-import	{useWeb3}					from	'@yearn-finance/web-lib/contexts';
-import	SectionRiskList				from	'components/sections/risk/SectionRiskList';
-import	SectionMatrix				from	'components/sections/risk/SectionMatrix';
-import	{TableHead, TableHeadCell}	from	'components/TableHeadCell';
-import	useWatch					from	'contexts/useWatch';
-import	{TRowHead, TRiskGroup}		from	'contexts/useWatch.d';
-import	{findStrategyBySearch}		from	'utils/filters';
-import	{getImpactScore, getTvlImpact, getLongevityScore, getExcludeIncludeUrlParams, median}		from	'utils';
+import React, {ReactElement, useCallback, useEffect, useState}  from 'react';
+import axios from 'axios';
+import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import SectionRiskList from 'components/sections/risk/SectionRiskList';
+import SectionMatrix from 'components/sections/risk/SectionMatrix';
+import {TableHead, TableHeadCell} from 'components/TableHeadCell';
+import {useWatch} from 'contexts/useWatch';
+import {TRiskGroup, TRowHead} from 'contexts/useWatch.d';
+import {findStrategyBySearch} from 'utils/filters';
+import {getExcludeIncludeUrlParams, getImpactScore, getLongevityScore, getTvlImpact, median} from 'utils';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -47,12 +47,12 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 function	Risk(): ReactElement {
 	const	{chainID} = useWeb3();
 	const	{isUpdating, vaults} = useWatch();
-	const	[sortBy, set_sortBy] = React.useState('score');
-	const	[groups, set_groups] = React.useState<TRiskGroup[]>([]);
-	const [risk, set_risk] = React.useState<TRiskGroup[]>([]);
+	const	[sortBy, set_sortBy] = useState('score');
+	const	[groups, set_groups] = useState<TRiskGroup[]>([]);
+	const [risk, set_risk] = useState<TRiskGroup[]>([]);
 
 	// load the risk framework scores from external data sources
-	const fetchRiskGroups = React.useCallback(async (): Promise<void> => {
+	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const	_chainID = chainID || 1;
 		const endpoints = [
 			process.env.RISK_GH_URL as string,	// Github
@@ -69,7 +69,7 @@ function	Risk(): ReactElement {
 		}
 	}, [chainID]);
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		fetchRiskGroups();
 	}, [fetchRiskGroups]);
 
@@ -80,7 +80,7 @@ function	Risk(): ReactElement {
 	** It also takes into account the router query arguments as additional
 	** filters.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		if (chainID === 0) {
 			set_groups([]);
 			return;

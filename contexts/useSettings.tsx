@@ -1,8 +1,8 @@
-import	React, {ReactElement}	from	'react';
-import	{useLocalStorage}		from	'@yearn-finance/web-lib/hooks';
-import	* as useSettingsTypes	from	'contexts/useSettings.d';
+import React, {ReactElement, createContext, useContext} from 'react';
+import {useLocalStorage} from '@yearn-finance/web-lib/hooks';
+import * as useSettingsTypes from 'contexts/useSettings.d';
 
-const	SettingsContext = React.createContext<useSettingsTypes.TSettingsContext>({
+const	SettingsContext = createContext<useSettingsTypes.TSettingsContext>({
 	shouldDisplayStratsInQueue: true,
 	switchShouldDisplayStratsInQueue: (): void => undefined,
 	shouldOnlyDisplayEndorsedVaults: true,
@@ -62,5 +62,5 @@ export const SettingsContextApp = ({children}: {children: ReactElement}): ReactE
 	);
 };
 
-export const useSettings = (): useSettingsTypes.TSettingsContext => React.useContext(SettingsContext);
+export const useSettings = (): useSettingsTypes.TSettingsContext => useContext(SettingsContext);
 export default useSettings;

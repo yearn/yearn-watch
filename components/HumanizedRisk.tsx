@@ -1,4 +1,4 @@
-import	React, {ReactElement}	from	'react';
+import React, {ReactElement} from 'react';
 
 export function	HumanizeRisk({risk}: {risk: number}): ReactElement {
 	if (risk === 0)
