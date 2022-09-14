@@ -1,5 +1,5 @@
-import	React, {ReactElement}		from	'react';
-import	{Chevron}					from	'@yearn-finance/web-lib/icons';
+import React, {ReactElement} from 'react';
+import {Chevron} from '@yearn-finance/web-lib/icons';
 
 type	TPageController = {
 	pageIndex: number,

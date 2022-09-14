@@ -1,28 +1,28 @@
-import	React, {ReactElement}				from	'react';
-import	Image								from	'next/image';
-import	Link								from	'next/link';
-import	{List}								from	'@yearn-finance/web-lib/layouts';
-import	{AddressWithActions, Button, Card}	from	'@yearn-finance/web-lib/components';
-import	* as utils							from	'@yearn-finance/web-lib/utils';
-import	{TStrategy}							from	'contexts/useWatch.d';
-import	{HumanizeRisk}						from	'components/HumanizedRisk';
-import	{PageController}					from	'components/PageController';
+import React, {ReactElement, memo, useEffect, useState} from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import {List} from '@yearn-finance/web-lib/layouts';
+import {AddressWithActions, Button, Card} from '@yearn-finance/web-lib/components';
+import * as utils from '@yearn-finance/web-lib/utils';
+import {TStrategy} from 'contexts/useWatch.d';
+import {HumanizeRisk} from 'components/HumanizedRisk';
+import {PageController} from 'components/PageController';
 
 type		TSectionHealthcheckList = {
 	sortBy: string,
 	strategies: (TStrategy)[],
 };
-const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortBy, strategies}: TSectionHealthcheckList): ReactElement {
-	const	[sortedStrategies, set_sortedStrategies] = React.useState([] as (TStrategy)[]);
-	const	[pageIndex, set_pageIndex] = React.useState(0);
-	const	[amountToDisplay] = React.useState(20);
+const	SectionHealthcheckList = memo(function SectionHealthcheckList({sortBy, strategies}: TSectionHealthcheckList): ReactElement {
+	const	[sortedStrategies, set_sortedStrategies] = useState([] as (TStrategy)[]);
+	const	[pageIndex, set_pageIndex] = useState(0);
+	const	[amountToDisplay] = useState(20);
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		if (['risk', '-risk', ''].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				if (sortBy === '-risk')
-					return a.tvlImpact - b.tvlImpact;
-				return b.tvlImpact - a.tvlImpact;
+					return a?.details?.tvlImpact - b?.details?.tvlImpact;
+				return b?.details?.tvlImpact - a?.details?.tvlImpact;
 			});
 			utils.performBatchedUpdates((): void => {
 				set_sortedStrategies(_strategies);
@@ -31,8 +31,8 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 		} else if (['tvl', '-tvl'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
 				if (sortBy === '-tvl')
-					return a.totalDebtUSDC - b.totalDebtUSDC;
-				return b.totalDebtUSDC - a.totalDebtUSDC;
+					return a?.details?.totalDebtUSDC - b?.details?.totalDebtUSDC;
+				return b?.details?.totalDebtUSDC - a?.details?.totalDebtUSDC;
 			});
 			utils.performBatchedUpdates((): void => {
 				set_sortedStrategies(_strategies);
@@ -40,8 +40,8 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 			});
 		} else if (['name', '-name'].includes(sortBy)) {
 			const	_strategies = [...strategies].sort((a, b): number => {
-				const	aName = a.display_name || a.name || '';
-				const	bName = b.display_name || b.name || '';
+				const	aName = a.name || '';
+				const	bName = b.name || '';
 				if (sortBy === '-name')
 					return aName.localeCompare(bName);
 				return bName.localeCompare(aName);
@@ -61,12 +61,11 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 	** converted to a human readable number.
 	**************************************************************************/
 	function	computeTotalDebt(totalDebtUSDC: number): string {
-		return (
-			utils.format.amount(
-				totalDebtUSDC / Number((sortedStrategies?.reduce((acc: number, strategy: TStrategy): number => acc + strategy.totalDebtUSDC, 0) || 0)) * 100,
-				2
-			)
-		);
+		let	totalDebt = 0;
+		for (const strategy of sortedStrategies) {
+			totalDebt = totalDebt + (strategy?.details?.totalDebtUSDC || 0);
+		}
+		return utils.format.amount(totalDebtUSDC / totalDebt * 100, 2, 2);
 	}
 
 	function rowRenderer(index: number): ReactElement {
@@ -85,10 +84,9 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 									src={strategy.vault.icon}
 									quality={60} /> : <div className={'h-10 min-h-[40px] w-10 min-w-[40px] rounded-full bg-neutral-200'} />}
 								<div className={'ml-2 md:ml-6'}>
-									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.display_name || strategy.name}`}</b>
+									<b className={'text-ellipsis line-clamp-1'}>{`${strategy.name}`}</b>
 									<AddressWithActions
 										address={strategy.address}
-										explorer={strategy.vault.explorer}
 										wrapperClassName={'flex'}
 										className={'font-mono text-sm text-neutral-500'} />
 								</div>
@@ -97,23 +95,25 @@ const	SectionHealthcheckList = React.memo(function SectionHealthcheckList({sortB
 					</div>
 					<div className={'min-w-36 cell-end col-span-4 flex flex-row items-center tabular-nums'}>
 						<div>
-							<b>{`${utils.format.amount(strategy.totalDebtUSDC, 2)}$`}</b>
-							<p className={'text-sm'}>{`${computeTotalDebt(strategy.totalDebtUSDC)}%`}</p>
+							<b>{`${utils.format.amount(strategy?.details?.totalDebtUSDC, 2)}$`}</b>
+							<p className={'text-sm'}>{`${computeTotalDebt(strategy?.details?.totalDebtUSDC)}%`}</p>
 						</div>
 					</div>
 					<div className={'min-w-36 cell-end col-span-4 flex flex-row items-center tabular-nums'}>
 						<div>
-							<b>{utils.format.bigNumberAsAmount(strategy.debtOutstanding, strategy.vault.decimals, 4)}</b>
-							<p className={'text-sm'}>{strategy.vault.name}</p>
+							<b>
+								{utils.format.bigNumberAsAmount(utils.format.BN(strategy?.details?.debtOutstanding), (strategy?.vault?.decimals || 18), 4)}
+							</b>
+							<p className={'text-sm'}>{strategy?.vault?.name}</p>
 						</div>
 					</div>
 					<div className={'min-w-36 col-span-3 flex flex-row items-center justify-end tabular-nums'}>
 						<div>
-							<HumanizeRisk risk={strategy.tvlImpact} />
+							<HumanizeRisk risk={strategy?.details?.tvlImpact} />
 						</div>
 					</div>
 					<div className={'min-w-36 cell-end col-span-3 flex flex-row items-center'}>
-						<Link passHref href={`/vault/${strategy.vault.address}/${strategy.address}`}>
+						<Link passHref href={`/vault/${strategy?.vault?.address}/${strategy.address}`}>
 							<Button
 								as={'a'}
 								variant={'light'}

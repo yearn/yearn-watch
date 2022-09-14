@@ -1,27 +1,26 @@
-import	React							from	'react';
-import	Image							from	'next/image';
-import	{useRouter}						from	'next/router';
-import	{Action, createAction,
-	useRegisterActions}					from	'kbar';
-import	useWatch						from	'contexts/useWatch';
+import React, {useEffect, useState} from 'react';
+import Image from 'next/image';
+import {useRouter} from 'next/router';
+import {Action, createAction, useRegisterActions} from 'kbar';
+import {useWatch} from 'contexts/useWatch';
 
 function	KBarWrapper(): React.ReactElement {
-	const	[actions, set_actions] = React.useState<Action[]>([]);
+	const	[actions, set_actions] = useState<Action[]>([]);
 	const	{vaults} = useWatch();
 	const	router = useRouter();
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_actions = [];
 		for (const vault of vaults) {
 			const	vaultAction = createAction({
-				name: `${vault.display_name || vault.name} v${vault.version}`,
-				keywords: `${vault.display_name || vault.name} ${vault.symbol} ${vault.address}`,
+				name: `${vault.name} v${vault.version}`,
+				keywords: `${vault.name} ${vault.symbol} ${vault.address}`,
 				section: 'Vaults',
 				perform: async (): Promise<boolean> => router.push(`/vault/${vault.address}`),
 				icon: (vault.icon ? 
 					<Image
 						src={vault.icon}
-						alt={vault.display_name || vault.name}
+						alt={vault.name}
 						decoding={'async'}
 						quality={70}
 						width={36}
@@ -42,7 +41,7 @@ function	KBarWrapper(): React.ReactElement {
 					icon: (vault.icon ? 
 						<Image
 							src={vault.icon}
-							alt={vault.display_name || vault.name}
+							alt={vault.name}
 							decoding={'async'}
 							quality={70}
 							width={36}

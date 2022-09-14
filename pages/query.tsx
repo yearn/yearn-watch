@@ -1,12 +1,11 @@
-import	React, {ReactElement}			from	'react';
-import	{GetServerSideProps}			from	'next';
-import	{useRouter}						from	'next/router';
-import	{SearchBox}						from	'@yearn-finance/web-lib/components';
-import	{findStrategyBySearch}			from	'utils/filters';
-import	useWatch						from	'contexts/useWatch';
-import	{TStrategy, TRowHead}			from	'contexts/useWatch.d';
-import	SectionQueryList				from	'components/sections/query/SectionQueryList';
-import	{TableHead, TableHeadCell}		from	'components/TableHeadCell';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {useRouter} from 'next/router';
+import {SearchBox} from '@yearn-finance/web-lib/components';
+import {findStrategyBySearch} from 'utils/filters';
+import {useWatch} from 'contexts/useWatch';
+import {TRowHead, TStrategy} from 'contexts/useWatch.d';
+import SectionQueryList from 'components/sections/query/SectionQueryList';
+import {TableHead, TableHeadCell} from 'components/TableHeadCell';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -41,11 +40,11 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 function	Query(): ReactElement {
 	const	router = useRouter();
 	const	{vaults} = useWatch();
-	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as (TStrategy)[]);
-	const	[searchTerm, set_searchTerm] = React.useState('');
-	const	[sortBy, set_sortBy] = React.useState('risk');
+	const	[filteredStrategies, set_filteredStrategies] = useState([] as (TStrategy)[]);
+	const	[searchTerm, set_searchTerm] = useState('');
+	const	[sortBy, set_sortBy] = useState('risk');
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		if (router?.query?.include) {
 			const	_routerIncludeUnknown = (router?.query?.include || []);
 			const	_routerIncludeArr = typeof(_routerIncludeUnknown) === 'string' ? [_routerIncludeUnknown] : _routerIncludeUnknown;
@@ -61,7 +60,7 @@ function	Query(): ReactElement {
 	** It also takes into account the router query arguments as additional
 	** filters.
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_vaults = vaults;
 		const	_routerExcludeUnknown = (router?.query?.exclude || []);
 		const	_routerExcludeArr = typeof(_routerExcludeUnknown) === 'string' ? [_routerExcludeUnknown] : _routerExcludeUnknown;
@@ -104,7 +103,7 @@ function	Query(): ReactElement {
 					</div>
 				</div>
 
-				<div className={'flex h-full overflow-x-scroll pb-0'}>
+				<div className={'flex h-full overflow-x-scroll pb-0 scrollbar-none'}>
 					<div className={'flex h-full w-[965px] flex-col md:w-full'}>
 						<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
 						<SectionQueryList sortBy={sortBy} strategies={filteredStrategies} />
@@ -119,6 +118,6 @@ export default Query;
 
 // Used to directly fetch the query params
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getServerSideProps: GetServerSideProps = async (): Promise<any> => {
-	return {props: {}};
-};
+// export const getServerSideProps: GetServerSideProps = async (): Promise<any> => {
+// 	return {props: {}};
+// };

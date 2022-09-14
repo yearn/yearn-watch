@@ -1,10 +1,10 @@
-import	React, {ReactElement}	from	'react';
-import	{TVault, TStrategy}		from	'contexts/useWatch.d';
-import	{AddressWithActions} 	from	'@yearn-finance/web-lib/components';
-import	{parseMarkdown} 		from	'@yearn-finance/web-lib/utils';
+import React, {ReactElement, memo} from 'react';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
+import {AddressWithActions}  from '@yearn-finance/web-lib/components';
+import {parseMarkdown}  from '@yearn-finance/web-lib/utils';
 
 type	TSectionAbout = {currentVault: TVault, currentStrategy: TStrategy | undefined};
-const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStrategy}: TSectionAbout): ReactElement {
+const	SectionAbout = memo(function SectionAbout({currentVault, currentStrategy}: TSectionAbout): ReactElement {
 	return (
 		<section
 			aria-label={'about-the-strategy'}
@@ -15,7 +15,6 @@ const	SectionAbout = React.memo(function SectionAbout({currentVault, currentStra
 					<b className={'mb-2 block'}>{currentVault.name}</b>
 					<AddressWithActions
 						address={currentVault.address}
-						explorer={currentVault.explorer}
 						truncate={0}
 						className={'break-all font-mono text-sm text-neutral-500'} />
 				</div>

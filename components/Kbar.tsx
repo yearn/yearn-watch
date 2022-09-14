@@ -1,13 +1,14 @@
-import	React, {ReactElement}		from	'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, {ReactElement, forwardRef, useMemo} from 'react';
 import {
 	ActionId,
+	ActionImpl,
 	KBarAnimator,
 	KBarPortal,
 	KBarPositioner,
-	KBarSearch,
 	KBarResults,
-	useMatches,
-	ActionImpl
+	KBarSearch,
+	useMatches
 } from 'kbar';
 
 const searchStyle = {
@@ -40,14 +41,14 @@ const groupNameStyle = {
 };
 
 // eslint-disable-next-line react/display-name
-const ResultItem = React.forwardRef((
+const ResultItem = forwardRef((
 	{action, active, currentRootActionId}:
 	{action: ActionImpl; active: boolean; currentRootActionId: ActionId;},
 	ref: React.Ref<HTMLDivElement>
 ): ReactElement => {
-	const ancestors = React.useMemo((): unknown => {
+	const ancestors = useMemo((): unknown => {
 		if (!currentRootActionId) return action.ancestors;
-		const index = action.ancestors.findIndex((ancestor: any): any => ancestor.id === currentRootActionId);
+		const index = action.ancestors.findIndex((ancestor: any): boolean => ancestor.id === currentRootActionId);
 		return action.ancestors.slice(index + 1);
 	}, [action.ancestors, currentRootActionId]);
 	

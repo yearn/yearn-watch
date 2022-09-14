@@ -1,4 +1,4 @@
-import {TVault, TStrategy}	from	'contexts/useWatch.d';
+import {TStrategy, TVault} from 'contexts/useWatch.d';
 
 /* 🔵 - Yearn Finance ******************************************************
 ** When using the search field, one of the things we will check is if from
@@ -25,14 +25,14 @@ export function	deepFindVaultBySearch(vault: TVault, term: string): boolean {
 
 	const	shouldSearchWithVaults = !shouldSearchWithStrategies && !shouldSearchWithTokens;
 	return (
-		(shouldSearchWithVaults && (vault?.display_name || vault?.name || '').toLowerCase().includes(term)) ||
+		(shouldSearchWithVaults && (vault?.name || '').toLowerCase().includes(term)) ||
 		(shouldSearchWithVaults && (vault?.address || '').toLowerCase().includes(term)) ||
 		(shouldSearchWithVaults && (vault?.symbol || '').toLowerCase().includes(term)) ||
-		(shouldSearchWithTokens && (vault?.token?.display_name || vault?.token?.name || '').toLowerCase().includes(term)) ||
+		(shouldSearchWithTokens && (vault?.token?.name || '').toLowerCase().includes(term)) ||
 		(shouldSearchWithTokens && ((vault?.token?.address || '')).toLowerCase().includes(term)) ||
 		(shouldSearchWithStrategies && (vault?.strategies || []).some((strategy): boolean => {
 			return (
-				(strategy?.display_name || strategy?.name || '').toLowerCase().includes(term)
+				(strategy?.name || '').toLowerCase().includes(term)
 				|| (strategy?.address || '').toLowerCase().includes(term)
 			);
 		}))
@@ -49,10 +49,10 @@ export function	findVaultBySearch(vault: TVault, term: string): boolean {
 	if (term.length === 0)
 		return true;
 	return (
-		(vault?.display_name || vault?.name || '').toLowerCase().includes(term.toLowerCase()) ||
+		(vault?.name || '').toLowerCase().includes(term.toLowerCase()) ||
 		(vault?.address || '').toLowerCase().includes(term.toLowerCase()) ||
 		(vault?.symbol || '').toLowerCase().includes(term.toLowerCase()) ||
-		(vault?.token?.display_name || vault?.token?.name || '').toLowerCase().includes(term.toLowerCase()) ||
+		(vault?.token?.name || '').toLowerCase().includes(term.toLowerCase()) ||
 		(vault?.token?.address || '').toLowerCase().includes(term.toLowerCase())
 	);
 }
@@ -67,8 +67,7 @@ export function	findStrategyBySearch(strategy: TStrategy, term: string): boolean
 	if (term.length === 0)
 		return true;
 	return (
-		(strategy?.display_name || '').toLowerCase().includes(term.toLowerCase())
-		|| (strategy?.name || '').toLowerCase().includes(term.toLowerCase())
+		(strategy?.name || '').toLowerCase().includes(term.toLowerCase())
 		|| (strategy?.address || '').toLowerCase().includes(term.toLowerCase())
 		|| (strategy.vault?.name || '').toLowerCase().includes(term.toLowerCase())
 		|| (strategy.vault?.address || '').toLowerCase().includes(term.toLowerCase())

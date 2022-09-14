@@ -1,12 +1,12 @@
-import	React, {ReactElement} 							from	'react';
-import	{Card, Banner, Switch, SearchBox}				from	'@yearn-finance/web-lib/components';
-import	* as utils										from	'@yearn-finance/web-lib/utils';
-import	useWatch										from	'contexts/useWatch';
-import	{TStrategy, TRowHead}							from	'contexts/useWatch.d';
-import	useSettings										from	'contexts/useSettings';
-import	{deepFindVaultBySearch, findStrategyBySearch}	from	'utils/filters';
-import	SectionHealthcheckList							from	'components/sections/healthcheck/SectionHealthcheckList';
-import	{TableHead, TableHeadCell}						from	'components/TableHeadCell';
+import React, {ReactElement, useEffect, useState}  from 'react';
+import {Banner, Card, SearchBox, Switch} from '@yearn-finance/web-lib/components';
+import * as utils from '@yearn-finance/web-lib/utils';
+import {useWatch} from 'contexts/useWatch';
+import {TRowHead, TStrategy} from 'contexts/useWatch.d';
+import {useSettings} from 'contexts/useSettings';
+import {deepFindVaultBySearch, findStrategyBySearch} from 'utils/filters';
+import SectionHealthcheckList from 'components/sections/healthcheck/SectionHealthcheckList';
+import {TableHead, TableHeadCell} from 'components/TableHeadCell';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -41,10 +41,10 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 function	Healthcheck(): ReactElement {
 	const	{vaults} = useWatch();
 	const	settings = useSettings(); // eslint-disable-line @typescript-eslint/naming-convention
-	const	[filteredStrategies, set_filteredStrategies] = React.useState([] as TStrategy[]);
-	const	[searchTerm, set_searchTerm] = React.useState('');
-	const	[isOnlyWithTvl, set_isOnlyWithTvl] = React.useState(true);
-	const	[sortBy, set_sortBy] = React.useState('risk');
+	const	[filteredStrategies, set_filteredStrategies] = useState([] as TStrategy[]);
+	const	[searchTerm, set_searchTerm] = useState('');
+	const	[isOnlyWithTvl, set_isOnlyWithTvl] = useState(true);
+	const	[sortBy, set_sortBy] = useState('risk');
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -56,46 +56,42 @@ function	Healthcheck(): ReactElement {
 	** - Healtchecker address is invalid
 	** - TVL is not 0 (can be forced with the isOnlyWithTVL variable)
 	**************************************************************************/
-	React.useEffect((): void => {
+	useEffect((): void => {
 		const	_vaults = vaults;
 		let		_filteredVaults = [..._vaults];
 		const	_filteredStrategies = [];
 
-		//If the shouldOnlyDisplayEndorsedVaults is checked, we only display the endorsed vaults (by the API)
-		if (settings.shouldOnlyDisplayEndorsedVaults) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => vault.isEndorsed);
-		}
 
 		//If the shouldDisplayVaultsWithMigration is checked, we also display the vaults with a migration
 		if (!settings.shouldDisplayVaultsWithMigration) {
-			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault.hasMigration);
+			_filteredVaults = _filteredVaults.filter((vault): boolean => !vault?.migration?.available);
 		}
 
 		//If the shouldDisplayVaultNoStrats is checked, we to hide all vaults with 0 strategies or none in withdrawal queue
 		if (!settings.shouldDisplayVaultNoStrats) {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (
 				vault.strategies.length > 0
-				&& !vault.strategies.every((strat): boolean => strat.index === 21)
+				&& !vault.strategies.every((strat): boolean => strat?.details?.withdrawalQueuePosition === -1)
 			));
 		}
 
 		_filteredVaults = _filteredVaults.filter((vault): boolean => deepFindVaultBySearch(vault, searchTerm));
 		_filteredVaults = _filteredVaults.sort((a, b): number => Number(b.version.replace('.', '')) - Number(a.version.replace('.', '')));
 		for (const vault of _filteredVaults) {
-			let	_strategies = vault.strategies.filter((strat): boolean => strat.shouldDoHealthCheck);
+			let	_strategies = vault.strategies.filter((strat): boolean => strat?.details?.doHealthCheck);
 			_strategies = _strategies.filter((strat): boolean => findStrategyBySearch(strat, searchTerm));
 
 			for (const strategy of vault.strategies) {
-				const	shouldDoHealtcheck = strategy.shouldDoHealthCheck;
-				const	hasValidHealtcheckAddr = !utils.isZeroAddress(strategy.addrHealthCheck);
+				const	shouldDoHealtcheck = strategy?.details?.doHealthCheck;
+				const	hasValidHealtcheckAddr = !utils.isZeroAddress(strategy?.details?.healthCheck);
 
-				if (shouldDoHealtcheck || hasValidHealtcheckAddr || (strategy?.totalDebt.isZero() && isOnlyWithTvl))
+				if (shouldDoHealtcheck || hasValidHealtcheckAddr || (utils.format.BN(strategy?.details?.totalDebt).isZero() && isOnlyWithTvl))
 					continue;
 				_filteredStrategies.push(strategy);
 			}
 		}
 		set_filteredStrategies(_filteredStrategies);
-	}, [vaults, searchTerm, isOnlyWithTvl, settings.shouldOnlyDisplayEndorsedVaults, settings.shouldDisplayVaultsWithMigration, settings.shouldDisplayVaultNoStrats]);
+	}, [vaults, searchTerm, isOnlyWithTvl, settings.shouldDisplayVaultsWithMigration, settings.shouldDisplayVaultNoStrats]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
@@ -129,7 +125,7 @@ function	Healthcheck(): ReactElement {
 				</div>
 			</div>
 
-			<div className={'flex h-full overflow-x-scroll pb-0'}>
+			<div className={'flex h-full overflow-x-scroll pb-0 scrollbar-none'}>
 				<div className={'flex h-full w-[965px] flex-col md:w-full'}>
 					<RowHead sortBy={sortBy} set_sortBy={set_sortBy} />
 					<SectionHealthcheckList sortBy={sortBy} strategies={filteredStrategies} />

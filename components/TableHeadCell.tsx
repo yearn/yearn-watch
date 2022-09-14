@@ -1,7 +1,7 @@
-import	React, {ReactElement} 					from	'react';
-import	{ArrowDown}								from	'@yearn-finance/web-lib/icons';
+import React, {ReactElement, cloneElement}  from 'react';
+import {ArrowDown} from '@yearn-finance/web-lib/icons';
 
-type		TTableHeadCell = {
+type	TTableHeadCell = {
 	label: string,
 	sortId?: string,
 	sortBy?: string,
@@ -30,7 +30,7 @@ type		TTableHead = {
 function	TableHead({children, sortBy, set_sortBy}: TTableHead): ReactElement {
 	return (
 		<div className={'grid w-[965px] grid-cols-22 px-6 pb-4 md:w-full'}>
-			{children?.map((child, i): ReactElement => React.cloneElement(child, {key: i, sortBy, set_sortBy}))}
+			{children?.map((child, i): ReactElement => cloneElement(child, {key: i, sortBy, set_sortBy}))}
 		</div>
 	);
 }
