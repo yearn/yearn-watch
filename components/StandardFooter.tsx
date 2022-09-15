@@ -4,12 +4,10 @@ import {useUI, useWeb3} from '@yearn-finance/web-lib/contexts';
 import meta from 'public/manifest.json';
 
 const SUBGRAPH_URLS = new Map([
-	[1, ''],
-	[10, ''],
-	[250, ''],
-	[42161, ''],
-	[1337, ''],
-	[31337, '']
+	[1, 'https://api.thegraph.com/subgraphs/name/rareweasel/yearn-vaults-v2-subgraph-mainnet'],
+	[10, 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-optimism'],
+	[250, 'https://api.thegraph.com/subgraphs/name/bsamuels453/yearn-fantom-validation-grafted'],
+	[42161, 'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-arbitrum']
 ]);
 
 function	Footer(): ReactElement {
@@ -21,9 +19,9 @@ function	Footer(): ReactElement {
 			<a href={meta.github} target={'_blank'} className={'pr-6 text-xs text-neutral-500 transition-colors hover:text-accent-500 hover:underline'} rel={'noreferrer'}>
 				{'Yearn.watch repo'}
 			</a>
-			<a href={SUBGRAPH_URLS.has(chainID) ? SUBGRAPH_URLS.get(chainID) : 'https://gov.yearn.finance/'} target={'_blank'} className={'pr-6 text-xs text-neutral-500 transition-colors hover:text-accent-500 hover:underline'} rel={'noreferrer'}>
+			{SUBGRAPH_URLS.has(chainID) && <a href={SUBGRAPH_URLS.get(chainID)} target={'_blank'} className={'pr-6 text-xs text-neutral-500 transition-colors hover:text-accent-500 hover:underline'} rel={'noreferrer'}>
 				{'Subgraph'}
-			</a>
+			</a>}
 			<a href={'https://discord.yearn.finance/'} target={'_blank'} className={'pr-6 text-xs text-neutral-500 transition-colors hover:text-accent-500 hover:underline'} rel={'noreferrer'}>
 				{'Discord'}
 			</a>
