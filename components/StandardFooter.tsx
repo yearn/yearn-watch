@@ -1,7 +1,7 @@
-import	React, {ReactElement}		from	'react';
-import	{SwitchTheme}				from	'@yearn-finance/web-lib/components';
-import	{useUI, useWeb3}						from	'@yearn-finance/web-lib/contexts';
-import	meta						from	'public/manifest.json';
+import React, {ReactElement} from 'react';
+import {SwitchTheme} from '@yearn-finance/web-lib/components';
+import {useUI, useWeb3} from '@yearn-finance/web-lib/contexts';
+import meta from 'public/manifest.json';
 
 const SUBGRAPH_URLS = new Map([
 	[1, 'https://api.thegraph.com/subgraphs/name/rareweasel/yearn-vaults-v2-subgraph-mainnet'],
