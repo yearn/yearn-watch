@@ -78,15 +78,15 @@ const	SectionReports = memo(
 									<StatisticCard.Wrapper>
 										<StatisticCard
 											className={'col-span-12 md:col-span-3'}
-											label={`Dept Added (${currentVault.symbol})`}
+											label={`Debt Added (${currentVault.symbol})`}
 											value={format.bigNumberAsAmount(format.BN(report?.debtAdded), currentVault.decimals, 4, '')} />
 										<StatisticCard
 											className={'col-span-12 md:col-span-3'}
-											label={'Dept Limit'}
+											label={'Debt Limit'}
 											value={format.bigNumberAsAmount(format.BN(report?.debtLimit), 2, 4, '%')} />
 										<StatisticCard
 											className={'col-span-12 md:col-span-6'}
-											label={`Total Dept (${currentVault.symbol})`}
+											label={`Total Debt (${currentVault.symbol})`}
 											value={format.bigNumberAsAmount(format.BN(report?.totalDebt), currentVault.decimals, 4, '')} />
 
 										<StatisticCard
@@ -120,7 +120,7 @@ const	SectionReports = memo(
 											value={`${format.amount(Number((Number(report?.results?.[0]?.APR || 0) * 100)), 2)}%`} />
 										<StatisticCard
 											className={'col-span-12 md:col-span-3'}
-											label={'Dept Paid'}
+											label={'Debt Paid'}
 											value={format.bigNumberAsAmount(format.BN(report?.debtPaid), currentVault.decimals, 4, '')} />
 									</StatisticCard.Wrapper>
 								</Card.Detail>
