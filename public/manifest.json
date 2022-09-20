@@ -2,7 +2,7 @@
 	"name": "Yearn Watch",
 	"short_name": "yWatch",
 	"description": "All the analytics for your Vaults",
-	"iconPath": "./favicons/apple-icon.png",
+	"iconPath": "./favicons/favicon.svg",
 	"locale": "en-US",
 	"uri": "https://yearn.watch/",
 	"og": "https://yearn.watch/og.png",
