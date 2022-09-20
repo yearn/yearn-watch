@@ -25,10 +25,12 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 				sortId={'tvl'} />
 			<TableHeadCell
 				className={'cell-end min-w-36 col-span-4'}
-				label={'Debt Outstanding'} />
+				label={'Debt Outstanding'} 
+				sortId={'debtStanding'} />
 			<TableHeadCell
 				className={'cell-end min-w-36 col-span-3'}
-				label={'KeepCRV'} />
+				label={'KeepCRV'} 
+				sortId={'keepCRV'} />
 		</TableHead>
 	);
 }
@@ -41,7 +43,7 @@ function	Track(): ReactElement {
 	const	[filteredStrategies, set_filteredStrategies] = useState([] as TStrategy[]);
 	const	[searchTerm, set_searchTerm] = useState('');
 	const	[isOnlyWithTvl, set_isOnlyWithTvl] = useState(true);
-	const	[sortBy, set_sortBy] = useState('risk');
+	const	[sortBy, set_sortBy] = useState('tvl');
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
