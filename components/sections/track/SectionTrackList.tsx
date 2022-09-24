@@ -49,7 +49,27 @@ const	SectionTrackList = memo(function SectionTrackList({sortBy, strategies}: TS
 				set_sortedStrategies(_strategies);
 				set_pageIndex(0);
 			});
-		}
+		} else if (['keepCRV', '-keepCRV'].includes(sortBy)) {
+			const	_strategies = [...strategies].sort((a, b): number => {
+				if (sortBy === '-keepCRV')
+					return a?.details?.keepCRV - b?.details?.keepCRV;
+				return b?.details?.keepCRV - a?.details?.keepCRV;
+			});
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
+		} else if (['debtStanding', '-debtStanding'].includes(sortBy)) {
+			const	_strategies = [...strategies].sort((a, b): number => {
+				if (sortBy === '-debtStanding')
+					return utils.format.toNormalizedValue(utils.format.BN(a?.details?.debtOutstanding)) - utils.format.toNormalizedValue(utils.format.BN(b?.details?.debtOutstanding));
+				return utils.format.toNormalizedValue(utils.format.BN(b?.details?.debtOutstanding)) - utils.format.toNormalizedValue(utils.format.BN(a?.details?.debtOutstanding));
+			});
+			utils.performBatchedUpdates((): void => {
+				set_sortedStrategies(_strategies);
+				set_pageIndex(0);
+			});
+		} 
 	}, [strategies, sortBy]);
 
 
