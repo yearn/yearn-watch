@@ -17,7 +17,7 @@ const	GroupBox = memo(
 						<div className={'text-neutral-500'}>
 							<div className={'flex-row-center'}>
 								<div>
-									<b>{group.label}</b>
+									<b className={'whitespace-nowrap'}>{group.label}</b>
 									<p className={'text-xs text-neutral-500'}>
 										{group.strategiesCount > 1 ? `${group.strategiesCount} strats` : `${group.strategiesCount} strat`}
 									</p>
