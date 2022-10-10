@@ -72,6 +72,12 @@ function	WithLayout(props: AppProps): ReactElement {
 			icon: <IconTrack />
 		},
 		{
+			route: '/allocations',
+			values: ['/allocations'],
+			label: 'Allocations',
+			icon: <IconTrack />
+		},
+		{
 			route: '/settings',
 			values: ['/settings'],
 			label: 'Settings',
