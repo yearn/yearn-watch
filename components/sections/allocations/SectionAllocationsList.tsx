@@ -1,4 +1,4 @@
-import	React, {ReactElement}	    from	'react';
+import	React, {ReactElement, memo, useEffect, useState}	    from	'react';
 import	{List}						from	'@yearn-finance/web-lib/layouts';
 import	{Card}						from	'@yearn-finance/web-lib/components';
 import	* as utils					from	'@yearn-finance/web-lib/utils';
@@ -6,7 +6,7 @@ import	{Chevron}					from	'@yearn-finance/web-lib/icons';
 import {format} 					from 	'@yearn-finance/web-lib/utils';
 import {TChainData, TProtocolData}  from 	'../../../pages/allocations';
 
-const	ProtocolBox = React.memo(function ProtocolBox({protocol}: {protocol: TProtocolData}): ReactElement {
+const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolData}): ReactElement {
 
 	function	renderSummary(p: {open: boolean}): ReactElement {
 		return (
@@ -97,9 +97,9 @@ type		TSectionAllocationsList = {
 	protocols: TChainData,
 };
 
-const	SectionAllocationsList = React.memo(function SectionAllocationsList({sortBy, protocols}: TSectionAllocationsList): ReactElement {
-	const	[sortedProtocols, set_sortedProtocols] = React.useState([] as TProtocolData[]);
-	React.useEffect((): void => {
+const	SectionAllocationsList = memo(function SectionAllocationsList({sortBy, protocols}: TSectionAllocationsList): ReactElement {
+	const	[sortedProtocols, set_sortedProtocols] = useState([] as TProtocolData[]);
+	useEffect((): void => {
 		if(protocols.list){
 			const protocolList = Object.keys(protocols.list).map((protocol): TProtocolData => protocols.list[protocol]);
 			if (['tvl', '-tvl'].includes(sortBy)) {

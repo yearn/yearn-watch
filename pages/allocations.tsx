@@ -1,4 +1,4 @@
-import	React, {ReactElement} 		from	'react';
+import	React, {ReactElement, useEffect, useState} 		from	'react';
 import 	{useWatch}					from	'contexts/useWatch';
 import	SectionAllocationsList		from	'components/sections/allocations/SectionAllocationsList';
 import	{TableHead, TableHeadCell}	from	'components/TableHeadCell';
@@ -97,9 +97,9 @@ const initProtocolState = {
 ******************************************************************************/
 function	Allocations(): ReactElement {
 	const	{vaultsByChain} = useWatch();
-	const	[sortBy, set_sortBy] = React.useState('tvl');
-	const	[selectedChain, set_chain] = React.useState('All');
-	const	[protocols, set_protocols] = React.useState<TProtocolsByChain>(initProtocolState);
+	const	[sortBy, set_sortBy] = useState('tvl');
+	const	[selectedChain, set_chain] = useState('All');
+	const	[protocols, set_protocols] = useState<TProtocolsByChain>(initProtocolState);
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
 	** changed. It filters the vault list based on the search term. This action
@@ -109,7 +109,7 @@ function	Allocations(): ReactElement {
 	**************************************************************************/
 
 
-	React.useEffect((): void => {
+	useEffect((): void => {
 		if (!vaultsByChain.length) {
 			set_protocols(initProtocolState);
 			return;
