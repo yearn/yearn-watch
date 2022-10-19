@@ -54,16 +54,19 @@ function	Risk(): ReactElement {
 	// load the risk framework scores from external data sources
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const _chainID = chainID || 1;
-		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=any&strategiesRisk=withRisk`
+		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
 			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];
 			const riskGroup = vaultWithRiskGroup.reduce((obj, vault) => {
-				let _obj = { ...obj }
-				vault.strategies.forEach(({ risk, name, address }) => {
-					const label = risk.riskGroup
-					if (!label) return
-					const id = `${_chainID}_${label.toLowerCase().split(' ').join('')}`
+				let _obj: Record<string, TRiskGroup> = { ...obj };
+				vault.strategies.forEach((strategy) => {
+					const { risk, address } = strategy;
+					const label = risk.riskGroup;
+					if (!label) return;
+
+					const id = `${_chainID}_${label.toLowerCase().split(' ').join('')}`;
+					const strategyCriteria = [...(_obj[id]?.criteria.strategies ?? [])];
 					const group = {
 						[id]: {
 							id,
@@ -79,23 +82,22 @@ function	Risk(): ReactElement {
 							protocolSafetyScore: risk.protocolSafetyScore,
 							complexityScore: risk.complexityScore,
 							teamKnowledgeScore: risk.teamKnowledgeScore,
-							longevityScore: 0,
+							longevityScore: risk.longevityImpact,
 							oldestActivation: 0,
 							medianScore: 0,
 							impactScore: 0,
 							strategiesCount: 0,
 							criteria: {
-								nameLike: [name],
-								strategies: [address],
+								strategies: [...strategyCriteria, address],
 								exclude: []
 							},
 							strategies: []
 						} as TRiskGroup
-					}
-					_obj = {...obj, ...group}
-				})
-				return _obj
-			}, {} as Record<string, TRiskGroup>)
+					};
+					_obj = {..._obj, ...group};
+				});
+				return _obj;
+			}, {} as Record<string, TRiskGroup>);
 			set_risk(Object.values(riskGroup));
 			return;
 		}
@@ -130,11 +132,7 @@ function	Risk(): ReactElement {
 			_group.strategies = [];
 			for (const vault of _vaults) {
 				for (const strategy of vault.strategies) {
-					if (group.criteria.exclude.some((exclude): boolean => findStrategyBySearch(strategy, exclude))) {
-						continue;
-					}
-					if (group.criteria.nameLike.some((include): boolean => findStrategyBySearch(strategy, include)) ||
-							group.criteria.strategies.some((include): boolean => include !== '' && findStrategyBySearch(strategy, include))) {
+					if (group.criteria.strategies.some((include): boolean => findStrategyBySearch(strategy, include))) {
 						_totalDebt += strategy?.details?.totalDebtUSDC;
 						_group.tvl += strategy?.details?.totalDebtUSDC;
 						_group.strategiesCount += 1;

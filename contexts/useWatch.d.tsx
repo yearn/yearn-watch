@@ -135,7 +135,6 @@ export type TRiskGroup = {
 	impactScore: number,
 	strategiesCount: number,
 	criteria: {
-		nameLike: string[],
 		strategies: string[],
 		exclude: string[]
 	},
