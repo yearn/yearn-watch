@@ -5,7 +5,7 @@ import SectionRiskList from 'components/sections/risk/SectionRiskList';
 import SectionMatrix from 'components/sections/risk/SectionMatrix';
 import {TableHead, TableHeadCell} from 'components/TableHeadCell';
 import {useWatch} from 'contexts/useWatch';
-import {TRiskGroup, TRowHead} from 'contexts/useWatch.d';
+import {TRiskGroup, TVaultWithRiskGroup, TRowHead} from 'contexts/useWatch.d';
 import {findStrategyBySearch} from 'utils/filters';
 import {getExcludeIncludeUrlParams, getImpactScore, getLongevityScore, getTvlImpact, median} from 'utils';
 
@@ -53,20 +53,53 @@ function	Risk(): ReactElement {
 
 	// load the risk framework scores from external data sources
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
-		const	_chainID = chainID || 1;
-		const endpoints = [
-			process.env.RISK_GH_URL as string,	// Github
-			process.env.RISK_API_URL as string + '/riskgroups/'	// Risk API
-		];
-		for (const endpoint of endpoints) {
-			const response = await axios.get(endpoint);
-			if (response.status === 200) {
-				const riskGroups = response.data as TRiskGroup[];
-				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
-				set_risk(riskForNetworks);
-				return;
-			}
+		const _chainID = chainID || 1;
+		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=any&strategiesRisk=withRisk`
+		const response = await axios.get(endpoint);
+		if (response.status === 200) {
+			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];
+			const riskGroup = vaultWithRiskGroup.reduce((obj, vault) => {
+				let _obj = { ...obj }
+				vault.strategies.forEach(({ risk, name, address }) => {
+					const label = risk.riskGroup
+					if (!label) return
+					const id = `${_chainID}_${label.toLowerCase().split(' ').join('')}`
+					const group = {
+						[id]: {
+							id,
+							network: _chainID,
+							label,
+							urlParams: '',
+							totalDebtRatio: 0,
+							tvl: 0,
+							tvlImpact: risk.TVLImpact,
+							auditScore: risk.auditScore,
+							codeReviewScore: risk.codeReviewScore,
+							testingScore: risk.testingScore,
+							protocolSafetyScore: risk.protocolSafetyScore,
+							complexityScore: risk.complexityScore,
+							teamKnowledgeScore: risk.teamKnowledgeScore,
+							longevityScore: 0,
+							oldestActivation: 0,
+							medianScore: 0,
+							impactScore: 0,
+							strategiesCount: 0,
+							criteria: {
+								nameLike: [name],
+								strategies: [address],
+								exclude: []
+							},
+							strategies: []
+						} as TRiskGroup
+					}
+					_obj = {...obj, ...group}
+				})
+				return _obj
+			}, {} as Record<string, TRiskGroup>)
+			set_risk(Object.values(riskGroup));
+			return;
 		}
+
 	}, [chainID]);
 
 	useEffect((): void => {
