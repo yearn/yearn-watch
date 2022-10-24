@@ -1,9 +1,10 @@
-import	React, {ReactElement, memo, useEffect, useState}	    from	'react';
+import React, {Fragment, ReactElement, memo, useEffect, useState} from 'react';
 import	{List}						from	'@yearn-finance/web-lib/layouts';
 import	{Card}						from	'@yearn-finance/web-lib/components';
 import	* as utils					from	'@yearn-finance/web-lib/utils';
 import	{Chevron}					from	'@yearn-finance/web-lib/icons';
 import {format} 					from 	'@yearn-finance/web-lib/utils';
+import {Disclosure, Transition}     from    '@headlessui/react';
 import {TChainData, TProtocolData}  from 	'../../../pages/allocations';
 
 const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolData}): ReactElement {
@@ -81,6 +82,49 @@ const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolDa
 						);
 					})
 				}
+				{protocol.emptyStrategies.length > 0 ?
+					<div className={'mt-4 w-full'}>
+						<Disclosure>
+							{({open}): ReactElement => (
+								<>
+									<Disclosure.Button className={'w-full'}>
+										<span className={'mb-2 flex flex-row items-center justify-end gap-2 mx-16'}>
+											<p className={'text-left text-neutral-500 text-lg'}>{'Empty Strategies'}</p>
+											<Chevron className={`h-4 w-4 mr-2 text-accent-500 ${open ? 'rotate-180' : 'rotate-0'}`} />
+										</span>
+									</Disclosure.Button>
+									<Transition
+										as={Fragment}
+										show={open}
+										enter={'transition duration-100 ease-out origin-top'}
+										enterFrom={'transform scale-y-0 opacity-0 origin-top'}
+										enterTo={'transform scale-y-100 opacity-100 origin-top'}
+										leave={'transition ease-out origin-top'}
+										leaveFrom={'transform scale-y-100 opacity-100 origin-top'}
+										leaveTo={'transform scale-y-0 opacity-0 origin-top'}>
+										<Disclosure.Panel static className={'rounded-default w-full py-2'}>
+											{
+												protocol.emptyStrategies.map((strategy: string): ReactElement => (
+													<div className={'mx-auto flex w-10/12 flex-col mb-5'} key={'empty' + strategy}>
+														<span className={'mb-2 flex flex-row items-center justify-between'}>
+															<p className={'text-left text-neutral-500'}>{strategy}</p>
+															<b className={'text-left text-accent-500'}>{'0%'}</b>
+														</span>
+														<div>
+															<div className={'relative h-2 w-full overflow-hidden rounded-2xl bg-neutral-200 transition-transform'}>
+																<div className={'inset-y-0 left-0 h-full rounded-2xl bg-accent-500 w-0'} />
+															</div>
+														</div>
+													</div>
+												))
+											}
+										</Disclosure.Panel>
+									</Transition>
+								</>
+							)}
+						</Disclosure>
+					</div>
+					: null}
 			</div>
 		);
 	}

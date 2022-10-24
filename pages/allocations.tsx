@@ -67,6 +67,7 @@ export type TProtocolData =  {
 		[strategyName: string]: number
 	},
 	tvl: number,
+	emptyStrategies: string[],
 	allocatedStrategies: number,
 	name: string,
 	totalDebtRatio: number,
@@ -135,6 +136,7 @@ function	Allocations(): ReactElement {
 							if (!protocols[chainData.chainName].list[protocol]) {
 								protocols[chainData.chainName].list[protocol] = {
 									strategiesTVL: {},
+									emptyStrategies:[],
 									tvl: 0,
 									allocatedStrategies: 0,
 									strategiesAmount: 0,
@@ -153,6 +155,7 @@ function	Allocations(): ReactElement {
 							if (!protocols.All.list[protocol]) {
 								protocols.All.list[protocol] = {
 									strategiesTVL: {},
+									emptyStrategies:[],
 									tvl: 0,
 									allocatedStrategies: 0,
 									strategiesAmount: 0,
@@ -177,6 +180,12 @@ function	Allocations(): ReactElement {
 			if(protocols[networkName].list) {
 				Object.keys(protocols[networkName].list).forEach((protocol): void => {
 					protocols[networkName].list[protocol].strategiesAmount = Object.keys(protocols[networkName].list[protocol].strategiesTVL).length;
+					Object.keys(protocols[networkName].list[protocol].strategiesTVL).forEach((strategy): void=>{
+						if(protocols[networkName].list[protocol].strategiesTVL[strategy] === 0) {
+							delete protocols[networkName].list[protocol].strategiesTVL[strategy];
+							protocols[networkName].list[protocol].emptyStrategies.push(strategy);
+						}
+					});
 					protocols[networkName].list[protocol].totalDebtRatio =
 						protocols[networkName].list[protocol].tvl /
 						protocols[networkName].tvlTotal * 100;
