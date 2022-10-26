@@ -1,30 +1,30 @@
-import	React, {ReactElement, useEffect, useState} 		from	'react';
-import 	{useWatch}					from	'contexts/useWatch';
-import	SectionAllocationsList		from	'components/sections/allocations/SectionAllocationsList';
-import	{TableHead, TableHeadCell}	from	'components/TableHeadCell';
-import 	{TRowHead} 					from 	'contexts/useWatch.d';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {useWatch} from 'contexts/useWatch';
+import SectionAllocationsList, {TProtocolsByChain} from 'components/sections/allocations/SectionAllocationsList';
+import {TableHead, TableHeadCell} from 'components/TableHeadCell';
+import {TRowHead} from 'contexts/useWatch.d';
 import {format} from '@yearn-finance/web-lib/utils';
 
+
+type		TNetworkSelector = {
+	selectedChain: string,
+	chainList: string[],
+	set_chain: React.Dispatch<React.SetStateAction<string>>
+}
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the chain selector for table. This component asks for
 *  sortBy and set_sortBy in order to handle the chevron displays and to set
 ** the sort based on the user's choice.
 ******************************************************************************/
-function	NetworkSelector({selectedChain, chainList, set_chain}:
-								{
-									selectedChain: string,
-									chainList: string[],
-									set_chain: React.Dispatch<React.SetStateAction<string>>
-								}):
-	ReactElement {
+function	NetworkSelector({selectedChain, chainList, set_chain}: TNetworkSelector): ReactElement {
 	return (
 		<div className={'min-w-32 col-span-8 flex flex-row items-center gap-4'}>
 			{chainList?.map((chain, index): ReactElement=>(
 				<div
 					key={index}
-					className={`text-black-600 cursor-pointer rounded-[12px] py-2 px-4 hover:bg-neutral-300${chain === selectedChain ? 'transition-color bg-neutral-300' : 'transition-color bg-neutral-300/50'}`}
-					onClick={(): void=>set_chain(chain)}
+					className={`text-black-600 cursor-pointer rounded-[12px] py-2 px-4 hover:bg-neutral-300 ${chain === selectedChain ? 'transition-color bg-neutral-300' : 'transition-color bg-neutral-300/50'}`}
+					onClick={(): void=> set_chain(chain)}
 				>
 					{chain}
 				</div>
@@ -32,7 +32,6 @@ function	NetworkSelector({selectedChain, chainList, set_chain}:
 		</div>
 	);
 }
-
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -60,30 +59,6 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 				sortId={'allocatedStrategiesAmount'} />
 		</TableHead>
 	);
-}
-
-export type TProtocolData =  {
-	strategiesTVL: {
-		[strategyName: string]: number
-	},
-	tvl: number,
-	emptyStrategies: string[],
-	allocatedStrategies: number,
-	name: string,
-	totalDebtRatio: number,
-	strategiesAmount: number
-}
-
-export type TChainData = {
-	tvlTotal: number,
-	protocolsCount?: number,
-	list: {
-		[protocolName: string]: TProtocolData
-	}
-}
-
-export type TProtocolsByChain = {
-	[chainName: string]: TChainData
 }
 
 const initProtocolState = {

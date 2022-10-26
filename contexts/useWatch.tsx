@@ -8,7 +8,7 @@ import {useWeb3} from '@yearn-finance/web-lib/contexts';
 import {format, isZeroAddress, performBatchedUpdates} from '@yearn-finance/web-lib/utils';
 import {getTvlImpact} from 'utils';
 import {useSettings} from 'contexts/useSettings';
-import {options} from '../components/Header';
+import {options} from 'components/Header';
 
 const	WatchContext = createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
@@ -159,7 +159,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					const	{data} = await axios.get(`${process.env.YDAEMON_BASE_URL}/${chain.value}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`);
 					chainData.push({vaults: data, chainId: chain.value, chainName: chain.label});
 				} catch (e) {
-					console.log(`Can't get info on ${chain.label} chain.\n`, e);
+					console.error(`Can't get info on ${chain.label} chain.\n`, e);
 				}
 			}
 			set_vaultsByChain(chainData);

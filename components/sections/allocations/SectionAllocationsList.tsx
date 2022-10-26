@@ -5,7 +5,30 @@ import	* as utils					from	'@yearn-finance/web-lib/utils';
 import	{Chevron}					from	'@yearn-finance/web-lib/icons';
 import {format} 					from 	'@yearn-finance/web-lib/utils';
 import {Disclosure, Transition}     from    '@headlessui/react';
-import {TChainData, TProtocolData}  from 	'../../../pages/allocations';
+
+export type TProtocolData =  {
+	strategiesTVL: {
+		[strategyName: string]: number
+	},
+	tvl: number,
+	emptyStrategies: string[],
+	allocatedStrategies: number,
+	name: string,
+	totalDebtRatio: number,
+	strategiesAmount: number
+}
+
+export type TChainData = {
+	tvlTotal: number,
+	protocolsCount?: number,
+	list: {
+		[protocolName: string]: TProtocolData
+	}
+}
+
+export type TProtocolsByChain = {
+	[chainName: string]: TChainData
+}
 
 const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolData}): ReactElement {
 
