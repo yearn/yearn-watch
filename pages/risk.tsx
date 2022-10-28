@@ -54,7 +54,7 @@ function	Risk(): ReactElement {
 	// load the risk framework scores from yDaemon
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const _chainID = chainID || 1;
-		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?strategiesRisk=withRisk`;
+		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
 			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];
@@ -102,6 +102,7 @@ function	Risk(): ReactElement {
 				return _obj;
 			}, {});
 			set_risk(Object.values(riskGroup));
+			console.log(riskGroup);
 			return;
 		}
 
