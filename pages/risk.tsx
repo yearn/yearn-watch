@@ -5,7 +5,7 @@ import SectionRiskList from 'components/sections/risk/SectionRiskList';
 import SectionMatrix from 'components/sections/risk/SectionMatrix';
 import {TableHead, TableHeadCell} from 'components/TableHeadCell';
 import {useWatch} from 'contexts/useWatch';
-import {TRiskGroup, TVaultWithRiskGroup, TRowHead} from 'contexts/useWatch.d';
+import {TRiskGroup, TRowHead, TVaultWithRiskGroup} from 'contexts/useWatch.d';
 import {findStrategyBySearch} from 'utils/filters';
 import {getExcludeIncludeUrlParams, getImpactScore, getLongevityScore, getTvlImpact, median} from 'utils';
 
@@ -49,19 +49,22 @@ function	Risk(): ReactElement {
 	const	{isUpdating, vaults} = useWatch();
 	const	[sortBy, set_sortBy] = useState('score');
 	const	[groups, set_groups] = useState<TRiskGroup[]>([]);
-	const [risk, set_risk] = useState<TRiskGroup[]>([]);
+	const	[risk, set_risk] = useState<TRiskGroup[]>([]);
 
-	// load the risk framework scores from external data sources
+	// load the risk framework scores from yDaemon
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const _chainID = chainID || 1;
 		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
 			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];
-			const riskGroup = vaultWithRiskGroup.reduce((obj, vault) => {
-				let _obj: Record<string, TRiskGroup> = { ...obj };
-				vault.strategies.forEach((strategy) => {
-					const { risk, address } = strategy;
+			const riskGroup = vaultWithRiskGroup.reduce((obj, vault): { [key: string]: TRiskGroup }  => {
+
+				// rebuild the risk groups by adding strategy addresses
+				let _obj: { [key: string]: TRiskGroup } = {...obj};
+
+				vault.strategies.forEach((strategy): void => {
+					const {risk, address} = strategy;
 					const label = risk.riskGroup;
 					if (!label) return;
 
@@ -91,13 +94,13 @@ function	Risk(): ReactElement {
 								strategies: [...strategyCriteria, address],
 								exclude: []
 							},
-							strategies: []
-						} as TRiskGroup
+							strategies: []  // strategy instances from context
+						}
 					};
 					_obj = {..._obj, ...group};
 				});
 				return _obj;
-			}, {} as Record<string, TRiskGroup>);
+			}, {});
 			set_risk(Object.values(riskGroup));
 			return;
 		}
