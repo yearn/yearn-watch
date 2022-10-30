@@ -102,7 +102,6 @@ function	Risk(): ReactElement {
 				return _obj;
 			}, {});
 			set_risk(Object.values(riskGroup));
-			console.log(riskGroup);
 			return;
 		}
 
