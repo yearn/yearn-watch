@@ -63,13 +63,12 @@ function	Risk(): ReactElement {
 				// rebuild the risk groups by adding strategy addresses
 				let _obj: {[key: string]: TRiskGroup} = {...obj};
 
-				vault.strategies.forEach((strategy): void => {
-					const {risk, address} = strategy;
+				for (const { risk, address } of vault.strategies) {
 					const label = risk.riskGroup;
 					if (!label) {
-						return;
+						continue;
 					}
-
+	
 					const id = `${_chainID}_${label.toLowerCase().split(' ').join('')}`;
 					const strategyCriteria = [...(_obj[id]?.criteria?.strategies ?? [])];
 					const group = {
@@ -100,7 +99,7 @@ function	Risk(): ReactElement {
 						}
 					};
 					_obj = {..._obj, ...group};
-				});
+				}
 				return _obj;
 			}, {});
 			set_risk(Object.values(riskGroup));
