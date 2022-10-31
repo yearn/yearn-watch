@@ -12,6 +12,7 @@ import IconHealthcheck from 'components/icons/IconHealthcheck';
 import IconTrack from 'components/icons/IconTrack';
 import IconQuery from 'components/icons/IconQuery';
 import IconRisk from 'components/icons/IconRisk';
+import IconAllocations from '../components/icons/IconAllocations';
 import LogoWatch from 'components/logo/LogoWatch';
 import KBarButton from 'components/KBarButton';
 import KBarWrapper from 'components/KBarWrapper';
@@ -70,6 +71,12 @@ function	WithLayout(props: AppProps): ReactElement {
 			values: ['/track'],
 			label: 'Track',
 			icon: <IconTrack />
+		},
+		{
+			route: '/allocations',
+			values: ['/allocations'],
+			label: 'Allocations',
+			icon: <IconAllocations />
 		},
 		{
 			route: '/settings',

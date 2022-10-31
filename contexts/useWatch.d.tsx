@@ -253,8 +253,16 @@ export type TVault = {
 	strategies: TStrategy[] //From API & subgraph & multicall
 }
 
+export type TVaultByChain = {
+	vaults: TVault[],
+	chainId: number,
+	chainName: string
+}
+
+
 export type	TWatchContext = {
 	vaults: TVault[],
+	vaultsByChain: TVaultByChain[],
 	lastUpdate: number,
 	isUpdating: boolean,
 	hasError: boolean,
