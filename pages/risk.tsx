@@ -58,7 +58,7 @@ function	Risk(): ReactElement {
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
 			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];
-			const riskGroup = vaultWithRiskGroup.reduce((obj, vault): { [key: string]: TRiskGroup }  => {
+			const riskGroup = vaultWithRiskGroup.reduce((obj, vault): {[key: string]: TRiskGroup}  => {
 
 				// rebuild the risk groups by adding strategy addresses
 				let _obj: {[key: string]: TRiskGroup} = {...obj};
