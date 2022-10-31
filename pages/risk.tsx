@@ -61,7 +61,7 @@ function	Risk(): ReactElement {
 			const riskGroup = vaultWithRiskGroup.reduce((obj, vault): { [key: string]: TRiskGroup }  => {
 
 				// rebuild the risk groups by adding strategy addresses
-				let _obj: { [key: string]: TRiskGroup } = {...obj};
+				let _obj: {[key: string]: TRiskGroup} = {...obj};
 
 				vault.strategies.forEach((strategy): void => {
 					const {risk, address} = strategy;
