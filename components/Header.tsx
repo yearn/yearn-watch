@@ -3,7 +3,13 @@ import {useWeb3} from '@yearn-finance/web-lib/contexts';
 import {Card, Dropdown, ModalMobileMenu} from '@yearn-finance/web-lib/components';
 import {Hamburger, NetworkArbitrum, NetworkEthereum, NetworkFantom, NetworkOptimism} from '@yearn-finance/web-lib/icons';
 
-const	options: any[] = [
+type		TOptions = {
+	icon: ReactElement,
+	label: string,
+	value: number
+}
+
+export const	options: TOptions[] = [
 	{icon: <NetworkEthereum />, label: 'Ethereum', value: 1},
 	{icon: <NetworkOptimism />, label: 'Optimism', value: 10},
 	{icon: <NetworkFantom />, label: 'Fantom', value: 250},

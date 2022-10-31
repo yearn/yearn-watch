@@ -8,9 +8,11 @@ import {useWeb3} from '@yearn-finance/web-lib/contexts';
 import {format, isZeroAddress, performBatchedUpdates} from '@yearn-finance/web-lib/utils';
 import {getTvlImpact} from 'utils';
 import {useSettings} from 'contexts/useSettings';
+import {options} from 'components/Header';
 
 const	WatchContext = createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
+	vaultsByChain:[],
 	lastUpdate: 0,
 	isUpdating: true,
 	hasError: false
@@ -30,6 +32,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 	const	{chainID} = useWeb3();
 	const	{shouldOnlyDisplayEndorsedVaults} = useSettings();
 	const	[vaults, set_vaults] = useState<useWatchTypes.TVault[]>([]);
+	const	[vaultsByChain, set_vaultsByChain] = useState<useWatchTypes.TVaultByChain[]>([]);
 	const	[lastUpdate, set_lastUpdate] = useState<number>(0);
 
 	const	{data: allVaults, error} = useSWR(`${process.env.YDAEMON_BASE_URL}/${chainID}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`, fetcher);
@@ -139,14 +142,35 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 				set_vaults(_allVaults || []);
 				set_lastUpdate(Date.now());
 			});
+			fetchVaultsByChain();
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [allVaults]);
+
+	async function fetchVaultsByChain(): Promise<void> {
+		if(!vaultsByChain.length && chainID){
+			const chainData = [{vaults: [...allVaults], chainId:  chainID || 1, chainName: ''}];
+			for (const chain of options){
+				if(chain.value === chainID){
+					chainData[0].chainName = chain.label;
+					continue;
+				}
+				try {
+					const	{data} = await axios.get(`${process.env.YDAEMON_BASE_URL}/${chain.value}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`);
+					chainData.push({vaults: data, chainId: chain.value, chainName: chain.label});
+				} catch (e) {
+					console.error(`Can't get info on ${chain.label} chain.\n`, e);
+				}
+			}
+			set_vaultsByChain(chainData);
+		}
+	}
 
 	return (
 		<WatchContext.Provider
 			value={{
 				vaults,
+				vaultsByChain,
 				lastUpdate,
 				isUpdating: !allVaults && !error,
 				hasError: !!error
