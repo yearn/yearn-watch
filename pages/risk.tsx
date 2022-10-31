@@ -71,7 +71,7 @@ function	Risk(): ReactElement {
 					}
 
 					const id = `${_chainID}_${label.toLowerCase().split(' ').join('')}`;
-					const strategyCriteria = [...(_obj[id]?.criteria.strategies ?? [])];
+					const strategyCriteria = [...(_obj[id]?.criteria?.strategies ?? [])];
 					const group = {
 						[id]: {
 							id,
