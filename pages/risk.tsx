@@ -66,7 +66,9 @@ function	Risk(): ReactElement {
 				vault.strategies.forEach((strategy): void => {
 					const {risk, address} = strategy;
 					const label = risk.riskGroup;
-					if (!label) return;
+					if (!label) {
+						return;
+					}
 
 					const id = `${_chainID}_${label.toLowerCase().split(' ').join('')}`;
 					const strategyCriteria = [...(_obj[id]?.criteria.strategies ?? [])];
