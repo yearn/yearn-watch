@@ -12,6 +12,109 @@ export type TAlert = {
 	message: string
 }
 
+export type TVaultWithRiskGroup = {
+	address: string
+	symbol: string
+	display_symbol: string
+	formated_symbol: string
+	name: string
+	display_name: string
+	formated_name: string
+	icon: string
+	version: string
+	type: string
+	inception: number
+	decimals: number
+	updated: number
+	endorsed: boolean
+	emergency_shutdown: boolean
+	token: {
+		address: string
+		name: string
+		display_name: string
+		symbol: string
+		description: string
+		decimals: number
+		icon: string
+	}
+	tvl: {
+		total_assets: string
+		total_delegated_assets: string
+		tvl_deposited: number
+		tvl_delegated: number
+		tvl: number
+		price: number
+	}
+	apy: {
+		type: string
+		gross_apr: number
+		net_apy: number
+		fees: {
+			performance: number
+			withdrawal: number
+			management: number
+			keep_crv: number
+			cvx_keep_crv: number
+		}
+		points: {
+			week_ago: number
+			month_ago: number
+			inception: number
+		}
+		composite: {
+			boost: number
+			pool_apy: number
+			boosted_apr: number
+			base_apr: number
+			cvx_apr: number
+			rewards_apr: number
+		}
+	}
+	strategies: {
+		address: string
+		name: string
+		description: string
+		risk: {
+			riskGroup: string
+			TVLImpact: number
+			auditScore: number
+			codeReviewScore: number
+			complexityScore: number
+			longevityImpact: number
+			protocolSafetyScore: number
+			teamKnowledgeScore: number
+			testingScore: number
+			allocation: {
+				currentTVL: string
+				availableTVL: string
+				currentAmount: string
+				availableAmount: string
+			}
+		}
+	}[]
+	migration: {
+		available: boolean
+		address: string
+	},
+	details: {
+		management: string
+		governance: string
+		guardian: string
+		rewards: string
+		depositLimit: string
+		comment: string
+		apyTypeOverride: string
+		apyOverride: number
+		performanceFee: number
+		managementFee: number
+		depositsDisabled: boolean
+		withdrawalsDisabled: boolean
+		allowZapIn: boolean
+		allowZapOut: boolean
+		retired: boolean
+	}
+}
+
 export type TRiskGroup = {
 	id: string,
 	network: number,
@@ -32,7 +135,6 @@ export type TRiskGroup = {
 	impactScore: number,
 	strategiesCount: number,
 	criteria: {
-		nameLike: string[],
 		strategies: string[],
 		exclude: string[]
 	},

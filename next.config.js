@@ -46,7 +46,5 @@ module.exports = (phase) => withPWA({
 		},
 		YDAEMON_BASE_URL: 'https://ydaemon.yearn.finance',
 		// YDAEMON_BASE_URL: 'http://localhost:8080',
-		RISK_GH_URL: 'https://raw.githubusercontent.com/yearn/ydata/616d6728ca8d81f44757a0bf3c340ef97a41803b/src/risk_framework/risks.json',
-		RISK_API_URL: 'https://d3971bp2359cnv.cloudfront.net/api'
 	}
 });

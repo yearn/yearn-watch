@@ -5,7 +5,7 @@ import SectionRiskList from 'components/sections/risk/SectionRiskList';
 import SectionMatrix from 'components/sections/risk/SectionMatrix';
 import {TableHead, TableHeadCell} from 'components/TableHeadCell';
 import {useWatch} from 'contexts/useWatch';
-import {TRiskGroup, TRowHead} from 'contexts/useWatch.d';
+import {TRiskGroup, TRowHead, TVaultWithRiskGroup} from 'contexts/useWatch.d';
 import {findStrategyBySearch} from 'utils/filters';
 import {getExcludeIncludeUrlParams, getImpactScore, getLongevityScore, getTvlImpact, median} from 'utils';
 
@@ -49,24 +49,63 @@ function	Risk(): ReactElement {
 	const	{isUpdating, vaults} = useWatch();
 	const	[sortBy, set_sortBy] = useState('score');
 	const	[groups, set_groups] = useState<TRiskGroup[]>([]);
-	const [risk, set_risk] = useState<TRiskGroup[]>([]);
+	const	[risk, set_risk] = useState<TRiskGroup[]>([]);
 
-	// load the risk framework scores from external data sources
+	// load the risk framework scores from yDaemon
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
-		const	_chainID = chainID || 1;
-		const endpoints = [
-			process.env.RISK_GH_URL as string,	// Github
-			process.env.RISK_API_URL as string + '/riskgroups/'	// Risk API
-		];
-		for (const endpoint of endpoints) {
-			const response = await axios.get(endpoint);
-			if (response.status === 200) {
-				const riskGroups = response.data as TRiskGroup[];
-				const riskForNetworks = riskGroups.filter((r): boolean => r.network === _chainID);
-				set_risk(riskForNetworks);
-				return;
-			}
+		const _chainID = chainID || 1;
+		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
+		const response = await axios.get(endpoint);
+		if (response.status === 200) {
+			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];
+			const riskGroup = vaultWithRiskGroup.reduce((obj, vault): {[key: string]: TRiskGroup}  => {
+
+				// rebuild the risk groups by adding strategy addresses
+				let _obj: {[key: string]: TRiskGroup} = {...obj};
+
+				for (const {risk, address} of vault.strategies) {
+					const label = risk.riskGroup;
+					if (!label) {
+						continue;
+					}
+	
+					const id = `${_chainID}_${label.toLowerCase().split(' ').join('')}`;
+					const strategyCriteria = [...(_obj[id]?.criteria?.strategies ?? [])];
+					const group = {
+						[id]: {
+							id,
+							network: _chainID,
+							label,
+							urlParams: '',
+							totalDebtRatio: 0,
+							tvl: 0,
+							tvlImpact: risk.TVLImpact,
+							auditScore: risk.auditScore,
+							codeReviewScore: risk.codeReviewScore,
+							testingScore: risk.testingScore,
+							protocolSafetyScore: risk.protocolSafetyScore,
+							complexityScore: risk.complexityScore,
+							teamKnowledgeScore: risk.teamKnowledgeScore,
+							longevityScore: risk.longevityImpact,
+							oldestActivation: 0,
+							medianScore: 0,
+							impactScore: 0,
+							strategiesCount: 0,
+							criteria: {
+								strategies: [...strategyCriteria, address],
+								exclude: []
+							},
+							strategies: []  // strategy instances from context
+						}
+					};
+					_obj = {..._obj, ...group};
+				}
+				return _obj;
+			}, {});
+			set_risk(Object.values(riskGroup));
+			return;
 		}
+
 	}, [chainID]);
 
 	useEffect((): void => {
@@ -97,11 +136,7 @@ function	Risk(): ReactElement {
 			_group.strategies = [];
 			for (const vault of _vaults) {
 				for (const strategy of vault.strategies) {
-					if (group.criteria.exclude.some((exclude): boolean => findStrategyBySearch(strategy, exclude))) {
-						continue;
-					}
-					if (group.criteria.nameLike.some((include): boolean => findStrategyBySearch(strategy, include)) ||
-							group.criteria.strategies.some((include): boolean => include !== '' && findStrategyBySearch(strategy, include))) {
+					if (group.criteria.strategies.some((include): boolean => findStrategyBySearch(strategy, include))) {
 						_totalDebt += strategy?.details?.totalDebtUSDC;
 						_group.tvl += strategy?.details?.totalDebtUSDC;
 						_group.strategiesCount += 1;
