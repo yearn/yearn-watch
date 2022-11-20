@@ -8,6 +8,7 @@ import {useWatch} from 'contexts/useWatch';
 import {TRiskGroup, TRowHead, TVaultWithRiskGroup} from 'contexts/useWatch.d';
 import {findStrategyBySearch} from 'utils/filters';
 import {getExcludeIncludeUrlParams, getImpactScore, getLongevityScore, getTvlImpact, median} from 'utils';
+import {useSettings} from '@yearn-finance/web-lib/contexts';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable
@@ -54,7 +55,8 @@ function	Risk(): ReactElement {
 	// load the risk framework scores from yDaemon
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const _chainID = chainID || 1;
-		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
+		const {settings} = useSettings();
+		const endpoint = `${settings.yDaemonBaseURI}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
 			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];

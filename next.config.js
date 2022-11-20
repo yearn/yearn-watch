@@ -44,7 +44,7 @@ module.exports = (phase) => withPWA({
 			'0xFEB4acf3df3cDEA7399794D0869ef76A6EfAff52': 'ychad.eth',
 			'0x846e211e8ba920B353FB717631C015cf04061Cc9': 'dev.ychad.eth'
 		},
-		YDAEMON_BASE_URL: 'https://ydaemon.yearn.finance',
+		//YDAEMON_BASE_URL: 'https://ydaemon.yearn.finance',
 		// YDAEMON_BASE_URL: 'http://localhost:8080',
 	}
 });
