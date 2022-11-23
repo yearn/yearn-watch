@@ -33,7 +33,7 @@ function	WrappedInput({title, initialValue, onSave}: TWrappedInput): ReactElemen
 					disabled={isInitialValue}
 					className={'w-full md:w-48 rounded-none'}
 					onClick={(): void => onSave(value)}>
-					{'Submit'}
+					{'Save'}
 				</Button>
 			</div>
 		</label>
@@ -88,116 +88,6 @@ function	SectionRPCEndpoints(): ReactElement {
 						initialValue={''}
 						onSave={(value): void => {
 							onUpdateNetworks({42161: {rpcURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-				</div>
-			</div>
-		</Card>
-	);
-}
-
-function	SectionSubGraphEndpoints(): ReactElement {
-	const	{onUpdateNetworks, networks} = useSettings();
-	const	[, set_nonce] = useState(0);
-
-	return (
-		<Card>
-			<div className={'flex w-full flex-row justify-between pb-4'}>
-				<h4 className={'text-lg font-bold'}>{'Subgraph Endpoints'}</h4>
-			</div>
-			<div className={'text-justify'}>
-				<p>
-					{'The blockchain is an ever-growing chain of blocks and each block has a small piece of information inside it, when we need to query for something that needs data from many blocks we need to read through them all and aggregate the data, turns out this can get super complex and hard to maintain, so we use Subgraphs to make it easier.'}
-				</p>
-				<div className={'mt-4 grid grid-cols-1 gap-4'}>
-					<WrappedInput
-						title={''}
-						caption={'Subgraph endpoint for the Ethereum Mainnet chain (chainID: 1).'}
-						initialValue={networks[1].graphURI}
-						onSave={(value): void => {
-							onUpdateNetworks({1: {graphURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Subgraph endpoint for the Optimism chain (chainID: 10).'}
-						initialValue={networks[10].graphURI}
-						onSave={(value): void => {
-							onUpdateNetworks({1: {graphURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Subgraph endpoint for the Fantom Opera chain (chainID: 250).'}
-						initialValue={networks[250].graphURI}
-						onSave={(value): void => {
-							onUpdateNetworks({1: {graphURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Subgraph endpoint for the Arbitrum chain (chainID: 42161).'}
-						initialValue={networks[42161].graphURI}
-						onSave={(value): void => {
-							onUpdateNetworks({1: {graphURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-				</div>
-			</div>
-		</Card>
-	);
-}
-
-function	SectionExplorerBaseURI(): ReactElement {
-	const	{onUpdateNetworks, networks} = useSettings();
-	const	[, set_nonce] = useState(0);
-
-	return (
-		<Card>
-			<div className={'flex w-full flex-row justify-between pb-4'}>
-				<h4 className={'text-lg font-bold'}>{'Explorer Base URL'}</h4>
-			</div>
-			<div className={'text-justify'}>
-				<p>
-					{'Base URL of the chain explorer in order to list transactions and follow the blocks.'}
-				</p>
-				<div className={'mt-4 grid grid-cols-1 gap-4'}>
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Ethereum Mainnet chain (chainID: 1).'}
-						initialValue={networks[1].explorerBaseURI}
-						onSave={(value): void => {
-							onUpdateNetworks({1: {explorerBaseURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Optimism chain (chainID: 10).'}
-						initialValue={networks[10].explorerBaseURI}
-						onSave={(value): void => {
-							onUpdateNetworks({10: {explorerBaseURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Fantom Opera chain (chainID: 250).'}
-						initialValue={networks[250].explorerBaseURI}
-						onSave={(value): void => {
-							onUpdateNetworks({250: {explorerBaseURI: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Arbitrum chain (chainID: 42161).'}
-						initialValue={networks[42161].explorerBaseURI}
-						onSave={(value): void => {
-							onUpdateNetworks({42161: {explorerBaseURI: value}});
 							set_nonce((n: number): number => n + 1);
 						}} />
 				</div>
@@ -309,8 +199,6 @@ function	Settings(): ReactElement {
 			</Card>
 			<SectionYearnAPIBaseURI />
 			<SectionRPCEndpoints />
-			<SectionSubGraphEndpoints />
-			<SectionExplorerBaseURI />
 		</div>
 		
 	);
