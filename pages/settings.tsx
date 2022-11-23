@@ -1,45 +1,41 @@
 import React, {ReactElement, useMemo, useState} from 'react';
-import {Card, Switch} from '@yearn-finance/web-lib/components';
+import {Card, Switch, Button} from '@yearn-finance/web-lib/components';
 import {useSettings as productUseSettings} from 'contexts/useSettings';
 import {useSettings} from '@yearn-finance/web-lib/contexts';
 
 type TWrappedInput = {
 	title: string;
-	caption: string;
 	initialValue: string;
 	onSave: (value: string) => void;
 }
 
-function	WrappedInput({title, caption, initialValue, onSave}: TWrappedInput): ReactElement {
+function	WrappedInput({title, initialValue, onSave}: TWrappedInput): ReactElement {
 	const	[isFocused, set_isFocused] = useState(false);
 	const	[value, set_value] = useState(initialValue);
 	const	isInitialValue = useMemo((): boolean => value === initialValue, [value, initialValue]);
 
 	return (
 		<label>
-			<p className={`transition-colors ${isFocused ? 'text-primary-500' : 'text-neutral-900'}`}>
-				{title}
-			</p>
-			<div data-focused={isFocused} className={'yearn--input relative'}>
-				<input
-					onFocus={(): void => set_isFocused(true)}
-					onBlur={(): void => set_isFocused(false)}
-					placeholder={'Use default RPC'}
-					value={value}
-					type={'text'}
-					onChange={(e): void => set_value(e.target.value)}
-				/>
-				<div className={`absolute inset-y-0 right-2 flex justify-center ${isInitialValue ? 'pointer-events-none opacity-0' : 'opacity-100'} transition-opacity`}>
-					<button
-						onClick={(): void => onSave(value)}
-						className={'flex h-6 cursor-pointer items-center justify-center bg-primary-500 px-2 py-1 text-center hover:bg-primary-600'}>
-						<p className={'text-sm text-neutral-0'}>{'Save'}</p>
-					</button>
+			<p className={'pb-1 text-neutral-900'}>{title}</p>
+			<div className={'flex flex-row space-x-2'}>
+				<div data-focused={isFocused} className={'yearn--input relative w-full'}>
+					<input
+						onFocus={(): void => set_isFocused(true)}
+						onBlur={(): void => set_isFocused(false)}
+						className={'h-10 w-full overflow-x-scroll border-2 border-neutral-700 bg-neutral-0 p-2 outline-none scrollbar-none'}
+						placeholder={'Use default'}
+						value={value}
+						type={'text'}
+						onChange={(e): void => set_value(e.target.value)}
+					/>
 				</div>
+				<Button
+					disabled={isInitialValue}
+					className={'w-full md:w-48 rounded-none'}
+					onClick={(): void => onSave(value)}>
+					{'Submit'}
+				</Button>
 			</div>
-			<p className={'yearn--input-caption'}>
-				{caption}
-			</p>
 		</label>
 	);
 }
@@ -210,61 +206,6 @@ function	SectionExplorerBaseURI(): ReactElement {
 	);
 }
 
-function	SectionOracleAddress(): ReactElement {
-	const	{onUpdateNetworks, networks} = useSettings();
-	const	[, set_nonce] = useState(0);
-
-	return (
-		<Card>
-			<div className={'flex w-full flex-row justify-between pb-4'}>
-				<h4 className={'text-lg font-bold'}>{'Lens Oracle Address'}</h4>
-			</div>
-			<div className={'text-justify'}>
-				<p>
-					{'The Lens oracle provide an easy way to display the USD value for a given token.'}
-				</p>
-				<div className={'mt-4 grid grid-cols-1 gap-4'}>
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Ethereum Mainnet chain (chainID: 1).'}
-						initialValue={networks[1].lensAddress}
-						onSave={(value): void => {
-							onUpdateNetworks({1: {lensAddress: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Optimism chain (chainID: 10).'}
-						initialValue={networks[10].lensAddress}
-						onSave={(value): void => {
-							onUpdateNetworks({10: {lensAddress: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Fantom Opera chain (chainID: 250).'}
-						initialValue={networks[250].lensAddress}
-						onSave={(value): void => {
-							onUpdateNetworks({250: {lensAddress: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-
-					<WrappedInput
-						title={''}
-						caption={'Explorer Base URL for the Arbitrum chain (chainID: 42161).'}
-						initialValue={networks[42161].lensAddress}
-						onSave={(value): void => {
-							onUpdateNetworks({42161: {lensAddress: value}});
-							set_nonce((n: number): number => n + 1);
-						}} />
-				</div>
-			</div>
-		</Card>
-	);
-}
-
 function	SectionYearnAPIBaseURI(): ReactElement {
 	const	{onUpdateBaseSettings, settings: baseAPISettings} = useSettings();
 
@@ -370,7 +311,6 @@ function	Settings(): ReactElement {
 			<SectionRPCEndpoints />
 			<SectionSubGraphEndpoints />
 			<SectionExplorerBaseURI />
-			<SectionOracleAddress />
 		</div>
 		
 	);

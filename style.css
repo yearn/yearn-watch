@@ -96,23 +96,3 @@
 .yearn--select-no-arrow::-ms-expand {
     display: none;
 }
-
-.yearn--input {
-	@apply rounded-default w-full border-0 border-b-2 border-transparent bg-neutral-100 mt-1 text-neutral-900 focus:ring-0 transition-colors pr-10 h-10;
-	&[data-focused='true'] {
-		@apply bg-neutral-200 border-primary-500 transition-colors;
-		& ~ .yearn--input-caption {
-			@apply text-primary-500;
-		}
-	}
-	&[aria-invalid="true"] {
-		@apply border-red-900;
-	}
-	& > input {
-		@apply w-full border-0 bg-transparent text-neutral-900 focus:ring-0 h-10 p-2;
-	}
-
-	& ~ .yearn--input-caption {
-		@apply mt-1 pl-2 text-xs transition-colors text-neutral-900
-	}
-}
