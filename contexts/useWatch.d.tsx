@@ -219,6 +219,7 @@ export type TVault = {
 	decimals: number, //From Yearn API
 	emergency_shutdown: boolean, //From Yearn API
 	isHidden: boolean,
+	display_name: string,
 	isEndorsed: boolean,
 	address: utils.TAddress, //From Yearn API
 	balanceTokens: BigNumber, //From the GraphQL schema

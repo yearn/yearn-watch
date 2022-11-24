@@ -5,6 +5,7 @@ import {parseMarkdown}  from '@yearn-finance/web-lib/utils';
 
 type	TSectionAbout = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionAbout = memo(function SectionAbout({currentVault, currentStrategy}: TSectionAbout): ReactElement {
+	console.log(currentVault);
 	return (
 		<section
 			aria-label={'about-the-strategy'}
@@ -24,7 +25,7 @@ const	SectionAbout = memo(function SectionAbout({currentVault, currentStrategy}:
 					<div className={'flex-row-center mt-4'}>
 						<p
 							className={'text-neutral-500'}
-							dangerouslySetInnerHTML={{__html: parseMarkdown((currentStrategy?.description || '').replace(/{{token}}/g, currentVault.display_name) || '')}} />
+							dangerouslySetInnerHTML={{__html: parseMarkdown((currentStrategy?.description || '').replace(/{{token}}/g, currentVault.display_name || currentVault.symbol) || '')}} />
 					</div>
 				</div>
 				
