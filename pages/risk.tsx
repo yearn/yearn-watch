@@ -1,6 +1,6 @@
 import React, {ReactElement, useCallback, useEffect, useState}  from 'react';
 import axios from 'axios';
-import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import {useSettings, useWeb3} from '@yearn-finance/web-lib/contexts';
 import SectionRiskList from 'components/sections/risk/SectionRiskList';
 import SectionMatrix from 'components/sections/risk/SectionMatrix';
 import {TableHead, TableHeadCell} from 'components/TableHeadCell';
@@ -8,7 +8,6 @@ import {useWatch} from 'contexts/useWatch';
 import {TRiskGroup, TRowHead, TVaultWithRiskGroup} from 'contexts/useWatch.d';
 import {findStrategyBySearch} from 'utils/filters';
 import {getExcludeIncludeUrlParams, getImpactScore, getLongevityScore, getTvlImpact, median} from 'utils';
-import {useSettings} from '@yearn-finance/web-lib/contexts';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** This will render the head of the fake table we have, with the sortable

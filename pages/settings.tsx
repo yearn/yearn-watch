@@ -1,5 +1,5 @@
 import React, {ReactElement, useMemo, useState} from 'react';
-import {Card, Switch, Button} from '@yearn-finance/web-lib/components';
+import {Button, Card, Switch} from '@yearn-finance/web-lib/components';
 import {useSettings as productUseSettings} from 'contexts/useSettings';
 import {useSettings} from '@yearn-finance/web-lib/contexts';
 
@@ -31,7 +31,7 @@ function	WrappedInput({title, initialValue, onSave}: TWrappedInput): ReactElemen
 				</div>
 				<Button
 					disabled={isInitialValue}
-					className={'w-full md:w-48 rounded-none'}
+					className={'w-full rounded-none md:w-48'}
 					onClick={(): void => onSave(value)}>
 					{'Save'}
 				</Button>
@@ -57,7 +57,6 @@ function	SectionRPCEndpoints(): ReactElement {
 				<div className={'mt-4 grid grid-cols-1 gap-4'}>
 					<WrappedInput
 						title={''}
-						caption={'Endpoint to use to read and write on the Ethereum Mainnet chain (chainID: 1).'}
 						initialValue={''}
 						onSave={(value): void => {
 							onUpdateNetworks({1: {rpcURI: value}});
@@ -66,7 +65,6 @@ function	SectionRPCEndpoints(): ReactElement {
 
 					<WrappedInput
 						title={''}
-						caption={'Endpoint to use to read and write on the Optimism chain (chainID: 10).'}
 						initialValue={''}
 						onSave={(value): void => {
 							onUpdateNetworks({10: {rpcURI: value}});
@@ -75,7 +73,6 @@ function	SectionRPCEndpoints(): ReactElement {
 
 					<WrappedInput
 						title={''}
-						caption={'Endpoint to use to read and write on the Fantom Opera chain (chainID: 250).'}
 						initialValue={''}
 						onSave={(value): void => {
 							onUpdateNetworks({250: {rpcURI: value}});
@@ -84,7 +81,6 @@ function	SectionRPCEndpoints(): ReactElement {
 
 					<WrappedInput
 						title={''}
-						caption={'Endpoint to use to read and write on the Arbitrum chain (chainID: 42161).'}
 						initialValue={''}
 						onSave={(value): void => {
 							onUpdateNetworks({42161: {rpcURI: value}});
@@ -111,7 +107,6 @@ function	SectionYearnAPIBaseURI(): ReactElement {
 				<div className={'mt-4 grid grid-cols-1 gap-4'}>
 					<WrappedInput
 						title={''}
-						caption={'yDaemon API endpoint to get the list of Vaults and Strategies along with their details.'}
 						initialValue={baseAPISettings.yDaemonBaseURI}
 						onSave={(value): void => onUpdateBaseSettings({
 							...baseAPISettings,
@@ -119,7 +114,6 @@ function	SectionYearnAPIBaseURI(): ReactElement {
 						})} />
 					<WrappedInput
 						title={''}
-						caption={'Legacy API endpoint to get the list of Vaults and Strategies along with their details.'}
 						initialValue={baseAPISettings.apiBaseURI}
 						onSave={(value): void => onUpdateBaseSettings({
 							...baseAPISettings,
@@ -127,7 +121,6 @@ function	SectionYearnAPIBaseURI(): ReactElement {
 						})} />
 					<WrappedInput
 						title={''}
-						caption={'Meta API endpoint to get the some human readable information about the vaults, strategies and protocols.'}
 						initialValue={baseAPISettings.metaBaseURI}
 						onSave={(value): void => onUpdateBaseSettings({
 							...baseAPISettings,
