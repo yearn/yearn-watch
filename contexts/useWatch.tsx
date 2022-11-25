@@ -35,9 +35,9 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 	const	[vaults, set_vaults] = useState<useWatchTypes.TVault[]>([]);
 	const	[vaultsByChain, set_vaultsByChain] = useState<useWatchTypes.TVaultByChain[]>([]);
 	const	[lastUpdate, set_lastUpdate] = useState<number>(0);
-	const	{ settings } = useSettings();
+	const	{ settings: baseAPISettings} = useSettings()
 
-	const	{data: allVaults, error} = useSWR(`${settings.yDaemonBaseURI}/${chainID}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`, fetcher);
+	const	{data: allVaults, error} = useSWR(`${baseAPISettings.yDaemonBaseURI}/${chainID}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`, fetcher);
 
 	useEffect((): void => {
 		if (!allVaults) {
@@ -158,7 +158,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					continue;
 				}
 				try {
-					const	{data} = await axios.get(`${settings.yDaemonBaseURI}/${chain.value}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`);
+					const	{data} = await axios.get(`${baseAPISettings.yDaemonBaseURI}/${chain.value}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`);
 					chainData.push({vaults: data, chainId: chain.value, chainName: chain.label});
 				} catch (e) {
 					console.error(`Can't get info on ${chain.label} chain.\n`, e);

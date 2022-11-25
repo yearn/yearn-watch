@@ -13,8 +13,8 @@ type	TSectionReports = {currentVault: TVault, currentStrategy: TStrategy | undef
 const	SectionReports = memo(
 	function SectionReports({currentVault, currentStrategy}: TSectionReports): ReactElement {
 		const	{chainID} = useWeb3();
-		const 	{settings} = useSettings();
-		const	{data: allReports} = useSWR(`${settings.yDaemonBaseURI}/${chainID}/reports/${currentStrategy?.address}`, fetcher);
+		const 	{settings: baseAPISettings} = useSettings();
+		const	{data: allReports} = useSWR(`${baseAPISettings.yDaemonBaseURI}/${chainID}/reports/${currentStrategy?.address}`, fetcher);
 
 		function	computeAverageAPR(reports: TStrategyReport[]): number {
 			const	totalAPR = reports.reduce((acc, curr): number => acc + Number(curr?.results?.[0]?.APR || 0), 0);
