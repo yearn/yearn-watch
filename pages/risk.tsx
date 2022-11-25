@@ -50,11 +50,11 @@ function	Risk(): ReactElement {
 	const	[sortBy, set_sortBy] = useState('score');
 	const	[groups, set_groups] = useState<TRiskGroup[]>([]);
 	const	[risk, set_risk] = useState<TRiskGroup[]>([]);
+	const 	{settings:baseAPISettings} = useSettings();
 
 	// load the risk framework scores from yDaemon
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const _chainID = chainID || 1;
-		const {settings:baseAPISettings} = useSettings();
 		const endpoint = `${baseAPISettings.yDaemonBaseURI}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
