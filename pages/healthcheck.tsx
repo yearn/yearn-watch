@@ -29,7 +29,7 @@ function	RowHead({sortBy, set_sortBy}: TRowHead): ReactElement {
 				label={'Debt Outstanding'} />
 			<TableHeadCell
 				className={'cell-end min-w-36 col-span-3'}
-				label={'Risk'}
+				label={'Impact'}
 				sortId={'risk'} />
 		</TableHead>
 	);
