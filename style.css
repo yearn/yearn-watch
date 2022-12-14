@@ -78,3 +78,21 @@
 	@apply bg-transparent;
 }
 
+
+
+
+.yearn--select-reset {
+	@apply bg-transparent p-0 border-none;
+	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+}
+.yearn--select-no-arrow {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: none;
+}
+.yearn--select-no-arrow::-ms-expand {
+    display: none;
+}
