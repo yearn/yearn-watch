@@ -1,6 +1,6 @@
 import React, {ReactElement, useCallback, useEffect, useState}  from 'react';
 import axios from 'axios';
-import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import {useSettings, useWeb3} from '@yearn-finance/web-lib/contexts';
 import SectionRiskList from 'components/sections/risk/SectionRiskList';
 import SectionMatrix from 'components/sections/risk/SectionMatrix';
 import {TableHead, TableHeadCell} from 'components/TableHeadCell';
@@ -50,11 +50,12 @@ function	Risk(): ReactElement {
 	const	[sortBy, set_sortBy] = useState('score');
 	const	[groups, set_groups] = useState<TRiskGroup[]>([]);
 	const	[risk, set_risk] = useState<TRiskGroup[]>([]);
+	const 	{settings:baseAPISettings} = useSettings();
 
 	// load the risk framework scores from yDaemon
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const _chainID = chainID || 1;
-		const endpoint = `${process.env.YDAEMON_BASE_URL}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
+		const endpoint = `${baseAPISettings.yDaemonBaseURI}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
 			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];

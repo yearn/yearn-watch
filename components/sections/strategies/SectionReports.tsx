@@ -5,6 +5,7 @@ import {useWeb3} from '@yearn-finance/web-lib/contexts';
 import {Card, StatisticCard, TxHashWithActions} from '@yearn-finance/web-lib/components';
 import {format}  from '@yearn-finance/web-lib/utils';
 import {TStrategy, TStrategyReport, TVault} from 'contexts/useWatch.d';
+import {useSettings} from '@yearn-finance/web-lib/contexts';
 
 const fetcher = async (url: string): Promise<TStrategyReport[]> => axios.get(url).then((res): TStrategyReport[] => res.data);
 
@@ -12,7 +13,8 @@ type	TSectionReports = {currentVault: TVault, currentStrategy: TStrategy | undef
 const	SectionReports = memo(
 	function SectionReports({currentVault, currentStrategy}: TSectionReports): ReactElement {
 		const	{chainID} = useWeb3();
-		const	{data: allReports} = useSWR(`${process.env.YDAEMON_BASE_URL}/${chainID}/reports/${currentStrategy?.address}`, fetcher);
+		const 	{settings: baseAPISettings} = useSettings();
+		const	{data: allReports} = useSWR(`${baseAPISettings.yDaemonBaseURI}/${chainID}/reports/${currentStrategy?.address}`, fetcher);
 
 		function	computeAverageAPR(reports: TStrategyReport[]): number {
 			const	totalAPR = reports.reduce((acc, curr): number => acc + Number(curr?.results?.[0]?.APR || 0), 0);

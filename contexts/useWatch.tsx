@@ -7,8 +7,9 @@ import * as useWatchTypes from 'contexts/useWatch.d';
 import {useWeb3} from '@yearn-finance/web-lib/contexts';
 import {format, isZeroAddress, performBatchedUpdates} from '@yearn-finance/web-lib/utils';
 import {getTvlImpact} from 'utils';
-import {useSettings} from 'contexts/useSettings';
+import {useSettings as productUseSettings} from 'contexts/useSettings';
 import {options} from 'components/Header';
+import {useSettings} from '@yearn-finance/web-lib/contexts';
 
 const	WatchContext = createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
@@ -30,12 +31,13 @@ const fetcher = async (url: string): Promise<any> => axios.get(url).then((res): 
 ******************************************************************************/
 export const WatchContextApp = ({children}: {children: ReactElement}): ReactElement => {
 	const	{chainID} = useWeb3();
-	const	{shouldOnlyDisplayEndorsedVaults} = useSettings();
+	const	{shouldOnlyDisplayEndorsedVaults} = productUseSettings();
 	const	[vaults, set_vaults] = useState<useWatchTypes.TVault[]>([]);
 	const	[vaultsByChain, set_vaultsByChain] = useState<useWatchTypes.TVaultByChain[]>([]);
 	const	[lastUpdate, set_lastUpdate] = useState<number>(0);
+	const	{ settings: baseAPISettings} = useSettings()
 
-	const	{data: allVaults, error} = useSWR(`${process.env.YDAEMON_BASE_URL}/${chainID}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`, fetcher);
+	const	{data: allVaults, error} = useSWR(`${baseAPISettings.yDaemonBaseURI}/${chainID}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`, fetcher);
 
 	useEffect((): void => {
 		if (!allVaults) {
@@ -156,7 +158,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					continue;
 				}
 				try {
-					const	{data} = await axios.get(`${process.env.YDAEMON_BASE_URL}/${chain.value}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`);
+					const	{data} = await axios.get(`${baseAPISettings.yDaemonBaseURI}/${chain.value}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`);
 					chainData.push({vaults: data, chainId: chain.value, chainName: chain.label});
 				} catch (e) {
 					console.error(`Can't get info on ${chain.label} chain.\n`, e);
