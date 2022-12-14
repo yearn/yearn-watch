@@ -5,7 +5,6 @@ import {parseMarkdown}  from '@yearn-finance/web-lib/utils';
 
 type	TSectionAbout = {currentVault: TVault, currentStrategy: TStrategy | undefined};
 const	SectionAbout = memo(function SectionAbout({currentVault, currentStrategy}: TSectionAbout): ReactElement {
-	console.log(currentVault);
 	return (
 		<section
 			aria-label={'about-the-strategy'}
