@@ -93,8 +93,8 @@ const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolDa
 				{
 					strategiesList.map((strategy): ReactElement => {
 						return (
-							<div className={'mb-2 py-5 px-2 hover:bg-neutral-200'} key={strategy.name}>
-								<Link passHref href={`/vault/${strategy.data?.vaultAddress}/${strategy.data?.address}`}>
+							<Link key={strategy.name} passHref href={`/vault/${strategy.data?.vaultAddress}/${strategy.data?.address}`}>
+								<div className={'mb-2 py-5 px-2 hover:bg-neutral-200'}>
 									<div className={'mx-auto flex w-10/12 flex-col'}>
 										<span className={'flex flex-row items-center justify-between'}>
 											<AddressWithActions
@@ -112,8 +112,8 @@ const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolDa
 											</div>
 										</div>
 									</div>
-								</Link>
-							</div>
+								</div>
+							</Link>
 						);
 					})
 				}
