@@ -1,6 +1,6 @@
 import React, {Fragment, ReactElement, memo, useEffect, useState} from 'react';
 import	{List}						from	'@yearn-finance/web-lib/layouts';
-import	{AddressWithActions, Card}						from	'@yearn-finance/web-lib/components';
+import	{AddressWithActions, Card}	from	'@yearn-finance/web-lib/components';
 import	* as utils					from	'@yearn-finance/web-lib/utils';
 import	{Chevron}					from	'@yearn-finance/web-lib/icons';
 import {format} 					from 	'@yearn-finance/web-lib/utils';
