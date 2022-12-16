@@ -1,16 +1,21 @@
 import React, {Fragment, ReactElement, memo, useEffect, useState} from 'react';
 import	{List}						from	'@yearn-finance/web-lib/layouts';
-import	{Card}						from	'@yearn-finance/web-lib/components';
+import	{AddressWithActions, Card}						from	'@yearn-finance/web-lib/components';
 import	* as utils					from	'@yearn-finance/web-lib/utils';
 import	{Chevron}					from	'@yearn-finance/web-lib/icons';
 import {format} 					from 	'@yearn-finance/web-lib/utils';
 import {Disclosure, Transition}     from    '@headlessui/react';
+import {TStrategy} from 'contexts/useWatch.d';
+import Link from 'next/link';
 
 export type TProtocolData =  {
 	strategiesTVL: {
 		[strategyName: string]: number
 	},
 	tvl: number,
+	strategies: {
+		[strategyName: string]: Partial<TStrategy> & { vaultAddress: string}
+	},
 	emptyStrategies: string[],
 	allocatedStrategies: number,
 	name: string,
@@ -72,10 +77,11 @@ const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolDa
 
 	function	RenderDetail(): ReactElement {
 		const _strategiesList = Object.keys(protocol.strategiesTVL).map((strategy): {
-			name: string, tvl: number
+			name: string; data?: TProtocolData['strategies'][0]; tvl: number;
 		} => {
 			return {
 				name: strategy,
+				data: protocol.strategies[strategy],
 				tvl: protocol.strategiesTVL[strategy]
 			};
 		});
@@ -87,20 +93,26 @@ const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolDa
 				{
 					strategiesList.map((strategy): ReactElement => {
 						return (
-							<div className={'mb-10'} key={strategy.name}>
-								<div className={'mx-auto flex w-10/12 flex-col'}>
-									<span className={'mb-2 flex flex-row items-center justify-between'}>
-										<p className={'text-left text-neutral-500'}>{`${strategy.name}`}</p>
-										<b className={'text-left text-accent-500'}>
-											{`${format.amount(protocol.tvl ? strategy.tvl / protocol.tvl * 100 : 0)}%`}
-										</b>
-									</span>
-									<div>
-										<div className={'relative h-2 w-full overflow-hidden rounded-2xl bg-neutral-200 transition-transform'}>
-											<div className={'inset-y-0 left-0 h-full rounded-2xl bg-accent-500'} style={{width: `${protocol.tvl ? strategy.tvl / protocol.tvl * 100 : 0}%`}} />
+							<div className={'mb-2 py-5 px-2 hover:bg-neutral-200'} key={strategy.name}>
+								<Link passHref href={`/vault/${strategy.data?.vaultAddress}/${strategy.data?.address}`}>
+									<div className={'mx-auto flex w-10/12 flex-col'}>
+										<span className={'flex flex-row items-center justify-between'}>
+											<AddressWithActions
+												address={strategy.data?.address}
+												wrapperClassName={'hidden md:flex'}
+												className={'font-mono text-sm text-neutral-500'} />
+											<p className={'text-left text-neutral-500'}>{`${strategy.name}`}</p>
+											<b className={'text-left text-accent-500'}>
+												{`${format.amount(protocol.tvl ? strategy.tvl / protocol.tvl * 100 : 0)}%`}
+											</b>
+										</span>
+										<div>
+											<div className={'relative h-2 w-full overflow-hidden rounded-2xl bg-neutral-200 transition-transform'}>
+												<div className={'inset-y-0 left-0 h-full rounded-2xl bg-accent-500'} style={{width: `${protocol.tvl ? strategy.tvl / protocol.tvl * 100 : 0}%`}} />
+											</div>
 										</div>
 									</div>
-								</div>
+								</Link>
 							</div>
 						);
 					})
@@ -111,9 +123,9 @@ const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolDa
 							{({open}): ReactElement => (
 								<>
 									<Disclosure.Button className={'w-full'}>
-										<span className={'mb-2 flex flex-row items-center justify-end gap-2 mx-16'}>
-											<p className={'text-left text-neutral-500 text-lg'}>{'Empty Strategies'}</p>
-											<Chevron className={`h-4 w-4 mr-2 text-accent-500 ${open ? 'rotate-180' : 'rotate-0'}`} />
+										<span className={'mx-16 mb-2 flex flex-row items-center justify-end gap-2'}>
+											<p className={'text-left text-lg text-neutral-500'}>{'Empty Strategies'}</p>
+											<Chevron className={`mr-2 h-4 w-4 text-accent-500 ${open ? 'rotate-180' : 'rotate-0'}`} />
 										</span>
 									</Disclosure.Button>
 									<Transition
@@ -128,14 +140,14 @@ const	ProtocolBox = memo(function ProtocolBox({protocol}: {protocol: TProtocolDa
 										<Disclosure.Panel static className={'rounded-default w-full py-2'}>
 											{
 												protocol.emptyStrategies.map((strategy: string): ReactElement => (
-													<div className={'mx-auto flex w-10/12 flex-col mb-5'} key={'empty' + strategy}>
+													<div className={'mx-auto mb-5 flex w-10/12 flex-col'} key={'empty' + strategy}>
 														<span className={'mb-2 flex flex-row items-center justify-between'}>
 															<p className={'text-left text-neutral-500'}>{strategy}</p>
 															<b className={'text-left text-accent-500'}>{'0%'}</b>
 														</span>
 														<div>
 															<div className={'relative h-2 w-full overflow-hidden rounded-2xl bg-neutral-200 transition-transform'}>
-																<div className={'inset-y-0 left-0 h-full rounded-2xl bg-accent-500 w-0'} />
+																<div className={'inset-y-0 left-0 h-full w-0 rounded-2xl bg-accent-500'} />
 															</div>
 														</div>
 													</div>
