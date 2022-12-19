@@ -55,7 +55,7 @@ function	Risk(): ReactElement {
 	// load the risk framework scores from yDaemon
 	const fetchRiskGroups = useCallback(async (): Promise<void> => {
 		const _chainID = chainID || 1;
-		const endpoint = `${baseAPISettings.yDaemonBaseURI}/${_chainID}/vaults/all?classification=all&strategiesRisk=withRisk`;
+		const endpoint = `${baseAPISettings.yDaemonBaseURI}/${_chainID}/vaults/all?classification=all&strategiesDetails=withDetails`;
 		const response = await axios.get(endpoint);
 		if (response.status === 200) {
 			const vaultWithRiskGroup = response.data as TVaultWithRiskGroup[];
@@ -80,14 +80,14 @@ function	Risk(): ReactElement {
 							urlParams: '',
 							totalDebtRatio: 0,
 							tvl: 0,
-							tvlImpact: risk.TVLImpact,
-							auditScore: risk.auditScore,
-							codeReviewScore: risk.codeReviewScore,
-							testingScore: risk.testingScore,
-							protocolSafetyScore: risk.protocolSafetyScore,
-							complexityScore: risk.complexityScore,
-							teamKnowledgeScore: risk.teamKnowledgeScore,
-							longevityScore: risk.longevityImpact,
+							tvlImpact: risk?.riskDetails?.TVLImpact,
+							auditScore: risk?.riskDetails?.auditScore,
+							codeReviewScore: risk?.riskDetails?.codeReviewScore,
+							testingScore: risk?.riskDetails?.testingScore,
+							protocolSafetyScore: risk?.riskDetails?.protocolSafetyScore,
+							complexityScore: risk?.riskDetails?.complexityScore,
+							teamKnowledgeScore: risk?.riskDetails?.teamKnowledgeScore,
+							longevityScore: risk?.riskDetails?.longevityImpact,
 							oldestActivation: 0,
 							medianScore: 0,
 							impactScore: 0,

@@ -75,20 +75,23 @@ export type TVaultWithRiskGroup = {
 		name: string
 		description: string
 		risk: {
-			riskGroup: string
-			TVLImpact: number
-			auditScore: number
-			codeReviewScore: number
-			complexityScore: number
-			longevityImpact: number
-			protocolSafetyScore: number
-			teamKnowledgeScore: number
-			testingScore: number
+			riskGroup: string,
 			allocation: {
-				currentTVL: string
-				availableTVL: string
-				currentAmount: string
-				availableAmount: string
+				availableAmount: string,
+				availableTVL: string,
+				currentAmount: string,
+				currentTVL: string,
+			}
+
+			riskDetails: {
+				TVLImpact: number,
+				auditScore: number,
+				codeReviewScore: number,
+				complexityScore: number,
+				longevityImpact: number,
+				protocolSafetyScore: number,
+				teamKnowledgeScore: number,
+				testingScore: number,
 			}
 		}
 	}[]

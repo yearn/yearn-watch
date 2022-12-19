@@ -4,12 +4,11 @@ import useSWR from 'swr';
 import NProgress from 'nprogress';
 import {createHash} from 'crypto';
 import * as useWatchTypes from 'contexts/useWatch.d';
-import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import {useSettings, useWeb3} from '@yearn-finance/web-lib/contexts';
 import {format, isZeroAddress, performBatchedUpdates} from '@yearn-finance/web-lib/utils';
 import {getTvlImpact} from 'utils';
 import {useSettings as productUseSettings} from 'contexts/useSettings';
 import {options} from 'components/Header';
-import {useSettings} from '@yearn-finance/web-lib/contexts';
 
 const	WatchContext = createContext<useWatchTypes.TWatchContext>({
 	vaults: [],
@@ -35,7 +34,7 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 	const	[vaults, set_vaults] = useState<useWatchTypes.TVault[]>([]);
 	const	[vaultsByChain, set_vaultsByChain] = useState<useWatchTypes.TVaultByChain[]>([]);
 	const	[lastUpdate, set_lastUpdate] = useState<number>(0);
-	const	{ settings: baseAPISettings} = useSettings()
+	const	{settings: baseAPISettings} = useSettings();
 
 	const	{data: allVaults, error} = useSWR(`${baseAPISettings.yDaemonBaseURI}/${chainID}/vaults/all?strategiesDetails=withDetails${shouldOnlyDisplayEndorsedVaults? '' : '&classification=all'}`, fetcher);
 

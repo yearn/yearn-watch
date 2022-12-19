@@ -1,11 +1,10 @@
 import React, {ReactElement, memo} from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
-import {useWeb3} from '@yearn-finance/web-lib/contexts';
+import {useSettings, useWeb3} from '@yearn-finance/web-lib/contexts';
 import {Card, StatisticCard, TxHashWithActions} from '@yearn-finance/web-lib/components';
 import {format}  from '@yearn-finance/web-lib/utils';
 import {TStrategy, TStrategyReport, TVault} from 'contexts/useWatch.d';
-import {useSettings} from '@yearn-finance/web-lib/contexts';
 
 const fetcher = async (url: string): Promise<TStrategyReport[]> => axios.get(url).then((res): TStrategyReport[] => res.data);
 
