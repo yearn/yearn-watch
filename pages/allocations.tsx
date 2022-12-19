@@ -111,6 +111,7 @@ function	Allocations(): ReactElement {
 							if (!protocols[chainData.chainName].list[protocol]) {
 								protocols[chainData.chainName].list[protocol] = {
 									strategiesTVL: {},
+									strategies: {},
 									emptyStrategies:[],
 									tvl: 0,
 									allocatedStrategies: 0,
@@ -125,11 +126,16 @@ function	Allocations(): ReactElement {
 								if(totalDebtUSDC>0) protocols[chainData.chainName].list[protocol].allocatedStrategies++;
 							}
 							protocols[chainData.chainName].list[protocol].strategiesTVL[strategy.name] += totalDebtUSDC;
+							protocols[chainData.chainName].list[protocol].strategies[strategy.name] = {
+								...strategy,
+								vaultAddress: vault.address
+							};
 							protocols[chainData.chainName].tvlTotal += totalDebtUSDC;
 
 							if (!protocols.All.list[protocol]) {
 								protocols.All.list[protocol] = {
 									strategiesTVL: {},
+									strategies: {},
 									emptyStrategies:[],
 									tvl: 0,
 									allocatedStrategies: 0,
@@ -145,6 +151,10 @@ function	Allocations(): ReactElement {
 							}
 							protocols.All.list[protocol].strategiesTVL[strategy.name] += totalDebtUSDC;
 							protocols.All.tvlTotal += totalDebtUSDC;
+							protocols.All.list[protocol].strategies[strategy.name] = {
+								...strategy,
+								vaultAddress: vault.address
+							};
 						});
 					}
 				});
