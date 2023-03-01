@@ -78,14 +78,8 @@ export const WatchContextApp = ({children}: {children: ReactElement}): ReactElem
 					vault.alerts.push({level: 'warning', message: 'Available deposit limit is zero'});
 				if (format.BN(vault?.details?.depositLimit).isZero())
 					vault.alerts.push({level: 'warning', message: 'Deposit limit is zero'});
-				if (vault?.details?.managementFee === 0)
-					vault.alerts.push({level: 'warning', message: 'Management fee is zero'});
 				if (vault?.details?.performanceFee === 0)
 					vault.alerts.push({level: 'warning', message: 'Performance fee is zero'});
-				if (vault?.details?.managementFee !== 200)
-					vault.alerts.push({level: 'warning', message: 'Invalid value for management fee'});
-				if (vault?.details?.performanceFee !== 2000)
-					vault.alerts.push({level: 'warning', message: 'Invalid value for performance fee'});
 				vault.alertHash = createHash('sha256').update(`${vault.address}_${JSON.stringify(vault.alerts)}`).digest('hex');
 
 				for (const _strategy of vault.strategies) {
