@@ -17,7 +17,8 @@ function	Index(): ReactElement {
 	const	[filteredVaults, set_filteredVaults] = useState<TVault[]>([]);
 	const	[searchTerm, set_searchTerm] = useState('');
 	const	[isOnlyWarning, set_isOnlyWarning] = useState(false);
-	const	[searchResult, set_searchResult] = useState({vaults: 0, strategies: 0});
+	const	[isOnlyStrategiesWithDebt, set_isOnlyStrategiesWithDebt] = useState(true);
+	const	[filteredCount, set_filteredCount] = useState({vaults: 0, strategies: 0});
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -31,6 +32,11 @@ function	Index(): ReactElement {
 		//If the isOnlyWarning is checked, we only display the vaults with a warning
 		if (isOnlyWarning) {
 			_filteredVaults = _filteredVaults.filter((vault): boolean => (vault.alerts?.length || 0) > 0);
+		}
+
+		//If the isOnlyStrategiesWithDebt is checked, we only display the vaults with at least one strategy with debt
+		if (isOnlyStrategiesWithDebt) {
+			_filteredVaults = _filteredVaults.filter(hasStrategyWithDebt);
 		}
 
 		//If the shouldDisplayVaultsWithMigration is checked, we also display the vaults with a migration
@@ -50,12 +56,12 @@ function	Index(): ReactElement {
 		_filteredVaults = _filteredVaults.sort((a, b): number => Number(b.version.replace('.', '')) - Number(a.version.replace('.', '')));
 		utils.performBatchedUpdates((): void => {
 			set_filteredVaults(_filteredVaults);
-			set_searchResult({
+			set_filteredCount({
 				vaults: _filteredVaults.length,
 				strategies: _filteredVaults.reduce((acc, vault): number => acc + (vault.strategies?.length || 0), 0)
 			});
 		});
-	}, [vaults, searchTerm, isOnlyWarning, settings.shouldDisplayStratsInQueue, settings.shouldDisplayVaultNoStrats, settings.shouldDisplayVaultsWithMigration]);
+	}, [vaults, searchTerm, isOnlyWarning, settings.shouldDisplayStratsInQueue, settings.shouldDisplayVaultNoStrats, settings.shouldDisplayVaultsWithMigration, isOnlyStrategiesWithDebt]);
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** Main render of the page.
@@ -68,9 +74,17 @@ function	Index(): ReactElement {
 						searchTerm={searchTerm}
 						onChange={set_searchTerm} />
 					<div className={'flex-row-center'}>
-						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Vaults Found: ${searchResult.vaults}`}</p>
-						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Strategies Found: ${searchResult.strategies}`}</p>
+						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Vaults Found: ${filteredCount.vaults}`}</p>
+						<p className={'mr-4 text-xs text-neutral-500 md:mr-10'}>{`Strategies Found: ${filteredCount.strategies}`}</p>
 					</div>
+				</div>
+				<div>
+					<Card padding={'narrow'}>
+						<label className={'component--switchCard-wrapper'}>
+							<p>{'Strategies with debt'}</p>
+							<Switch isEnabled={isOnlyStrategiesWithDebt} onSwitch={set_isOnlyStrategiesWithDebt} />
+						</label>
+					</Card>
 				</div>
 				<div>
 					<Card padding={'narrow'}>
@@ -100,6 +114,12 @@ function	Index(): ReactElement {
 			) : null}
 		</div>
 	);
+}
+
+function hasStrategyWithDebt(vault: TVault): boolean {
+	return vault.strategies.some((strategy): boolean => {
+		return utils.format.BN(strategy.details.totalDebt).gt(0);
+	});
 }
 
 export default Index;

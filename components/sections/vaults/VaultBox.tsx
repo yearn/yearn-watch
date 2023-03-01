@@ -1,6 +1,6 @@
 import React, {MouseEvent, ReactElement, memo, useEffect, useState} from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import ImageWithFallback from 'components/ImageWithFallback';
 import {AddressWithActions, Button, Card} from '@yearn-finance/web-lib/components';
 import {AlertWarning, Chevron} from '@yearn-finance/web-lib/icons';
 import {TStrategy, TVault} from 'contexts/useWatch.d';
@@ -21,14 +21,14 @@ const VaultBox = memo(function VaultBox({vault, isOnlyInQueue = false}: TVaultBo
 		return (
 			<div className={'flex-row-start w-full justify-between md:w-max'}>
 				<div className={'flex-row-start'}>
-					{vault.icon ? <Image
+					<ImageWithFallback
 						alt={`token ${vault.name}`}
 						decoding={'async'}
 						width={40}
 						height={40}
 						src={vault.icon}
 						quality={70}
-						className={'h-10 w-10'} /> : <div className={'h-10 min-h-[40px] w-10 min-w-[40px] rounded-full bg-neutral-200'} />}
+						className={'h-10 w-10'} />
 					<div className={'ml-2 md:ml-6'}>
 						<b>{vault.name}</b>
 						<p className={'text-xs text-neutral-500'}>
