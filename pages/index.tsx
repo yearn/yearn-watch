@@ -7,6 +7,8 @@ import {TVault} from 'contexts/useWatch.d';
 import {useSettings} from 'contexts/useSettings';
 import VaultBox from 'components/sections/vaults/VaultBox';
 import {deepFindVaultBySearch} from 'utils/filters';
+import {usePagination} from 'hooks/usePagination';
+import {Pagination} from 'components/Pagination';
 
 /* 🔵 - Yearn Finance **********************************************************
 ** Main render of the home page
@@ -19,6 +21,7 @@ function	Index(): ReactElement {
 	const	[isOnlyWarning, set_isOnlyWarning] = useState(false);
 	const	[isOnlyStrategiesWithDebt, set_isOnlyStrategiesWithDebt] = useState(true);
 	const	[filteredCount, set_filteredCount] = useState({vaults: 0, strategies: 0});
+	const	{currentItems, paginationProps} = usePagination<TVault>({data: filteredVaults, itemsPerPage: 10});
 
 	/* 🔵 - Yearn Finance ******************************************************
 	** This effect is triggered every time the vault list or the search term is
@@ -103,15 +106,18 @@ function	Index(): ReactElement {
 					</Card>
 				</div>
 			</div>
-			{filteredVaults ? (
+			{currentItems ? (
 				<List className={'flex w-full flex-col space-y-2'}>
-					{filteredVaults.map((vault): ReactElement => (
+					{currentItems.map((vault): ReactElement => (
 						<div key={vault.address}>
 							<VaultBox vault={vault} isOnlyInQueue={settings.shouldDisplayStratsInQueue} />
 						</div>
 					))}
 				</List>
 			) : null}
+			<div className={'my-4'}>
+				<Pagination {...paginationProps} />
+			</div>
 		</div>
 	);
 }
